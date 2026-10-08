@@ -100,7 +100,7 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
 .curseur { display: inline-flex; border: 1px solid var(--trait); border-radius: 999px; padding: 3px; gap: 3px; background: var(--carte); }
 .curseur button { font: 500 .9rem/1 var(--titre); color: var(--doux); background: transparent; border: 0; border-radius: 999px; padding: 9px 16px; cursor: pointer; }
 .curseur button.on { color: var(--fond); background: var(--or); }
-.reglage small { color: var(--doux); font-size: .74rem; flex: 1; min-width: 200px; }
+.curseur button small { display: block; font: 400 .66rem/1 var(--sans); margin-top: 4px; opacity: .8; }
 .colonnes { display: grid; grid-template-columns: 3fr 1fr 1fr; gap: 14px; align-items: start; }
 .b.minute-on { border-color: var(--or); background: rgba(226, 194, 122, .2); }
 @media (max-width: 900px) { .colonnes { grid-template-columns: 1fr; gap: 0; } }
@@ -134,7 +134,6 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
   .anneau { width: 54px; height: 54px; }
   .anneau .s { font-size: 1.25rem; }
   .curseur button { padding: 9px 13px; }
-  .reglage small { display: none; }
 }
 </style>
 </head>
@@ -174,9 +173,8 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
         <div class="s"><span id="reste">·</span></div>
       </div>
       <div class="curseur" id="curseur">
-        <button data-duree="10">10 s</button><button data-duree="20" class="on">20 s</button><button data-duree="30">30 s</button>
+        <button data-duree="10">10 s<small>jeu 2 : vote</small></button><button data-duree="20" class="on">20 s<small>jeu 1 : post-it</small></button><button data-duree="30">30 s<small>en réserve</small></button>
       </div>
-      <small id="sous">Durée de toutes les musiques et sons ci-dessous (sauf les boucles) : bips sur les 5 dernières secondes, buzzer à zéro. Toucher l'anneau ou la même carte pour arrêter.</small>
     </div>
     <div class="colonnes">
       <div class="sous">
