@@ -76,9 +76,13 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
 .b.boucle.on { border-color: var(--c, var(--or)); background: rgba(143, 182, 236, .14); }
 .b.boucle.on b::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--c, var(--or)); margin-right: 6px; vertical-align: 1px; animation: clignote 1.2s ease-in-out infinite; }
 @keyframes clignote { 50% { opacity: .25; } }
-/* Vrai extrait de pop culture rangé dans Gagné, Perdu ou Attente : point doré */
-.b.extrait::before { content: ""; position: absolute; top: 5px; right: 5px; width: 5px; height: 5px; border-radius: 50%; background: var(--or); }
-.b.extrait b { padding-right: 7px; }
+/* Vrais extraits : un fond par origine, pour les repérer d'un coup d'œil (le bord gauche reste la couleur du groupe) */
+.b.kaamelott { background: rgba(190, 74, 46, .34); border-color: rgba(232, 140, 100, .55); }
+.b.film { background: rgba(38, 160, 170, .26); border-color: rgba(110, 210, 215, .5); }
+.legende { display: flex; gap: 14px; flex-wrap: wrap; margin: 10px 0 0; font-size: .74rem; color: var(--doux); }
+.legende span::before { content: ""; display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; border: 1px solid var(--trait); background: var(--carte); }
+.legende .kaamelott::before { background: rgba(190, 74, 46, .6); border-color: rgba(232, 140, 100, .7); }
+.legende .film::before { background: rgba(38, 160, 170, .5); border-color: rgba(110, 210, 215, .7); }
 
 /* En haut : chrono à gauche, Attente à droite (l'un sous l'autre sur téléphone) */
 .duo { display: flex; gap: 18px; align-items: flex-start; }
@@ -153,6 +157,8 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
       <small id="verrou-etat">Une seule fois par téléphone.</small>
     </form>
   </section>
+
+  <p class="legende" id="legende" hidden><span>Sons</span><span class="kaamelott">Kaamelott</span><span class="film">Films, séries, jeux télé, jeux vidéo, manga</span></p>
 
   <!-- En haut : le chrono, et à côté tout ce qui accompagne l'attente -->
   <div class="duo">
@@ -262,7 +268,7 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
   <p class="vide" id="vide" hidden>Aucun son. Échap pour tout réafficher.</p>
 
   <p class="note">Un appui lance le son, un deuxième appui sur le même bouton l'arrête (sons, boucles et chrono). Au clavier : <kbd>/</kbd> pour chercher, <kbd>Entrée</kbd> joue le premier résultat, les lettres sur les boutons, <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> pour le chrono (10, 20, 30 s) avec le dernier tic-tac choisi, <kbd>4</kbd> <kbd>5</kbd> <kbd>6</kbd> pour le tic-tac (suspense, arcade, minuteur), <kbd>Espace</kbd> arrête le chrono, <kbd>Échap</kbd> coupe tout. Sur iPhone, monter le volume du téléphone avant.</p>
-  <p class="note">Sons : <a href="https://bigsoundbank.com">BigSoundBank</a> (CC0) et <a href="https://mixkit.co">Mixkit</a> (licence gratuite Mixkit). Musique d'ascenseur : « Local Forecast - Elevator », Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), licence <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Pop culture : vrais extraits, réservés à la famille ; un point doré les signale dans chaque groupe.</p>
+  <p class="note">Sons : <a href="https://bigsoundbank.com">BigSoundBank</a> (CC0) et <a href="https://mixkit.co">Mixkit</a> (licence gratuite Mixkit). Musique d'ascenseur : « Local Forecast - Elevator », Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), licence <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Pop culture : vrais extraits, réservés à la famille ; fond rouille pour Kaamelott, turquoise pour le reste.</p>
 </main>
 <div id="etat"></div>
 <audio id="muet-ios" src="data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YSADAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA==" loop playsinline preload="auto"></audio>
@@ -551,6 +557,7 @@ async function ouvrePop(mdp, memoriser) {
 
 function construitPop() {
   document.getElementById("verrou-form").hidden = true;
+  document.getElementById("legende").hidden = false;
   const reste = document.getElementById("pop-reste");
   const groupes = {};
   for (const s of SONS_POP.liste) {
@@ -561,7 +568,7 @@ function construitPop() {
       g = groupes[s.cat] = document.createElement("div"); g.className = "groupe";
       g.innerHTML = "<h3></h3><div class=\"grille\"></div>"; g.querySelector("h3").textContent = s.cat; reste.append(g);
     }
-    const b = document.createElement("button"); b.className = "b" + (s.groupe ? " extrait" : ""); b.dataset.son = s.id; b._pop = true;
+    const b = document.createElement("button"); b.className = "b " + (/kaamelott/i.test(s.cat + " " + s.titre) ? "kaamelott" : "film"); b.dataset.son = s.id; b._pop = true;
     b.innerHTML = "<b></b><small></small>"; b.querySelector("b").textContent = s.titre; b.querySelector("small").textContent = s.detail;
     b.addEventListener("click", () => declenche(b));
     g.querySelector(".grille").append(b);
