@@ -53,6 +53,8 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
 .gagne { --c: var(--vert); }
 .perdu { --c: var(--rouge); }
 .attente { --c: var(--bleu); }
+.emotions { --c: #f0a0c4; }
+.entree { --c: var(--or); }
 .pop { --c: var(--or); }
 
 /* Boutons de sons : petits, pour tout voir d'un coup */
@@ -102,6 +104,7 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
 .neuf button.on { color: var(--fond); background: var(--or); border-color: var(--or); }
 
 /* Pop culture : mot de passe une seule fois par téléphone */
+.pop h2 { margin-top: 12px; }
 .verrou { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .verrou input { flex: 1; min-width: 140px; max-width: 260px; font: 16px var(--sans); color: var(--texte); background: rgba(255, 255, 255, .06); border: 1px solid var(--trait); border-radius: 8px; padding: 8px 10px; outline: none; }
 .verrou input:focus { border-color: var(--or); }
@@ -119,7 +122,8 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
   h1 { display: none; }
   .stop { padding: 11px 12px; font-size: .78rem; letter-spacing: .08em; }
   .grille { grid-template-columns: repeat(4, 1fr); gap: 4px; }
-  .question .grille, .gagne .grille, .perdu .grille, .attente .grille { grid-template-columns: repeat(5, 1fr); }
+  .grille { grid-template-columns: repeat(5, 1fr); }
+  .emotions .grille, .entree .grille { grid-template-columns: repeat(4, 1fr); }   /* répliques plus longues */
   .b { min-height: 44px; padding: 4px 4px 5px 6px; border-left-width: 2px; }
   .b b { font-size: .72rem; letter-spacing: 0; }
   .b small { font-size: .6rem; }
@@ -139,6 +143,17 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
     <button class="stop" id="stop">Tout couper</button>
   </div>
 
+  <!-- Pop culture : vrais extraits, chiffrés (sons-pop.bin) ou intégrés dans la version complète locale.
+       Rangés dans les groupes ci-dessous (point doré) ; mot de passe une seule fois par téléphone. -->
+  <section id="pop" class="pop">
+    <h2>Extraits de pop culture</h2>
+    <form class="verrou" id="verrou-form">
+      <input id="verrou-mdp" type="password" placeholder="Mot de passe de la famille" autocomplete="current-password">
+      <button type="submit">Ouvrir</button>
+      <small id="verrou-etat">Une seule fois par téléphone.</small>
+    </form>
+  </section>
+
   <!-- En haut : le chrono, et à côté tout ce qui accompagne l'attente -->
   <div class="duo">
     <div class="col-chrono">
@@ -156,6 +171,10 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
         <span data-ligne="minuteur">Minuteur</span>
         <button data-style="minuteur" data-chrono="10">10 s</button><button data-style="minuteur" data-chrono="20">20 s</button><button data-style="minuteur" data-chrono="30">30 s</button>
       </div>
+    </div>
+    <div class="sous">
+      <h3>Musiques pendant le chrono</h3>
+      <div class="grille" data-groupe="chrono"></div>
     </div>
     </div>
 
@@ -209,19 +228,41 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
     </div>
   </div>
 
-  <!-- Pop culture : vrais extraits, chiffrés (sons-pop.bin) ou intégrés dans la version complète locale -->
-  <section id="pop" class="pop">
-    <h2 id="pop-titre">Pop culture</h2>
-    <form class="verrou" id="verrou-form">
-      <input id="verrou-mdp" type="password" placeholder="Mot de passe de la famille" autocomplete="current-password">
-      <button type="submit">Ouvrir</button>
-      <small id="verrou-etat">Une seule fois par téléphone.</small>
-    </form>
-  </section>
+  <div class="groupe emotions">
+    <h2>Émotions</h2>
+    <div class="sous">
+      <h3>Content</h3>
+      <div class="grille" data-groupe="content"></div>
+    </div>
+    <div class="sous">
+      <h3>Pas content</h3>
+      <div class="grille" data-groupe="pascontent"></div>
+    </div>
+    <div class="sous">
+      <h3>Pas d'accord</h3>
+      <div class="grille" data-groupe="pasdaccord"></div>
+    </div>
+    <div class="sous">
+      <h3>Colère</h3>
+      <div class="grille" data-groupe="colere"></div>
+    </div>
+    <div class="sous">
+      <h3>Pas compris</h3>
+      <div class="grille" data-groupe="pascompris"></div>
+    </div>
+  </div>
+
+  <div class="groupe entree">
+    <h2>Entrée en scène</h2>
+    <div class="grille" data-groupe="entree"></div>
+  </div>
+
+  <!-- Extraits sans groupe (aucun aujourd'hui) -->
+  <section id="pop-reste" class="pop" hidden><h2>Autres extraits</h2></section>
   <p class="vide" id="vide" hidden>Aucun son. Échap pour tout réafficher.</p>
 
   <p class="note">Un appui lance le son, un deuxième appui sur le même bouton l'arrête (sons, boucles et chrono). Au clavier : <kbd>/</kbd> pour chercher, <kbd>Entrée</kbd> joue le premier résultat, les lettres sur les boutons, <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> pour le chrono (10, 20, 30 s) avec le dernier tic-tac choisi, <kbd>4</kbd> <kbd>5</kbd> <kbd>6</kbd> pour le tic-tac (suspense, arcade, minuteur), <kbd>Espace</kbd> arrête le chrono, <kbd>Échap</kbd> coupe tout. Sur iPhone, monter le volume du téléphone avant.</p>
-  <p class="note">Sons : <a href="https://bigsoundbank.com">BigSoundBank</a> (CC0) et <a href="https://mixkit.co">Mixkit</a> (licence gratuite Mixkit). Musique d'ascenseur : « Local Forecast - Elevator », Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), licence <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Pop culture : vrais extraits, réservés à la famille ; un point doré les signale dans Question, Gagné, Perdu et Attente.</p>
+  <p class="note">Sons : <a href="https://bigsoundbank.com">BigSoundBank</a> (CC0) et <a href="https://mixkit.co">Mixkit</a> (licence gratuite Mixkit). Musique d'ascenseur : « Local Forecast - Elevator », Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), licence <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Pop culture : vrais extraits, réservés à la famille ; un point doré les signale dans chaque groupe.</p>
 </main>
 <div id="etat"></div>
 <audio id="muet-ios" src="data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YSADAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA==" loop playsinline preload="auto"></audio>
@@ -405,6 +446,7 @@ function declenche(b) {
   // Deuxième appui pendant que le son joue : on l'arrête
   if (b._lecture) { arreteBouton(b); signale("■ " + b.querySelector("b").textContent + " : arrêt"); return; }
   // Un son de réponse coupe le chrono ; le suspense, la victoire et la pop culture le laissent tourner
+  if (nom === "zawarudo") arreteChrono(true);   // Dio arrête le temps
   if (!b._pop && !["roulement", "tambours", "fanfare", "bravo"].includes(nom)) arreteChrono(true);
   const lecture = {}; b._lecture = lecture;
   joue(nom).then(({ d, g }) => {
@@ -458,7 +500,7 @@ function filtre() {
   // Pendant une recherche : le chrono s'efface, et la pop culture aussi si rien n'y correspond
   const filtrant = mots.length > 0, chronoEl = document.querySelector(".chrono");
   chronoEl.hidden = chronoEl.previousElementSibling.hidden = filtrant;
-  pop.hidden = filtrant && !pop.querySelector(".groupe:not([hidden])");
+  pop.hidden = !!SONS_POP || filtrant;   // la ligne du mot de passe, tant que les extraits ne sont pas ouverts
 }
 
 /* ---------- Pop culture : extraits chiffrés, mot de passe retenu par le téléphone ---------- */
@@ -509,20 +551,21 @@ async function ouvrePop(mdp, memoriser) {
 
 function construitPop() {
   document.getElementById("verrou-form").hidden = true;
-  document.getElementById("pop-titre").textContent = `Pop culture (${SONS_POP.liste.filter(s => !s.groupe).length})`;
+  const reste = document.getElementById("pop-reste");
   const groupes = {};
   for (const s of SONS_POP.liste) {
-    // Extrait rangé avec les sons des jeux (Gagné, Perdu, Attente), sinon dans sa catégorie de Pop culture
+    // Extrait rangé dans son groupe (Question, Gagné, Émotions…), sinon dans « Autres extraits »
     let g = s.groupe ? document.querySelector(`[data-groupe="${s.groupe}"]`).parentNode : groupes[s.cat];
+    if (!s.groupe) reste.hidden = false;
     if (!g) {
       g = groupes[s.cat] = document.createElement("div"); g.className = "groupe";
-      g.innerHTML = "<h3></h3><div class=\"grille\"></div>"; g.querySelector("h3").textContent = s.cat; pop.append(g);
+      g.innerHTML = "<h3></h3><div class=\"grille\"></div>"; g.querySelector("h3").textContent = s.cat; reste.append(g);
     }
     const b = document.createElement("button"); b.className = "b" + (s.groupe ? " extrait" : ""); b.dataset.son = s.id; b._pop = true;
     b.innerHTML = "<b></b><small></small>"; b.querySelector("b").textContent = s.titre; b.querySelector("small").textContent = s.detail;
     b.addEventListener("click", () => declenche(b));
     g.querySelector(".grille").append(b);
-    b._texte = sansAccent([s.titre, s.detail, s.cat, "pop culture", b.closest(".groupe").querySelector("h2")?.textContent || ""].join(" "));
+    b._texte = sansAccent([s.titre, s.detail, s.cat, "pop culture", b.closest(".groupe")?.querySelector("h2")?.textContent || "chrono", b.closest(".sous")?.querySelector("h3")?.textContent || ""].join(" "));
   }
   filtre(); prechargePop();
 }
@@ -536,12 +579,13 @@ cherche.addEventListener("input", filtre);
 cherche.addEventListener("keydown", e => {
   if (e.key === "Enter") {
     e.preventDefault();
-    const b = document.querySelector(".groupe:not([hidden]) .b:not([hidden])");
+    const b = [...document.querySelectorAll(".b")].find(b => b.offsetParent);   // premier son visible
     if (b) declenche(b);
   } else if (e.key === "Escape") {
     cherche.value = ""; filtre(); cherche.blur();
   }
 });
+filtre();   // masque les lignes encore vides (extraits pas encore ouverts)
 if (SONS_POP) construitPop();   // version complète locale : extraits déjà là, pas de mot de passe
 else {
   // Mot de passe déjà retenu sur ce téléphone : les extraits s'ouvrent seuls
