@@ -263,6 +263,13 @@
   .paper .rule .num span { transform: rotate(-45deg); font: 500 8.6pt/1 var(--titre); }
   .paper .rule b { display: block; font: 500 8.6pt/1.25 var(--titre); text-transform: uppercase; letter-spacing: .12em; margin: .3mm 0 1mm; }
   .paper .rule p { margin: 0; }
+  .paper .ex { display: flex; align-items: center; justify-content: center; gap: 2.5mm; margin: .5mm 0 1.6mm; }
+  .paper .ex .pi { width: 21mm; height: 21mm; flex: none; padding: 1.2mm; background: #fbe98a; color: #3a3420; box-shadow: 0 .4mm 1.2mm rgba(0,0,0,.22); display: flex; flex-direction: column; justify-content: center; text-align: center; font: 600 10.5pt/1.15 "Marker Felt", "Comic Sans MS", cursive; transform: rotate(-3deg); }
+  .paper .ex .pi.v { background: #f7d96a; transform: rotate(2deg); font-size: 8.6pt; line-height: 1.3; }
+  .paper .ex .pi small { display: block; font: 500 4.8pt/1 var(--titre); letter-spacing: .2em; text-transform: uppercase; color: #7a6d3a; margin-bottom: 1.6mm; }
+  .paper .ex .turn { font: 500 5.4pt/1.35 var(--titre); letter-spacing: .14em; text-transform: uppercase; color: var(--gold); text-align: center; }
+  .paper .ex .turn b { display: block; font-size: 11pt; line-height: 1; color: var(--gold); }
+  .paper .ex .lbl { font: 500 5.4pt/1 var(--titre); letter-spacing: .2em; text-transform: uppercase; color: var(--gold); writing-mode: vertical-rl; transform: rotate(180deg); }
   .paper.p0 { font-size: 9.3pt; line-height: 1.42; }
   .paper.p0 .rule { margin-bottom: 4.4mm; }
   .paper.p0 .hl { margin-top: 1mm; }
@@ -685,20 +692,25 @@
             <p class="kicker">15 ans de mariage · Stéphane &amp; Suzanne</p>
             <h6>Le défi des mariés</h6>
             <div class="orn mini" data-orn="filet"></div>
-            <p class="lead">Écrivez sur un post-it <b>un mot</b> qui caractérise <b>Stéphane</b>, <b>Suzanne</b> ou <b>les deux</b>. Les mariés devront deviner qui est visé !</p>
-            <p class="hl"><b>Au dos</b> : pour qui (Stéphane, Suzanne ou les 2) <b>et votre prénom</b>.</p>
-            <p class="lead" style="margin-top:1mm">Pas d'idée ? Piochez ici :</p>
+            <p class="lead">Écrivez sur un post-it <b>un mot</b> qui caractérise <b>Stéphane</b>, <b>Suzanne</b> ou <b>les deux</b>. <b>Au dos</b>, notez <b>qui vous visez</b> et <b>votre prénom</b>. Les mariés devront deviner qui est visé !</p>
+            <div class="ex">
+              <span class="lbl">Exemple</span>
+              <div class="pi"><small>Devant</small>Tête<br>en l'air</div>
+              <div class="turn"><b>→</b>au dos</div>
+              <div class="pi v"><small>Au dos</small>Pour : Stéphane<br>De : Maxime</div>
+            </div>
+            <p class="lead" style="margin:0 0 1mm">Pas d'idée ? Piochez ici :</p>
             <div class="cols">
               <div>
                 <p class="grp">Adjectifs</p>
                 <ul class="words">
-                  <li>Rebelle</li><li>Têtu(e)</li><li>Bavard(e)</li><li>Gourmand(e)</li><li>Généreux(se)</li><li>Drôle</li><li>Organisé(e)</li><li>Perfectionniste</li><li>Fêtard(e)</li><li>Zen</li><li>Râleur(se)</li><li>Câlin(e)</li><li>Rêveur(se)</li><li>Aventurier(e)</li><li>Distrait(e)</li><li>Ponctuel(le)</li><li>Chaleureux(se)</li>
+                  <li>Rebelle</li><li>Têtu(e)</li><li>Bavard(e)</li><li>Gourmand(e)</li><li>Généreux(se)</li><li>Drôle</li><li>Organisé(e)</li><li>Perfectionniste</li><li>Fêtard(e)</li><li>Zen</li><li>Râleur(se)</li><li>Câlin(e)</li><li>Rêveur(se)</li><li>Aventurier(e)</li><li>Distrait(e)</li>
                 </ul>
               </div>
               <div>
                 <p class="grp">Mots &amp; expressions</p>
                 <ul class="words">
-                  <li>Tornade</li><li>Soleil</li><li>Fous rires</li><li>Bon vivant</li><li>Tête en l'air</li><li>Pilier</li><li>Cocon</li><li>Apéro</li><li>Voyages</li><li>Douceur</li><li>Complices</li><li>Inséparables</li><li>Chef d'orchestre</li><li>Grand cœur</li><li>Pile électrique</li><li>Duo de choc</li>
+                  <li>Tornade</li><li>Soleil</li><li>Fous rires</li><li>Bon vivant</li><li>Tête en l'air</li><li>Pilier</li><li>Apéro</li><li>Voyages</li><li>Douceur</li><li>Complices</li><li>Inséparables</li><li>Chef d'orchestre</li><li>Grand cœur</li><li>Pile électrique</li><li>Duo de choc</li>
                 </ul>
               </div>
             </div>
