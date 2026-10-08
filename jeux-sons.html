@@ -491,14 +491,19 @@ async function dechiffrePop(mdp, octets) {
 }
 async function ouvrePop(mdp, memoriser) {
   const etatEl = document.getElementById("verrou-etat");
-  try {
-    if (!chiffre) {
-      etatEl.textContent = "Chargement des extraits…";
-      const r = await fetch("sons-pop.bin");
-      if (!r.ok) throw new Error(r.status);
-      chiffre = new Uint8Array(await r.arrayBuffer());
+  if (!chiffre) {
+    etatEl.textContent = "Chargement des extraits…";
+    // Sur le site : à côté de la page. Dans le dossier du projet : dans sons/pop/.
+    for (const url of ["sons-pop.bin", "sons/pop/sons-pop.bin"]) {
+      try { const r = await fetch(url); if (r.ok) { chiffre = new Uint8Array(await r.arrayBuffer()); break; } } catch (e) {}
     }
-  } catch (e) { etatEl.textContent = "Extraits introuvables : vérifier la connexion."; return; }
+    if (!chiffre) {
+      // Page ouverte directement depuis le disque : le navigateur bloque le chargement, la version complète locale prend le relais
+      if (location.protocol === "file:") etatEl.innerHTML = 'Page ouverte depuis l\'ordinateur : les extraits sont dans <a href="jeux-sons-complet.html" style="color:var(--or)">la version complète</a>.';
+      else etatEl.textContent = "Extraits introuvables : vérifier la connexion.";
+      return;
+    }
+  }
   try {
     etatEl.textContent = "Ouverture…";
     SONS_POP = await dechiffrePop(mdp, chiffre);
