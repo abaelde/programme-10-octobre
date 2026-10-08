@@ -25,6 +25,7 @@
   --rouge: #e0825e;
   --vert: #9fd08a;
   --bleu: #8fb6ec;
+  --violet: #c4a6f0;
   --titre: Futura, "Century Gothic", "Trebuchet MS", sans-serif;
   --sans: Optima, Candara, "Segoe UI", sans-serif;
 }
@@ -48,6 +49,7 @@ h1 { font: 500 1rem/1.2 var(--titre); letter-spacing: .26em; text-transform: upp
 h2 { font: 500 .74rem/1 var(--titre); letter-spacing: .26em; text-transform: uppercase; color: var(--c, var(--doux)); margin: 16px 0 7px; display: flex; align-items: center; gap: 10px; }
 h2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--trait), transparent); }
 h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppercase; color: var(--doux); margin: 9px 0 5px; }
+.question { --c: var(--violet); }
 .gagne { --c: var(--vert); }
 .perdu { --c: var(--rouge); }
 .attente { --c: var(--bleu); }
@@ -75,6 +77,12 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
 /* Vrai extrait de pop culture rangé dans Gagné, Perdu ou Attente : point doré */
 .b.extrait::before { content: ""; position: absolute; top: 5px; right: 5px; width: 5px; height: 5px; border-radius: 50%; background: var(--or); }
 .b.extrait b { padding-right: 7px; }
+
+/* En haut : chrono à gauche, Attente à droite (l'un sous l'autre sur téléphone) */
+.duo { display: flex; gap: 18px; align-items: flex-start; }
+.col-chrono { flex: none; width: 470px; }
+.duo > .attente { flex: 1; min-width: 0; }
+@media (max-width: 900px) { .duo { display: block; } .col-chrono { width: auto; } }
 
 /* Chrono : anneau + grille 3 x 3 (tic-tac x durée) */
 .chrono { display: flex; align-items: center; gap: 12px; max-width: 470px; background: var(--carte); border: 1px solid var(--trait); border-radius: 12px; padding: 8px 10px; }
@@ -111,7 +119,7 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
   h1 { display: none; }
   .stop { padding: 11px 12px; font-size: .78rem; letter-spacing: .08em; }
   .grille { grid-template-columns: repeat(4, 1fr); gap: 4px; }
-  .gagne .grille, .perdu .grille, .attente .grille { grid-template-columns: repeat(5, 1fr); }
+  .question .grille, .gagne .grille, .perdu .grille, .attente .grille { grid-template-columns: repeat(5, 1fr); }
   .b { min-height: 44px; padding: 4px 4px 5px 6px; border-left-width: 2px; }
   .b b { font-size: .72rem; letter-spacing: 0; }
   .b small { font-size: .6rem; }
@@ -131,19 +139,50 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
     <button class="stop" id="stop">Tout couper</button>
   </div>
 
-  <h2>Chrono</h2>
-  <div class="chrono">
-    <div class="anneau" id="anneau" title="Toucher pour arrêter">
-      <svg viewBox="0 0 150 150"><circle class="piste" cx="75" cy="75" r="66"/><circle class="arc" cx="75" cy="75" r="66"/></svg>
-      <div class="s"><span id="reste">·</span><small id="sous">choisir</small></div>
+  <!-- En haut : le chrono, et à côté tout ce qui accompagne l'attente -->
+  <div class="duo">
+    <div class="col-chrono">
+    <h2>Chrono</h2>
+    <div class="chrono">
+      <div class="anneau" id="anneau" title="Toucher pour arrêter">
+        <svg viewBox="0 0 150 150"><circle class="piste" cx="75" cy="75" r="66"/><circle class="arc" cx="75" cy="75" r="66"/></svg>
+        <div class="s"><span id="reste">·</span><small id="sous">choisir</small></div>
+      </div>
+      <div class="neuf" id="neuf">
+        <span data-ligne="suspense" class="on">Suspense</span>
+        <button data-style="suspense" data-chrono="10">10 s</button><button data-style="suspense" data-chrono="20">20 s</button><button data-style="suspense" data-chrono="30">30 s</button>
+        <span data-ligne="arcade">Arcade</span>
+        <button data-style="arcade" data-chrono="10">10 s</button><button data-style="arcade" data-chrono="20">20 s</button><button data-style="arcade" data-chrono="30">30 s</button>
+        <span data-ligne="minuteur">Minuteur</span>
+        <button data-style="minuteur" data-chrono="10">10 s</button><button data-style="minuteur" data-chrono="20">20 s</button><button data-style="minuteur" data-chrono="30">30 s</button>
+      </div>
     </div>
-    <div class="neuf" id="neuf">
-      <span data-ligne="suspense" class="on">Suspense</span>
-      <button data-style="suspense" data-chrono="10">10 s</button><button data-style="suspense" data-chrono="20">20 s</button><button data-style="suspense" data-chrono="30">30 s</button>
-      <span data-ligne="arcade">Arcade</span>
-      <button data-style="arcade" data-chrono="10">10 s</button><button data-style="arcade" data-chrono="20">20 s</button><button data-style="arcade" data-chrono="30">30 s</button>
-      <span data-ligne="minuteur">Minuteur</span>
-      <button data-style="minuteur" data-chrono="10">10 s</button><button data-style="minuteur" data-chrono="20">20 s</button><button data-style="minuteur" data-chrono="30">30 s</button>
+    </div>
+
+    <div class="groupe attente">
+      <h2>Attente</h2>
+      <div class="sous">
+        <h3>Une fois</h3>
+        <div class="grille" data-groupe="attente">
+          <button class="b" data-son="roulement" data-k="r"><b>Roulement</b><small>« Et qui l'a écrit ? »</small><kbd>R</kbd></button>
+          <button class="b" data-son="tambours" data-k="m"><b>Tambours</b><small>Menace, suspense</small><kbd>M</kbd></button>
+        </div>
+      </div>
+      <div class="sous">
+        <h3>En boucle</h3>
+        <div class="grille">
+          <button class="b boucle" data-son="ascenseur" data-k="i"><b>Ascenseur</b><small>Entre et sort en fondu</small><kbd>I</kbd></button>
+          <button class="b boucle" data-son="criquets" data-k="k"><b>Criquets</b><small>Silence gênant</small><kbd>K</kbd></button>
+          <button class="b boucle" data-son="attente" data-k="p"><b>Attente tél.</b><small>Running gag de la CAF</small><kbd>P</kbd></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="groupe question">
+    <h2>Question</h2>
+    <div class="grille" data-groupe="question">
+      <button class="b" data-son="verres" data-k="t"><b>Verres</b><small>Question suivante, ouverture</small><kbd>T</kbd></button>
     </div>
   </div>
 
@@ -154,7 +193,6 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
       <button class="b" data-son="fanfare" data-k="e"><b>Fanfare</b><small>Titre d'un jeu, score</small><kbd>E</kbd></button>
       <button class="b" data-son="bravo" data-k="a"><b>Bravo</b><small>Applaudissements</small><kbd>A</kbd></button>
       <button class="b" data-son="bonus" data-k="b"><b>Bonus</b><small>Bonus gagné, jeu vidéo</small><kbd>B</kbd></button>
-      <button class="b" data-son="verres" data-k="t"><b>Verres</b><small>Ouverture, fin, question suivante</small><kbd>T</kbd></button>
     </div>
   </div>
 
@@ -171,25 +209,6 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
     </div>
   </div>
 
-  <div class="groupe attente">
-    <h2>Attente</h2>
-    <div class="sous">
-      <h3>Une fois</h3>
-      <div class="grille" data-groupe="attente">
-        <button class="b" data-son="roulement" data-k="r"><b>Roulement</b><small>« Et qui l'a écrit ? »</small><kbd>R</kbd></button>
-        <button class="b" data-son="tambours" data-k="m"><b>Tambours</b><small>Menace, suspense</small><kbd>M</kbd></button>
-      </div>
-    </div>
-    <div class="sous">
-      <h3>En boucle</h3>
-      <div class="grille">
-        <button class="b boucle" data-son="ascenseur" data-k="i"><b>Ascenseur</b><small>Entre et sort en fondu</small><kbd>I</kbd></button>
-        <button class="b boucle" data-son="criquets" data-k="k"><b>Criquets</b><small>Silence gênant</small><kbd>K</kbd></button>
-        <button class="b boucle" data-son="attente" data-k="p"><b>Attente tél.</b><small>Running gag de la CAF</small><kbd>P</kbd></button>
-      </div>
-    </div>
-  </div>
-
   <!-- Pop culture : vrais extraits, chiffrés (sons-pop.bin) ou intégrés dans la version complète locale -->
   <section id="pop" class="pop">
     <h2 id="pop-titre">Pop culture</h2>
@@ -202,7 +221,7 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
   <p class="vide" id="vide" hidden>Aucun son. Échap pour tout réafficher.</p>
 
   <p class="note">Un appui lance le son, un deuxième appui sur le même bouton l'arrête (sons, boucles et chrono). Au clavier : <kbd>/</kbd> pour chercher, <kbd>Entrée</kbd> joue le premier résultat, les lettres sur les boutons, <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> pour le chrono (10, 20, 30 s) avec le dernier tic-tac choisi, <kbd>4</kbd> <kbd>5</kbd> <kbd>6</kbd> pour le tic-tac (suspense, arcade, minuteur), <kbd>Espace</kbd> arrête le chrono, <kbd>Échap</kbd> coupe tout. Sur iPhone, monter le volume du téléphone avant.</p>
-  <p class="note">Sons : <a href="https://bigsoundbank.com">BigSoundBank</a> (CC0) et <a href="https://mixkit.co">Mixkit</a> (licence gratuite Mixkit). Musique d'ascenseur : « Local Forecast - Elevator », Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), licence <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Pop culture : vrais extraits, réservés à la famille ; un point doré les signale dans Gagné, Perdu et Attente.</p>
+  <p class="note">Sons : <a href="https://bigsoundbank.com">BigSoundBank</a> (CC0) et <a href="https://mixkit.co">Mixkit</a> (licence gratuite Mixkit). Musique d'ascenseur : « Local Forecast - Elevator », Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), licence <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Pop culture : vrais extraits, réservés à la famille ; un point doré les signale dans Question, Gagné, Perdu et Attente.</p>
 </main>
 <div id="etat"></div>
 <audio id="muet-ios" src="data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YSADAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA==" loop playsinline preload="auto"></audio>
