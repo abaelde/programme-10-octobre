@@ -22,6 +22,7 @@
     --warn-text: #7a5a12;
     --ok-bg: #e6f3ee;
     --ok-text: #2c6152;
+    --son: #1d7f8c;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -29,7 +30,7 @@
       --accent: #ea7a9b; --j1: #6cc0a8; --j2: #e2b45a; --j3: #ad8ae0;
       --lui: #7fa8de; --elle: #ea7a9b; --both: #a39d93;
       --warn-bg: #3a2f17; --warn-text: #f0d08e;
-      --ok-bg: #1d3530; --ok-text: #8fd6c1;
+      --ok-bg: #1d3530; --ok-text: #8fd6c1; --son: #62c3cf;
     }
   }
   :root[data-theme="dark"] {
@@ -37,7 +38,7 @@
     --accent: #ea7a9b; --j1: #6cc0a8; --j2: #e2b45a; --j3: #ad8ae0;
     --lui: #7fa8de; --elle: #ea7a9b; --both: #a39d93;
     --warn-bg: #3a2f17; --warn-text: #f0d08e;
-    --ok-bg: #1d3530; --ok-text: #8fd6c1;
+    --ok-bg: #1d3530; --ok-text: #8fd6c1; --son: #62c3cf;
   }
 
   * { box-sizing: border-box; }
@@ -111,6 +112,16 @@
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ans:not(.ask) { color: #181715; } }
   :root[data-theme="dark"] .ans:not(.ask) { color: #181715; }
   .comment { color: var(--muted); font-size: .88rem; }
+  .son { margin: 12px 0 6px; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--son); border-radius: 8px; padding: 8px 12px; }
+  .son-t { margin: 0 0 2px; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--son); }
+  .son ol { list-style: none; margin: 0; padding: 0; }
+  .son li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 46%); gap: 2px 14px; padding: 6px 0; border-top: 1px solid var(--line); font-size: .9rem; }
+  .son li:first-child { border-top: 0; }
+  .son li.sep { display: block; padding: 8px 0 2px; font-size: .78rem; font-weight: 700; color: var(--muted); }
+  .son .s b { color: var(--son); }
+  .son .s small { display: block; color: var(--muted); font-size: .8rem; }
+  .son .pr { display: inline-block; font-style: normal; background: var(--warn-bg); color: var(--warn-text); font-size: .7rem; font-weight: 600; padding: 0 6px; border-radius: 4px; margin-left: 4px; }
+  @media (max-width: 620px) { .son li { grid-template-columns: 1fr; } }
   .table-wrap { overflow-x: auto; }
   .qtab td:nth-child(2) { min-width: 150px; }
   .qtab td.gag { font-size: .88rem; width: 45%; }
@@ -418,6 +429,24 @@
   </div>
 
   <h2>Timeline des jeux</h2>
+  <div class="before" style="border-left-color:var(--son)">
+    <h4>Conduite son : mode d'emploi</h4>
+    <p style="margin:0 0 6px">Document de travail pour Aurélien et Maxime (page « Sons des jeux » sur son ordinateur). Chaque étape de la timeline a son bloc « Conduite son » : à gauche ce que dit ou fait Aurélien, à droite le son. <kbd>P</kbd> : touche du clavier. <kbd>/ vote</kbd> : taper / puis le mot, puis Entrée (premier son trouvé) ; ensuite <kbd>Échap</kbd> vide la recherche. <kbd>Échap</kbd> hors de la recherche : tout couper. <em class="pr" style="font-style:normal;background:var(--warn-bg);color:var(--warn-text);font-size:.7rem;font-weight:600;padding:0 6px;border-radius:4px">proposé</em> : à discuter ; sans étiquette : déjà prévu dans la fiche.</p>
+    <h5>Sons signatures (toujours les mêmes, la salle finit par les attendre)</h5>
+    <ul>
+      <li>Acronyme de la CAF : <b>Attente tél.</b> <kbd>P</kbd>, deux secondes.</li>
+      <li>Désaccord des mariés : <b>Cloche de ring</b> <kbd>C</kbd>, puis « Stéphane ? », salle : « Oui chérie ! ». <span class="prop">Après le « Oui chérie ! » : <b>Ah voui, vous avez raison</b> <kbd>/ raison</kbd> (Guenièvre).</span></li>
+      <li class="prop">« C'était bien mais… » de Suzanne : <b>Oui… Ben non !</b> <kbd>/ ben non</kbd> (Galessin).</li>
+    </ul>
+    <h5>Règles pour Maxime</h5>
+    <ul>
+      <li class="prop">Un son court tombe juste après la chute ou le rire, jamais par-dessus quelqu'un qui parle.</li>
+      <li class="prop">Les musiques (chrono, vote, ascenseur) s'arrêtent dès qu'Aurélien reprend la parole : <kbd>Échap</kbd>.</li>
+      <li class="prop">Blague qui tombe à plat : <b>Criquets</b> <kbd>K</kbd>, trois secondes.</li>
+      <li class="prop">Moments d'émotion (anecdotes du jeu 3, remise de la boîte) : aucun son.</li>
+      <li class="prop">Signe d'Aurélien vers Maxime : main levée = on coupe.</li>
+    </ul>
+  </div>
   <ol class="tl">
 
     <li class="off">
@@ -488,6 +517,15 @@
           <p>Suzanne l'a invité au restaurant, en tout bien tout honneur. Stéphane, lui, a surtout entendu "restaurant".</p>
           <p>Et comme toujours à la CAF, le traitement du dossier a pris du temps : 7 ans entre la rencontre et le mariage. Mais ça a abouti.</p>
           <p>Ce soir, trois défis, pour voir si vous les connaissez aussi bien qu'ils se connaissent. Et s'ils se connaissent vraiment. »</p>
+        </div>
+        <div class="son">
+          <p class="son-t">Conduite son</p>
+          <ol>
+            <li><span class="q">Stéphane tend le micro à Aurélien</span><span class="s"><b>La Marche impériale</b> <kbd>/ imperiale</kbd> <em class="pr">proposé</em><small>~5 s, <kbd>Échap</kbd> au premier mot</small></span></li>
+            <li><span class="q">« …au pied de la lettre. »</span><span class="s"><b>Ba-dum-tss</b> <kbd>Z</kbd> <em class="pr">proposé</em></span></li>
+            <li><span class="q">« …le traitement du dossier a pris du temps »</span><span class="s"><b>Attente tél.</b> <kbd>P</kbd> <em class="pr">proposé</em><small>en boucle pendant la phrase</small></span></li>
+            <li><span class="q">« Mais ça a abouti. »</span><span class="s"><kbd>Échap</kbd> puis <b>Ding</b> <kbd>D</kbd> <em class="pr">proposé</em></span></li>
+          </ol>
         </div>
       </div>
     </li>
@@ -615,6 +653,21 @@
         <div class="round"><p>« Score des mariés : … sur … Ils se connaissent, à peu près. On leur laisse un moment pour s'en remettre. » <span class="comment" style="font-style:normal">Son : fanfare.</span></p></div>
         <h5>Si ça s'essouffle</h5>
         <p>Garder 5-6 post-its au lieu de 8-10 ; passer plus vite au bonus « qui l'a écrit ? ».</p>
+        <p class="part">Conduite son</p>
+        <div class="son">
+          <p class="son-t">Conduite son</p>
+          <ol>
+            <li><span class="q">« Premier défi, le jeu de l'apéro. »</span><span class="s"><b>Jingle qui monte</b> <kbd>/ monte</kbd> <em class="pr">proposé</em><small>Questions pour un champion</small></span></li>
+            <li><span class="q">Aurélien lit le post-it</span><span class="s"><b>Chrono</b> : Suspense, 20 s<small>couper dès qu'ils répondent</small></span></li>
+            <li><span class="q">Aurélien retourne le post-it</span><span class="s"><b>Ding</b> <kbd>D</kbd> ou <b>Buzzer</b> <kbd>X</kbd><small>bonne cible ou ratée</small></span></li>
+            <li><span class="q">Les mariés ne sont pas d'accord</span><span class="s"><b>Cloche de ring</b> <kbd>C</kbd><small>puis « Stéphane ? », salle : « Oui chérie ! »</small></span></li>
+            <li><span class="q">Salle : « Oui chérie ! »</span><span class="s"><b>Ah voui, vous avez raison</b> <kbd>/ raison</kbd> <em class="pr">proposé</em></span></li>
+            <li><span class="q">« Et qui l'a écrit ? »</span><span class="s"><b>Roulement</b> <kbd>R</kbd></span></li>
+            <li><span class="q">« …Stéphane l'a peut-être écrit lui-même. »</span><span class="s"><b>Objection !</b> <kbd>/ objection</kbd> <em class="pr">proposé</em></span></li>
+            <li><span class="q">« …un dossier incomplet. On vous recontactera. »</span><span class="s"><b>Attente tél.</b> <kbd>P</kbd><small>deux secondes</small></span></li>
+            <li><span class="q">« Score des mariés : … sur … »</span><span class="s"><b>Fanfare</b> <kbd>E</kbd></span></li>
+          </ol>
+        </div>
         <p class="part">Préparation</p>
         <h5>Fiche « idées de mots » pour les invités</h5>
         <p>Une petite fiche posée sur les tables, pour piocher si on n'a pas d'idée. Elle précise que la liste n'est pas exhaustive.</p>
@@ -677,6 +730,14 @@
         </ul>
         <h5>Reprise</h5>
         <div class="round"><p>« Merci à nos deux artistes. Prenez vos panneaux. »</p></div>
+        <div class="son">
+          <p class="son-t">Conduite son</p>
+          <ol>
+            <li><span class="q">Stéphane &amp; Suzanne prennent la scène</span><span class="s"><b>Ascenseur</b> <kbd>I</kbd><small>en boucle, entre en fondu</small></span></li>
+            <li><span class="q">Ils commencent leur numéro</span><span class="s"><kbd>I</kbd> à nouveau <em class="pr">proposé</em><small>sort en fondu, sauf s'ils veulent un fond</small></span></li>
+            <li><span class="q">« Merci à nos deux artistes. »</span><span class="s"><b>Bravo</b> <kbd>A</kbd> <em class="pr">proposé</em></span></li>
+          </ol>
+        </div>
       </div>
     </li>
 
@@ -835,6 +896,33 @@
         </div>
         <h5>Si ça s'essouffle</h5>
         <p>Sauter les questions bonus ; faire voter la salle et les mariés en même temps.</p>
+        <p class="part">Conduite son</p>
+        <div class="son">
+          <p class="son-t">Conduite son</p>
+          <ol>
+            <li><span class="q">« Deuxième défi : c'est vous qui votez. »</span><span class="s"><b>Qui veut gagner des millions</b> <kbd>/ play</kbd> <em class="pr">proposé</em><small>« Let's play »</small></span></li>
+            <li><span class="q">Aurélien lit la question</span><span class="s"><b>Verres</b> <kbd>T</kbd> <em class="pr">proposé</em></span></li>
+            <li><span class="q">La salle lève ses panneaux</span><span class="s"><b>Vote du public</b> <kbd>/ vote</kbd> <em class="pr">proposé</em><small>couper quand Aurélien commente</small></span></li>
+            <li><span class="q">Les mariés ne sont pas d'accord</span><span class="s"><b>Cloche de ring</b> <kbd>C</kbd><small>puis « Stéphane ? », salle : « Oui chérie ! »</small></span></li>
+            <li><span class="q">Réponse officielle</span><span class="s"><b>Ding</b> <kbd>D</kbd> ou <b>Buzzer</b> <kbd>X</kbd> <em class="pr">proposé</em><small>les mariés ont juste ou faux</small></span></li>
+            <li><span class="q">« Gardez vos panneaux… »</span><span class="s"><b>Bravo</b> <kbd>A</kbd> <em class="pr">proposé</em></span></li>
+          </ol>
+        </div>
+        <div class="son">
+          <p class="son-t">Conduite son · question par question</p>
+          <ol>
+            <li><span class="q"><b>Q1</b> · pendant le vote</span><span class="s"><b>Les Dents de la mer</b> <kbd>/ dents</kbd> <em class="pr">proposé</em><small>elle approche…</small></span></li>
+            <li><span class="q"><b>Q2</b> · « Chérie A Forcément raison »</span><span class="s"><b>Attente tél.</b> <kbd>P</kbd><small>puis, après « Oui chérie ! » (proposé) : Ah voui, vous avez raison <kbd>/ raison</kbd></small></span></li>
+            <li><span class="q"><b>Q3</b> · « …pas fait de faux départ »</span><span class="s"><b>Les Chariots de feu</b> <kbd>/ chariots</kbd> <em class="pr">proposé</em><small>lancer, couper au bout de 2 s, relancer : un faux départ</small></span></li>
+            <li><span class="q"><b>Q4</b> · « Collection Anatomique Fragmentée »</span><span class="s"><b>Attente tél.</b> <kbd>P</kbd></span></li>
+            <li><span class="q"><b>Q5</b> · « D'après Suzanne : lui. »</span><span class="s"><b>On en a gros !</b> <kbd>/ en a gros</kbd> <em class="pr">proposé</em><small>Perceval</small></span></li>
+            <li><span class="q"><b>Q6</b> · « Question piège. »</span><span class="s"><b>La Quatrième Dimension</b> <kbd>/ dimension</kbd> <em class="pr">proposé</em></span></li>
+            <li><span class="q"><b>Q7</b> · « …les objets trouvés de la maison »</span><span class="s"><b>Inspecteur Gadget</b> <kbd>/ gadget</kbd> <em class="pr">proposé</em></span></li>
+            <li><span class="q"><b>Q8</b> · Suzanne : « C'était bien mais… »</span><span class="s"><b>Oui… Ben non !</b> <kbd>/ ben non</kbd> <em class="pr">proposé</em></span></li>
+            <li><span class="q"><b>Q10</b> · « …le grand saut… »</span><span class="s"><b>Cri Wilhelm</b> <kbd>/ wilhelm</kbd> <em class="pr">proposé</em><small>puis « Chute Avec Frissons » : <b>Attente tél.</b> <kbd>P</kbd></small></span></li>
+            <li><span class="q"><b>Q11</b> · pendant le vote</span><span class="s"><b>Le Bon, la Brute et le Truand</b> <kbd>/ brute</kbd> <em class="pr">proposé</em><small>le duel</small></span></li>
+          </ol>
+        </div>
         <p class="part">Préparation</p>
         <h5>Matériel</h5>
         <ul>
@@ -903,6 +991,13 @@
         </ul>
         <h5>Si pause buffet</h5>
         <div class="round"><p>« On mange un morceau. On revient dans un quart d'heure pour le dernier défi, et c'est vous qui aurez la parole. »</p></div>
+        <div class="son">
+          <p class="son-t">Conduite son</p>
+          <ol>
+            <li><span class="q">Stéphane &amp; Suzanne prennent la scène</span><span class="s"><b>Ascenseur</b> <kbd>I</kbd><small>comme à l'interlude 1</small></span></li>
+            <li><span class="q">Fin de leur numéro</span><span class="s"><kbd>I</kbd> à nouveau, puis <b>Bravo</b> <kbd>A</kbd> <em class="pr">proposé</em></span></li>
+          </ol>
+        </div>
       </div>
     </li>
 
@@ -1082,6 +1177,20 @@
         <p class="comment" style="margin-top:4px">Interventions spontanées bienvenues : l'ordre est indicatif.</p>
         <h5>Si ça s'essouffle</h5>
         <p>Faire passer Célia ou Sandrine H. (préparées) ; demander « pourquoi ? » ; demander leur version aux mariés ; raconter soi-même une anecdote (la CAF, la portière) ; lire une réponse marquante de questionnaire.</p>
+        <p class="part">Conduite son</p>
+        <div class="son">
+          <p class="son-t">Conduite son</p>
+          <ol>
+            <li><span class="q">« Dernier défi… »</span><span class="s">Aucun son <em class="pr">proposé</em><small>on change de ton</small></span></li>
+            <li><span class="q">« …la CAF, ça veut dire : Contestataire À Fond. »</span><span class="s"><b>Attente tél.</b> <kbd>P</kbd><small>deux secondes</small></span></li>
+            <li><span class="q">« De père en fils. »</span><span class="s"><b>Pays de Galles indépendant !</b> <kbd>/ galles</kbd> <em class="pr">proposé</em><small>Perceval, le rebelle</small></span></li>
+            <li><span class="q">« Et leur chanson de mariage, quelqu'un sait ? »</span><span class="s">Si silence : <b>Criquets</b> <kbd>K</kbd> <em class="pr">proposé</em></span></li>
+            <li><span class="q">La salle a trouvé (ou pas)</span><span class="s"><b>The Time of My Life</b>, l'intro<small>quelques secondes, playlist (pas sur la page des sons) ; on la garde entière pour la fin</small></span></li>
+            <li><span class="q">Une réponse « Titanic »</span><span class="s"><b>Titanic</b> <kbd>/ titanic</kbd> <em class="pr">proposé</em><small>quelques secondes</small></span></li>
+            <li><span class="q">Une anecdote qui finit sur une blague</span><span class="s"><b>Ba-dum-tss</b> <kbd>Z</kbd> <em class="pr">proposé</em><small>avec parcimonie</small></span></li>
+            <li><span class="q">Célia et les souvenirs émouvants</span><span class="s">Aucun son <em class="pr">proposé</em></span></li>
+          </ol>
+        </div>
         <p class="part">Préparation</p>
         <h5>Le questionnaire (4 par A4)</h5>
         <p>La fiche liste les 10 questions ; l'invité répond à une ou plusieurs questions de son choix, dans un seul grand cadre, en notant le numéro devant chaque réponse (plus au dos si besoin).</p>
@@ -1147,6 +1256,15 @@
           <li>Ça ne marche que si la salle a déjà répété « oui chérie » pendant les jeux 1 et 2.</li>
         </ul>
         <p class="comment" style="margin-top:4px">En réserve, pas validé par les mariés : faux renouvellement des vœux humoristique.</p>
+        <div class="son">
+          <p class="son-t">Conduite son</p>
+          <ol>
+            <li><span class="q">« …Ça A Fonctionné. »</span><span class="s"><b>Fanfare</b> <kbd>E</kbd></span></li>
+            <li><span class="q">Suzanne : « C'était bien mais… »</span><span class="s"><b>Oui… Ben non !</b> <kbd>/ ben non</kbd> <em class="pr">proposé</em></span></li>
+            <li><span class="q">« …joyeuses noces de cristal, Stéphane et Suzanne ! »</span><span class="s"><b>Bravo</b> <kbd>A</kbd> <em class="pr">proposé</em></span></li>
+            <li><span class="q">Stéphane et la salle : « Oui chérie ! »</span><span class="s"><b>The Time of My Life</b><small>tout de suite, en entier : playlist</small></span></li>
+          </ol>
+        </div>
       </div>
     </li>
   </ol>
