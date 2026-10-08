@@ -104,7 +104,7 @@ h2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg
       <button class="b" data-chrono="20"><b>20 s</b><small>mariés jeu 1</small></button>
       <button class="b" data-chrono="30"><b>30 s</b><small>si ça cherche</small></button>
     </div>
-    <p>Tic-tac, bip sur les 5 dernières secondes, buzzer à zéro. Toucher l'anneau pour arrêter (ils ont trouvé).</p>
+    <p>Tic-tac, bip sur les 5 dernières secondes, buzzer à zéro. Toucher l'anneau ou la même durée pour arrêter (ils ont trouvé).</p>
   </div>
 
   <h2>Réponses</h2>
@@ -131,7 +131,7 @@ h2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg
     <button class="b boucle" data-son="attente" data-k="p"><b>Attente téléphonique</b><small>Running gag de la CAF</small><kbd>P</kbd></button>
   </div>
 
-  <p class="note">Un appui lance le son, un autre appui sur une ambiance l'arrête. Au clavier : les lettres sur les boutons, <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> pour le chrono (10, 20, 30 s), <kbd>Espace</kbd> arrête le chrono, <kbd>Échap</kbd> coupe tout. Sur iPhone, monter le volume du téléphone avant.</p>
+  <p class="note">Un appui lance le son, un deuxième appui sur le même bouton l'arrête (sons, ambiances et chrono). Au clavier : les lettres sur les boutons, <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> pour le chrono (10, 20, 30 s), <kbd>Espace</kbd> arrête le chrono, <kbd>Échap</kbd> coupe tout. Sur iPhone, monter le volume du téléphone avant.</p>
   <p class="note">Sons : <a href="https://bigsoundbank.com">BigSoundBank</a> (CC0) et <a href="https://mixkit.co">Mixkit</a> (licence gratuite Mixkit). Musique d'ascenseur : « Local Forecast - Elevator », Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), licence <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
 </main>
 <div id="etat"></div>
@@ -209,7 +209,7 @@ function bip(dest, t) {
 }
 
 // Joue un son. Les boucles s'allument et s'éteignent (l'état change tout de suite, avant le décodage).
-// Renvoie une promesse de la durée du son (0 pour une boucle).
+// Renvoie une promesse de { d: durée, g: voix } (d = 0 pour une boucle).
 function joue(nom) {
   audio();
   const r = REGLAGES[nom] || {};
@@ -220,14 +220,14 @@ function joue(nom) {
         g.gain.cancelScheduledValues(ac.currentTime); g.gain.setValueAtTime(g.gain.value, ac.currentTime); g.gain.linearRampToValueAtTime(0, ac.currentTime + 3);
         setTimeout(() => libere(g), 3200);
       } else libere(g, true);
-      return Promise.resolve(0);
+      return Promise.resolve({ d: 0 });
     }
     const g = voie();
     boucles[nom] = { g };
     if (r.fondu) { g.gain.setValueAtTime(0, ac.currentTime); g.gain.linearRampToValueAtTime(1, ac.currentTime + 2.5); }
-    return charge(nom).then(() => { if (boucles[nom]?.g === g) lit(nom, g, ac.currentTime, { boucle: true }); return 0; });
+    return charge(nom).then(() => { if (boucles[nom]?.g === g) lit(nom, g, ac.currentTime, { boucle: true }); return { d: 0 }; });
   }
-  return charge(nom).then(b => { lit(nom, voie(b.duration), ac.currentTime + .01); return b.duration; });
+  return charge(nom).then(b => { const g = voie(b.duration); lit(nom, g, ac.currentTime + .01); return { d: b.duration, g }; });
 }
 
 /* ---------- Chrono ---------- */
@@ -292,19 +292,32 @@ function declenche(b) {
     signale((allume ? "▶ " : "■ ") + b.querySelector("b").textContent + (allume ? "" : REGLAGES[nom].fondu ? " : fondu de sortie" : " : arrêt"));
     return;
   }
+  // Deuxième appui pendant que le son joue : on l'arrête
+  if (b._lecture) { arreteBouton(b); signale("■ " + b.querySelector("b").textContent + " : arrêt"); return; }
   if (nom !== "roulement" && nom !== "fanfare" && nom !== "bravo") arreteChrono(true);
-  joue(nom).then(d => {
+  const lecture = {}; b._lecture = lecture;
+  joue(nom).then(({ d, g }) => {
+    if (b._lecture !== lecture) { libere(g, true); return; }   // arrêté pendant le décodage
+    lecture.g = g;
     b.classList.remove("joue"); b.offsetWidth; b.style.setProperty("--d", d + "s"); b.classList.add("joue");
-    clearTimeout(b._t); b._t = setTimeout(() => b.classList.remove("joue"), d * 1000);
+    clearTimeout(b._t); b._t = setTimeout(() => { if (b._lecture === lecture) b._lecture = null; b.classList.remove("joue"); }, d * 1000);
   });
 }
+function arreteBouton(b) {
+  if (b._lecture?.g) libere(b._lecture.g, true);
+  b._lecture = null; clearTimeout(b._t); b.classList.remove("joue");
+}
+// Durée du chrono : un deuxième appui sur la même durée l'arrête
+function basculeChrono(sec) {
+  if (chrono && chrono.sec === sec) arreteChrono(true); else lanceChrono(sec);
+}
 document.querySelectorAll("[data-son]").forEach(b => b.addEventListener("click", () => declenche(b)));
-document.querySelectorAll("[data-chrono]").forEach(b => b.addEventListener("click", () => lanceChrono(+b.dataset.chrono)));
+document.querySelectorAll("[data-chrono]").forEach(b => b.addEventListener("click", () => basculeChrono(+b.dataset.chrono)));
 anneau.addEventListener("click", () => arreteChrono(true));
 document.getElementById("stop").addEventListener("click", () => {
   if (!ac) return;
   toutCouper(); majBoucles();
-  document.querySelectorAll(".b.joue").forEach(b => b.classList.remove("joue"));
+  document.querySelectorAll("[data-son]").forEach(b => { b._lecture = null; clearTimeout(b._t); b.classList.remove("joue"); });
   signale("Tout est coupé");
 });
 
@@ -313,7 +326,7 @@ addEventListener("keydown", e => {
   const l = e.key.length === 1 ? e.key.toLowerCase() : e.key;
   const b = document.querySelector(`[data-k="${l}"]`);
   if (b) { e.preventDefault(); declenche(b); }
-  else if (l === "1" || l === "2" || l === "3") lanceChrono(+l * 10);
+  else if (l === "1" || l === "2" || l === "3") basculeChrono(+l * 10);
   else if (l === " ") { e.preventDefault(); audio(); arreteChrono(true); }
   else if (l === "Escape") document.getElementById("stop").click();
 });

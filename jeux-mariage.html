@@ -141,8 +141,8 @@
   .tl > li { display: grid; grid-template-columns: 58px 1fr; gap: 0 26px; position: relative; margin-bottom: 12px; }
   .tl > li::after { content: ""; position: absolute; left: 66px; top: 15px; width: 8px; height: 8px; border-radius: 50%; background: var(--c, var(--muted)); border: 2px solid var(--bg); }
   .tl .t { text-align: right; font-weight: 700; font-size: .85rem; color: var(--muted); padding-top: 10px; font-variant-numeric: tabular-nums; }
-  .tl .box { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--c, var(--muted)); border-radius: 8px; padding: 10px 14px 12px; min-width: 0; }
-  .tl li.off .box { background: var(--bg); border-style: dashed; border-left-style: solid; }
+  .tl > li > .box { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--c, var(--muted)); border-radius: 8px; padding: 10px 14px 12px; min-width: 0; }
+  .tl > li.off > .box { background: var(--bg); border-style: dashed; border-left-style: solid; }
   .tl .k { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; color: var(--c, var(--muted)); }
   .tl h4 { margin: 1px 0 4px; font-size: 1rem; }
   .tl .meta { font-size: .85rem; color: var(--muted); margin: 0 0 4px; }
@@ -152,6 +152,8 @@
   .tl li li { margin: 2px 0; }
   .tl .round { margin-top: 4px; }
   .tl .round p { font-style: italic; }
+  .tl .part { margin: 18px 0 2px; padding-top: 10px; border-top: 1px dashed var(--line); font-size: .8rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--c, var(--muted)); }
+  .tl .paper-wrap { margin-top: 4px; }
   @media (max-width: 620px) {
     .tl::before, .tl > li::after { display: none; }
     .tl > li { grid-template-columns: 1fr; }
@@ -454,13 +456,13 @@
       <li><strong>Blague qui tombe à plat</strong> : l'assumer, c'est souvent ce qui fait le plus rire. « Celle-là, je l'avais testée à la maison : même réaction. » Ou « Je la garde pour les 30 ans de mariage. » <span class="comment">Son : criquets.</span></li>
       <li><strong>Les limites</strong> : on charrie le couple, pas un invité qui n'a rien demandé. Si l'un des deux a l'air vexé, on passe à la suite.</li>
       <li><strong>Micro</strong> : à quelques centimètres de la bouche, ne pas le baisser quand tu ris, parler plus lentement que d'habitude.</li>
-      <li><strong>Tempo</strong> : un signe convenu avec Floriane pour accélérer ou couper.</li>
+      <li><strong>Tempo</strong> : finir quand c'est encore drôle, mieux vaut couper un jeu que l'épuiser. Un signe convenu avec Floriane pour accélérer ou couper.</li>
       <li><strong>Pendant leurs interludes</strong> : être leur premier public, rire et lancer les applaudissements.</li>
     </ol>
   </div>
 
   <h2>Timeline des jeux</h2>
-  <p class="note">Minute par minute, de l'accueil à la fin. Horaires indicatifs (~), à ajuster sur place. Les phrases en italique sont des propositions à reformuler à ta façon, pas un texte à lire.</p>
+  <p class="note">Minute par minute, de l'accueil à la fin. Chaque jeu contient tout : le principe, ce qui se passe sur scène, puis la préparation et le matériel. Horaires indicatifs (~), à ajuster sur place. Les phrases en italique sont des propositions à reformuler à ta façon, pas un texte à lire.</p>
   <ol class="tl">
 
     <li class="off">
@@ -475,6 +477,21 @@
         </ul>
         <h5>Annonce rapide au micro</h5>
         <div class="round"><p>« Sur vos tables : des post-its et un questionnaire. Un mot sur Stéphane, sur Suzanne ou sur les deux, au dos pour qui et votre prénom. Et vos souvenirs sur le questionnaire. On ramasse vers 18h45. »</p></div>
+        <h5>Fiche règles (sur les tables)</h5>
+        <p>Récapitulatif des 3 jeux laissé sur chaque table, pour ne pas avoir à repasser. 4 par A4, à découper puis plastifier.</p>
+        <div class="paper-wrap">
+          <div class="paper p0" data-card="regles">
+            <p class="kicker">15 ans de mariage · Stéphane &amp; Suzanne</p>
+            <div class="orn" data-orn="coupes"></div>
+            <h6>Les jeux de la soirée</h6>
+            <div class="rule r1"><span class="num"><span>1</span></span><div><b>Le défi des mariés</b><p>Écrivez sur un post-it <strong>un mot</strong> qui décrit Stéphane, Suzanne ou les deux. <strong>Au dos : pour qui et votre prénom.</strong> Les mariés devront deviner qui est visé. Pas d'idée ? Voir la fiche « idées ».</p></div></div>
+            <div class="rule r2"><span class="num"><span>2</span></span><div><b>LUI, ELLE ou les 2 ?</b><p>À chaque question, levez le panneau de <strong>Stéphane</strong>, de <strong>Suzanne</strong>, les deux… ou aucun. Ensuite, les mariés donnent leur réponse.</p></div></div>
+            <div class="rule r3"><span class="num"><span>3</span></span><div><b>15 ans de nous… racontés par vous</b><p>Remplissez le questionnaire : <strong>votre prénom</strong> et les questions qui vous inspirent. On vous demandera peut-être d'en lire une !</p></div></div>
+            <p class="hl">Post-its et questionnaires ramassés <b>avant le début des jeux</b> (~19h).</p>
+            <p class="foot">Merci de laisser cette fiche sur la table.</p>
+          </div>
+        </div>
+        <button class="print-btn" type="button" data-print="regles" style="--c:var(--accent)">Imprimer la planche (4 fiches par A4)</button>
       </div>
     </li>
 
@@ -540,6 +557,97 @@
         <span class="k">Jeu 1 · ~10 min</span>
         <h4>Le défi des mariés</h4>
         <p class="meta">Aurélien anime, les mariés devinent · Écran : « Jeu 1 », « règle », puis « score »</p>
+        <p class="part">Le principe</p>
+        <h5>En un coup d'œil</h5>
+        <div class="schema">
+          <p class="who-leg"><span><i style="--k:var(--text)"></i>Aurélien</span><span><i style="--k:var(--lui)"></i>Stéphane</span><span><i style="--k:var(--elle)"></i>Suzanne</span></p>
+          <div class="phase">
+            <p class="phase-h"><span>Avant · sur les tables, ~18h00 à 18h45</span></p>
+            <div class="steps">
+              <div class="step">
+                <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
+                  <g transform="rotate(-4 42 46)"><rect class="pi" x="8" y="12" width="68" height="68"/><text class="sm ink" x="42" y="25" text-anchor="middle">RECTO</text><text class="hand" x="42" y="48" text-anchor="middle">Tête</text><text class="hand" x="42" y="63" text-anchor="middle">en l'air</text></g>
+                  <g transform="rotate(3 118 46)"><rect class="pi2" x="84" y="12" width="68" height="68"/><text class="sm ink" x="118" y="25" text-anchor="middle">VERSO</text><text class="hand s" x="118" y="43" text-anchor="middle">Pour :</text><text class="hand s" x="118" y="56" text-anchor="middle">Stéphane</text><text class="hand s" x="118" y="72" text-anchor="middle">De : Maxime</text></g>
+                </svg>
+                <b>Chaque invité écrit un post-it</b>
+                <p>Recto : un mot. Verso : pour qui (Stéphane, Suzanne ou les 2) et son prénom.</p>
+              </div>
+              <span class="arr"></span>
+              <div class="step">
+                <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
+                  <rect class="pi" x="22" y="10" width="20" height="20" transform="rotate(-12 32 20)"/>
+                  <rect class="pi2" x="44" y="3" width="20" height="20" transform="rotate(8 54 13)"/>
+                  <rect class="pi" x="64" y="12" width="20" height="20" transform="rotate(-5 74 22)"/>
+                  <path class="box" d="M12 42h80l-6 42H18z"/>
+                  <path class="cs" d="M100 62h16m-6-6 6 6-6 6"/>
+                  <rect class="pi" x="122" y="34" width="26" height="26"/><rect class="pi2" x="127" y="39" width="26" height="26"/>
+                  <text class="big" x="140" y="84" text-anchor="middle">8-10</text>
+                </svg>
+                <b>~18h45 : Aurélien ramasse et trie</b>
+                <p>Il garde 8-10 post-its : les plus drôles, en mélangeant Stéphane, Suzanne et les 2.</p>
+              </div>
+            </div>
+          </div>
+          <div class="down">↓</div>
+          <div class="phase stage">
+            <p class="phase-h"><span>Pendant · sur scène, ~10 min</span><span class="loop">↻ à refaire pour chaque post-it gardé</span></p>
+            <div class="steps">
+              <div class="step">
+                <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
+                  <path class="bub" d="M62 40l-12 14 24-14"/>
+                  <rect class="bub" x="52" y="6" width="104" height="36" rx="12"/>
+                  <text class="say" x="104" y="29" text-anchor="middle">« Tête en l'air »</text>
+                  <use href="#pers" class="ink" x="8" y="36" width="40" height="52"/>
+                  <use href="#mic" class="ink" x="40" y="44" width="7" height="16"/>
+                  <rect class="pi" x="32" y="64" width="18" height="18" transform="rotate(-8 41 73)"/>
+                </svg>
+                <b>1. Aurélien lit le recto</b>
+                <p>Seulement le mot, sans retourner le post-it.</p>
+              </div>
+              <span class="arr"></span>
+              <div class="step">
+                <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
+                  <path class="bub" d="M84 40l-10 14 22-14"/>
+                  <rect class="bub" x="70" y="6" width="86" height="36" rx="12"/>
+                  <text class="say" x="113" y="29" text-anchor="middle">Stéphane !</text>
+                  <use href="#pers" class="lui" x="6" y="38" width="38" height="50"/>
+                  <use href="#pers" class="elle" x="38" y="38" width="38" height="50"/>
+                </svg>
+                <b>2. Les mariés devinent qui est visé</b>
+                <p>Stéphane, Suzanne ou les 2.</p>
+              </div>
+              <span class="arr"></span>
+              <div class="step">
+                <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
+                  <g transform="rotate(3 56 46)"><rect class="pi2" x="22" y="12" width="68" height="68"/><text class="sm ink" x="56" y="25" text-anchor="middle">VERSO</text><text class="hand s" x="56" y="43" text-anchor="middle">Pour :</text><text class="hand s" x="56" y="56" text-anchor="middle">Stéphane</text><text class="hand s" x="56" y="72" text-anchor="middle">De : Maxime</text></g>
+                  <circle class="okc" cx="126" cy="44" r="22"/>
+                  <text class="okt" x="126" y="50" text-anchor="middle">+1</text>
+                </svg>
+                <b>3. Aurélien retourne le post-it</b>
+                <p>Bonne cible = 1 point. Bonus : « Et qui l'a écrit ? »</p>
+              </div>
+            </div>
+          </div>
+          <p class="schema-end"><b>Fin :</b> score des mariés annoncé. Les post-its sont gardés pour eux.</p>
+        </div>
+        <h5>Principe</h5>
+        <p>Chaque invité écrit sur un post-it <strong>un mot</strong> (adjectif, nom, expression) qui caractérise Stéphane, Suzanne ou les deux.</p>
+        <p>Défi des mariés : pour chaque post-it, trouver <strong>qui est visé</strong> (Stéphane, Suzanne ou les 2). C'est l'enjeu principal. Deviner l'auteur est secondaire (bonus).</p>
+        <h5>Au dos : pour qui + prénom <span class="ok">décidé</span></h5>
+        <p>Chaque invité écrit au dos du post-it <strong>qui est visé</strong> (Stéphane, Suzanne ou les 2) et <strong>son prénom</strong>. Personne ne se souviendra de ce qu'il a écrit : en ramassant les post-its, on a tout pour vérifier les réponses des mariés.</p>
+        <h5>Exemple de post-it</h5>
+        <div class="postits">
+          <div class="postit"><small>Recto</small>Tête en l'air</div>
+          <div class="postit"><small>Verso</small>Pour : Stéphane<br>De : Maxime</div>
+        </div>
+        <h5>Exemple de manche</h5>
+        <div class="round">
+          <p><b>Aurélien</b> lit : « Tête en l'air ».</p>
+          <p><b>Les mariés</b> : « C'est Stéphane ! »</p>
+          <p><b>Aurélien</b> retourne le post-it : « Pour Stéphane : bonne réponse, 1 point ! »</p>
+          <p><b>Bonus</b> (si le temps le permet) : « Et qui l'a écrit ? » « Justin ? » « Raté, c'est Maxime ! »</p>
+        </div>
+        <p class="part">Sur scène</p>
         <h5>Annonce</h5>
         <div class="round"><p>« Premier défi, le jeu de l'apéro. Vous avez écrit un mot sur eux. Stéphane, Suzanne : à vous de deviner qui il visait. »</p></div>
         <h5>Pour chaque post-it (8-10)</h5>
@@ -567,6 +675,49 @@
         </ul>
         <h5>Sortie</h5>
         <div class="round"><p>« Score des mariés : … sur … Ils se connaissent, à peu près. On leur laisse un moment pour s'en remettre. » <span class="comment" style="font-style:normal">Son : fanfare.</span></p></div>
+        <h5>Si ça s'essouffle</h5>
+        <p>Garder 5-6 post-its au lieu de 8-10 ; passer plus vite au bonus « qui l'a écrit ? ».</p>
+        <p class="part">Préparation</p>
+        <h5>Fiche « idées de mots » pour les invités</h5>
+        <p>Une petite fiche posée sur les tables, pour piocher si on n'a pas d'idée. Elle précise que la liste n'est pas exhaustive.</p>
+        <div class="paper-wrap">
+          <div class="paper p1" data-card="jeu1">
+            <p class="kicker">15 ans de mariage · Stéphane &amp; Suzanne</p>
+            <h6>Le défi des mariés</h6>
+            <div class="orn mini" data-orn="filet"></div>
+            <p class="lead">Écrivez sur un post-it <b>un mot</b> qui caractérise <b>Stéphane</b>, <b>Suzanne</b> ou <b>les deux</b>. Les mariés devront deviner qui est visé !</p>
+            <p class="hl"><b>Au dos</b> : pour qui (Stéphane, Suzanne ou les 2) <b>et votre prénom</b>.</p>
+            <p class="lead" style="margin-top:1mm">Pas d'idée ? Piochez ici :</p>
+            <div class="cols">
+              <div>
+                <p class="grp">Adjectifs</p>
+                <ul class="words">
+                  <li>Rebelle</li><li>Têtu(e)</li><li>Bavard(e)</li><li>Gourmand(e)</li><li>Généreux(se)</li><li>Drôle</li><li>Organisé(e)</li><li>Perfectionniste</li><li>Fêtard(e)</li><li>Zen</li><li>Râleur(se)</li><li>Câlin(e)</li><li>Rêveur(se)</li><li>Aventurier(e)</li><li>Distrait(e)</li><li>Ponctuel(le)</li><li>Chaleureux(se)</li>
+                </ul>
+              </div>
+              <div>
+                <p class="grp">Mots &amp; expressions</p>
+                <ul class="words">
+                  <li>Tornade</li><li>Soleil</li><li>Fous rires</li><li>Bon vivant</li><li>Tête en l'air</li><li>Pilier</li><li>Cocon</li><li>Apéro</li><li>Voyages</li><li>Douceur</li><li>Complices</li><li>Inséparables</li><li>Chef d'orchestre</li><li>Grand cœur</li><li>Pile électrique</li><li>Duo de choc</li>
+                </ul>
+              </div>
+            </div>
+            <p class="foot">Liste non exhaustive : à vous de trouver mieux !</p>
+          </div>
+        </div>
+        <button class="print-btn" type="button" data-print="jeu1">Imprimer la planche (4 fiches par A4)</button>
+        <h5>Matériel</h5>
+        <ul>
+          <li>Post-its (~40), crayons (~35), un contenant pour les ramasser</li>
+          <li>Fiches « idées de mots » : 1 par table (2 planches A4), plastifiées</li>
+        </ul>
+        <h5>Suggestions</h5>
+        <ul>
+          <li class="prop">Avec ~25-30 post-its, n'en lire qu'une sélection (~8-10) : les plus drôles, et un équilibre Stéphane / Suzanne / les 2.</li>
+          <li class="prop">1 point par cible trouvée, score des mariés annoncé à la fin. L'auteur seulement en bonus, sur les post-its les plus drôles, pour ne pas rallonger.</li>
+          <li class="prop">Garder tous les post-its et les coller sur une feuille ou un cadre à offrir aux mariés.</li>
+        </ul>
+  
       </div>
     </li>
 
@@ -592,6 +743,96 @@
         <span class="k">Jeu 2 · ~10-12 min</span>
         <h4>LUI, ELLE ou les 2 ?</h4>
         <p class="meta">La salle vote, puis les mariés · Écran : « Jeu 2 », « règle », puis « questions » (compteur)</p>
+        <p class="part">Le principe</p>
+        <h5>En un coup d'œil</h5>
+        <div class="schema">
+          <p class="who-leg"><span><i style="--k:var(--text)"></i>Aurélien</span><span><i style="--k:var(--lui)"></i>Stéphane (et son panneau)</span><span><i style="--k:var(--elle)"></i>Suzanne (et son panneau)</span><span><i style="--k:var(--muted)"></i>Invités</span></p>
+          <div class="phase">
+            <p class="phase-h"><span>Juste avant le jeu · chaque invité reçoit 2 panneaux photo</span></p>
+            <p class="cap">Pour voter, on lève :</p>
+            <svg class="sv wide" viewBox="0 10 320 96" aria-hidden="true">
+              <use href="#pan" class="lui" x="45" y="24" width="20" height="44"/>
+              <use href="#pers" class="mut" x="26" y="50" width="28" height="38"/>
+              <text class="lbl" x="40" y="103" text-anchor="middle">Stéphane</text>
+              <use href="#pan" class="elle" x="125" y="24" width="20" height="44"/>
+              <use href="#pers" class="mut" x="106" y="50" width="28" height="38"/>
+              <text class="lbl" x="120" y="103" text-anchor="middle">Suzanne</text>
+              <use href="#pan" class="lui" x="175" y="24" width="20" height="44"/>
+              <use href="#pan" class="elle" x="205" y="24" width="20" height="44"/>
+              <use href="#pers" class="mut" x="186" y="50" width="28" height="38"/>
+              <text class="lbl" x="200" y="103" text-anchor="middle">Les 2</text>
+              <use href="#pers" class="mut" x="266" y="50" width="28" height="38"/>
+              <text class="lbl" x="280" y="103" text-anchor="middle">Aucun</text>
+            </svg>
+          </div>
+          <div class="down">↓</div>
+          <div class="phase stage">
+            <p class="phase-h"><span>Pendant · sur scène, ~10-12 min</span><span class="loop">↻ à refaire pour chacune des 11 questions</span></p>
+            <div class="steps">
+              <div class="step">
+                <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
+                  <path class="bub" d="M62 40l-12 14 24-14"/>
+                  <rect class="bub" x="52" y="6" width="104" height="36" rx="12"/>
+                  <text class="say" x="104" y="29" text-anchor="middle">Qui râle le plus ?</text>
+                  <use href="#pers" class="ink" x="8" y="36" width="40" height="52"/>
+                  <use href="#mic" class="ink" x="40" y="44" width="7" height="16"/>
+                </svg>
+                <b>1. Aurélien pose la question</b>
+                <p>Lue sur la fiche des questions.</p>
+              </div>
+              <span class="arr"></span>
+              <div class="step">
+                <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
+                  <use href="#pan" class="lui" x="2" y="30" width="14" height="31"/>
+                  <use href="#pan" class="elle" x="33" y="30" width="14" height="31"/>
+                  <use href="#pan" class="lui" x="64" y="30" width="14" height="31"/>
+                  <use href="#pan" class="elle" x="82" y="30" width="14" height="31"/>
+                  <use href="#pan" class="elle" x="113" y="30" width="14" height="31"/>
+                  <use href="#pan" class="lui" x="144" y="30" width="14" height="31"/>
+                  <use href="#pers" class="mut" x="8" y="60" width="20" height="28"/>
+                  <use href="#pers" class="mut" x="39" y="60" width="20" height="28"/>
+                  <use href="#pers" class="mut" x="70" y="60" width="20" height="28"/>
+                  <use href="#pers" class="mut" x="101" y="60" width="20" height="28"/>
+                  <use href="#pers" class="mut" x="132" y="60" width="20" height="28"/>
+                </svg>
+                <b>2. La salle vote</b>
+                <p>Chacun lève ses panneaux. Aurélien commente la tendance.</p>
+              </div>
+              <span class="arr"></span>
+              <div class="step">
+                <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
+                  <use href="#pan" class="elle" x="48" y="4" width="26" height="57"/>
+                  <use href="#pan" class="lui" x="120" y="4" width="26" height="57"/>
+                  <use href="#pers" class="lui" x="23" y="42" width="34" height="46"/>
+                  <use href="#pers" class="elle" x="95" y="42" width="34" height="46"/>
+                </svg>
+                <b>3. Les mariés votent</b>
+                <p>Sur scène, avec leurs grands panneaux. Ici, chacun accuse l'autre.</p>
+              </div>
+              <span class="arr"></span>
+              <div class="step">
+                <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
+                  <rect class="paperc" x="28" y="6" width="104" height="80" rx="4"/>
+                  <text class="pt" x="80" y="24" text-anchor="middle">RÉPONSE OFFICIELLE</text>
+                  <rect x="50" y="33" width="60" height="22" rx="4" fill="#6b665e"/>
+                  <text x="80" y="48" text-anchor="middle" style="fill:#fff;font-weight:800">LES 2</text>
+                  <text class="pt" x="80" y="72" text-anchor="middle" style="font-weight:500">« LUI d'après elle »</text>
+                </svg>
+                <b>4. Aurélien donne la réponse</b>
+                <p>Celle de la fiche, et il commente les désaccords.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h5>Déroulé <span class="ok">décidé</span></h5>
+        <ol>
+          <li>Les invités ont des panneaux avec la photo de Stéphane et la photo de Suzanne.</li>
+          <li>Aurélien pose la question <strong>à la salle</strong> : chacun lève le panneau de son choix. On commente la tendance du groupe.</li>
+          <li>Stéphane &amp; Suzanne, côté scène, lèvent à leur tour leur panneau.</li>
+          <li>Aurélien donne la réponse « officielle » (fiche ci-dessous) et commente les désaccords.</li>
+        </ol>
+        <p class="prop">Convention à annoncer : les deux panneaux levés = « les 2 », aucun panneau = « aucun des 2 ».</p>
+        <p class="part">Sur scène</p>
         <h5>Annonce</h5>
         <div class="round"><p>« Deuxième défi : c'est vous qui votez. Je pose une question, vous levez Stéphane, Suzanne, les deux… ou aucun. Ensuite, c'est à eux. »</p></div>
         <h5>Pour chaque question (11, dans l'ordre du tableau du jeu 2)</h5>
@@ -627,6 +868,73 @@
         </ul>
         <h5>Sortie</h5>
         <div class="round"><p>« Gardez vos panneaux, ils sont pour vous. On laisse la scène aux mariés. »</p></div>
+        <h5>Questions et réponses</h5>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Question</th><th>Réponse</th></tr></thead>
+            <tbody>
+              <tr><td class="num">1</td><td>Qui a fait le premier pas ?</td><td><span class="ans elle">ELLE</span><div class="comment">« mais ça se discute »</div></td></tr>
+              <tr><td class="num">2</td><td>Qui a toujours raison ?</td><td><span class="ans elle">ELLE</span><div class="comment">ça se discute : elle a toujours raison, et lui n'a jamais tort</div></td></tr>
+              <tr><td class="num">3</td><td>Qui est spécialiste des faux départs ?</td><td><span class="ans lui">LUI</span></td></tr>
+              <tr><td class="num">4</td><td>Qui peut, avec tous ses résultats d'examen, reconstituer son corps en puzzle ?</td><td><span class="ans lui">LUI</span></td></tr>
+              <tr><td class="num">5</td><td>Qui râle le plus souvent ?</td><td><span class="ans both">LES 2</span><div class="comment">LUI d'après elle, mais en vrai les 2</div></td></tr>
+              <tr><td class="num">6</td><td>Qui est le plus jaloux ?</td><td><span class="ans both">AUCUN</span><div class="comment">question piège</div></td></tr>
+              <tr><td class="num">7</td><td>Qui cherche toujours ses affaires ?</td><td><span class="ans lui">LUI</span></td></tr>
+              <tr><td class="num">8</td><td>Qui dit toujours « C'était bien mais... » ?</td><td><span class="ans elle">ELLE</span></td></tr>
+              <tr><td class="num">9</td><td>Qui pourrait tenir 2 mois sans faire une seule lessive ni toucher à un fer à repasser ?</td><td><span class="ans elle">ELLE</span></td></tr>
+              <tr><td class="num">10</td><td>Qui va bientôt faire le grand saut... en parachute ?</td><td><span class="ans elle">ELLE</span></td></tr>
+              <tr><td class="num">11</td><td>Qui pète le plus à la maison ?</td><td><span class="ans ask">à demander</span><div class="comment">ajoutée par Aurélien</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="comment" style="margin-top:8px">Bilan des 10 premières : 5 ELLE, 3 LUI, 1 les 2, 1 aucun. Question 11 : réponse à demander aux mariés.</p>
+        <h5>Suggestions : questions bonus</h5>
+        <p class="comment">Pas dans le document. Réponses à demander à Stéphane &amp; Suzanne si on les garde.</p>
+        <div class="table-wrap">
+          <table>
+            <tbody>
+              <tr><td class="num">+</td><td>Qui s'endort devant la télé ?</td><td><span class="ans ask">à demander</span></td></tr>
+              <tr><td class="num">+</td><td>Qui est toujours en retard ?</td><td><span class="ans ask">à demander</span></td></tr>
+              <tr><td class="num">+</td><td>Qui cuisine le mieux ?</td><td><span class="ans ask">à demander</span></td></tr>
+              <tr><td class="num">+</td><td>Qui a le dernier mot dans une dispute ?</td><td><span class="ans ask">à demander</span></td></tr>
+              <tr><td class="num">+</td><td>Qui a dit « je t'aime » en premier ?</td><td><span class="ans ask">à demander</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h5>Si ça s'essouffle</h5>
+        <p>Sauter les questions bonus ; faire voter la salle et les mariés en même temps.</p>
+        <p class="part">Préparation</p>
+        <h5>Matériel</h5>
+        <ul>
+          <li>Panneaux photo A5 : 1 de Stéphane + 1 de Suzanne par invité, ~35 paires (33 + marge)</li>
+          <li>Une couleur de feuille par personne (ex. bleu = Stéphane, jaune = Suzanne) : la salle se lit d'un coup d'œil depuis la scène</li>
+          <li>1 paire de panneaux A4 pour les mariés</li>
+          <li>Photos de Stéphane et de Suzanne à récupérer <span class="tbc">à faire</span></li>
+          <li>Fiche des questions (cette page imprimée ou sur téléphone)</li>
+        </ul>
+        <h5>Les panneaux</h5>
+        <p>Le cadre et le prénom s'impriment directement sur la feuille de couleur (2 panneaux par A4 paysage). La photo, recadrée à 96 × 94 mm (6 par A4 blanc), se colle dans la fenêtre.</p>
+        <div class="paper-wrap">
+          <div class="panneau" data-panneau="stephane" style="--feuille:#4f9be8">
+            <div class="orn" data-orn="coupes"></div>
+            <div class="fenetre"><div>Photo<br>96 × 94 mm</div></div>
+            <p class="nom">Stéphane</p>
+            <div class="orn mini" data-orn="filet"></div>
+          </div>
+          <div class="panneau" data-panneau="suzanne" style="--feuille:#f2bd3a">
+            <div class="orn" data-orn="coupes"></div>
+            <div class="fenetre"><div>Photo<br>96 × 94 mm</div></div>
+            <p class="nom">Suzanne</p>
+            <div class="orn mini" data-orn="filet"></div>
+          </div>
+        </div>
+        <div class="pan-btns">
+          <button class="print-btn" type="button" data-print="pan-stephane" style="--c:var(--lui)">Panneaux de Stéphane (2 par A4)</button>
+          <button class="print-btn" type="button" data-print="pan-suzanne" style="--c:var(--elle)">Panneaux de Suzanne (2 par A4)</button>
+          <button class="print-btn" type="button" data-print="a4-stephane" style="--c:var(--lui)">Grand panneau A4 de Stéphane</button>
+          <button class="print-btn" type="button" data-print="a4-suzanne" style="--c:var(--elle)">Grand panneau A4 de Suzanne</button>
+        </div>
+  
       </div>
     </li>
 
@@ -652,6 +960,152 @@
         <span class="k">Jeu 3 · ~12 min ou plus</span>
         <h4>15 ans de nous... racontés par vous</h4>
         <p class="meta">Aurélien interroge, le micro circule, les mariés réagissent · Écran : « Jeu 3 », « règle », puis « Vous avez la parole »</p>
+        <p class="part">Le principe</p>
+        <h5>En un coup d'œil</h5>
+        <div class="schema">
+          <p class="who-leg"><span><i style="--k:var(--text)"></i>Aurélien</span><span><i style="--k:var(--j3)"></i>Célia et Sandrine H.</span><span><i style="--k:var(--muted)"></i>Invités</span><span><i style="--k:var(--lui)"></i>Stéphane</span><span><i style="--k:var(--elle)"></i>Suzanne</span></p>
+          <div class="cols2">
+            <div class="phase">
+              <p class="phase-h"><span>Cette semaine · par message</span></p>
+              <div class="steps">
+                <div class="step">
+                  <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
+                    <rect class="phone" x="8" y="6" width="40" height="78" rx="7"/>
+                    <rect class="cf" x="14" y="20" width="28" height="13" rx="4"/>
+                    <text x="28" y="30.5" text-anchor="middle" style="fill:#fff;font-weight:800">?</text>
+                    <rect class="mut" x="14" y="39" width="20" height="10" rx="4" opacity=".45"/>
+                    <path class="cs" d="M56 46h16m-6-6 6 6-6 6"/>
+                    <use href="#pers" class="cf" x="72" y="30" width="30" height="40"/>
+                    <use href="#pers" class="cf" x="120" y="30" width="30" height="40"/>
+                    <text class="sm" x="87" y="84" text-anchor="middle">Célia</text>
+                    <text class="sm" x="135" y="84" text-anchor="middle">Sandrine H.</text>
+                  </svg>
+                  <b>Aurélien leur envoie une question rien qu'à elles</b>
+                  <p>Absente du questionnaire.</p>
+                </div>
+                <span class="arr"></span>
+                <div class="step">
+                  <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
+                    <circle class="bub" cx="44" cy="46" r="3"/>
+                    <circle class="bub" cx="53" cy="37" r="4.5"/>
+                    <rect class="bub" x="58" y="6" width="96" height="40" rx="14"/>
+                    <text class="say" x="106" y="24" text-anchor="middle">Anecdote</text>
+                    <text class="sm" x="106" y="37" text-anchor="middle">drôle, 1 à 2 min</text>
+                    <use href="#pers" class="cf" x="8" y="40" width="36" height="48"/>
+                  </svg>
+                  <b>Elles préparent une anecdote</b>
+                  <p>Secret : les mariés ne savent rien.</p>
+                </div>
+              </div>
+            </div>
+            <div class="phase">
+              <p class="phase-h"><span>Avant · sur les tables, ~18h00 à 18h45</span></p>
+              <div class="steps">
+                <div class="step">
+                  <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
+                    <rect class="paperc" x="40" y="4" width="64" height="82" rx="3"/>
+                    <text class="pt" x="46" y="17">Prénom</text>
+                    <path class="pl" d="M76 18h22M46 27h52M46 33h52M46 39h40"/>
+                    <rect x="46" y="48" width="52" height="30" rx="2" fill="none" stroke="#d6d0c4"/>
+                    <text class="pt" x="50" y="58" style="fill:#7a4fb0">n° 4</text>
+                    <path class="pl" d="M50 66h44M50 73h44"/>
+                    <g transform="rotate(30 124 46)"><rect x="120" y="14" width="8" height="46" fill="#e8b93a"/><path d="M120 60l4 10 4-10z" fill="#3a3420"/></g>
+                  </svg>
+                  <b>Chaque invité remplit le questionnaire</b>
+                  <p>Son prénom et les questions qui l'inspirent.</p>
+                </div>
+                <span class="arr"></span>
+                <div class="step">
+                  <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
+                    <use href="#sheet" x="14" y="22" width="44" height="58"/>
+                    <use href="#sheet" x="22" y="15" width="44" height="58"/>
+                    <use href="#sheet" x="30" y="8" width="44" height="58"/>
+                    <path class="cs" d="M86 46h16m-6-6 6 6-6 6"/>
+                    <use href="#sheet" x="112" y="24" width="34" height="44"/>
+                    <path d="M142 17l2.2 5.9 6.4.3-5 4 1.7 6.1-5.3-3.5-5.3 3.5 1.7-6.1-5-4 6.4-.3z" fill="#e8b93a"/>
+                    <text class="big" x="129" y="84" text-anchor="middle">4-5</text>
+                  </svg>
+                  <b>~18h45 : Aurélien en choisit 4-5</b>
+                  <p>Une drôle, une émouvante, un « petit dossier »…</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="down">↓</div>
+          <div class="phase stage">
+            <p class="phase-h"><span>Pendant · sur scène, ~12 min</span></p>
+            <div class="steps">
+              <div class="step">
+                <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
+                  <path class="bub" d="M62 44l-12 12 24-12"/>
+                  <rect class="bub" x="52" y="4" width="104" height="42" rx="12"/>
+                  <text class="say" x="104" y="22" text-anchor="middle">Stéphane,</text>
+                  <text class="say" x="104" y="37" text-anchor="middle">ce rebelle…</text>
+                  <use href="#pers" class="cf" x="8" y="36" width="40" height="52"/>
+                  <use href="#mic" class="ink" x="40" y="44" width="7" height="16"/>
+                </svg>
+                <b>1. Sandrine H. ouvre</b>
+                <p>Sa question spéciale, 1 à 2 min.</p>
+              </div>
+              <span class="arr"></span>
+              <div class="step">
+                <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
+                  <path class="bub" d="M46 30l-8 12 20-12"/>
+                  <rect class="bub" x="30" y="4" width="100" height="28" rx="12"/>
+                  <text class="say" x="80" y="23" text-anchor="middle">Votre réponse ?</text>
+                  <use href="#pers" class="ink" x="4" y="40" width="34" height="46"/>
+                  <use href="#mic" class="ink" x="32" y="46" width="6" height="14"/>
+                  <use href="#pers" class="mut" x="104" y="40" width="34" height="46"/>
+                  <use href="#sheet" x="94" y="58" width="22" height="28"/>
+                </svg>
+                <b>2. 4-5 invités lisent leur réponse</b>
+                <p>Aurélien les appelle un par un.</p>
+              </div>
+              <span class="arr"></span>
+              <div class="step">
+                <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
+                  <path class="bub" d="M62 40l-12 14 24-14"/>
+                  <rect class="bub" x="52" y="6" width="104" height="36" rx="12"/>
+                  <text class="say" x="104" y="29" text-anchor="middle">Ces deux-là…</text>
+                  <use href="#pers" class="cf" x="8" y="36" width="40" height="52"/>
+                  <use href="#mic" class="ink" x="40" y="44" width="7" height="16"/>
+                </svg>
+                <b>3. Célia conclut</b>
+                <p>Sa question spéciale, pour finir sur un temps fort.</p>
+              </div>
+              <span class="arr"></span>
+              <div class="step">
+                <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
+                  <use href="#sheet" x="22" y="22" width="22" height="28"/>
+                  <rect class="pi" x="48" y="26" width="18" height="18" transform="rotate(8 57 35)"/>
+                  <use href="#sheet" x="34" y="28" width="22" height="28"/>
+                  <path class="box" d="M12 46h68l-5 38H17z"/>
+                  <path d="M46 78C32 69 36 57 46 64C56 57 60 69 46 78Z" fill="#c2456b"/>
+                  <use href="#pers" class="lui" x="88" y="44" width="32" height="44"/>
+                  <use href="#pers" class="elle" x="122" y="44" width="32" height="44"/>
+                </svg>
+                <b>4. Tout est offert aux mariés</b>
+                <p>Questionnaires et post-its du jeu 1, en souvenir.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h5>Déroulé <span class="ok">décidé</span></h5>
+        <ol>
+          <li>Questionnaires distribués aux invités (sur les tables, dès leur arrivée), avec la liste des questions.</li>
+          <li>Chacun répond aux questions qui l'inspirent le plus et écrit son prénom.</li>
+          <li>Pendant le jeu, Aurélien interroge quelques invités sur une question précise : ils lisent ou racontent leur réponse.</li>
+          <li>À la fin, tous les questionnaires sont remis aux mariés en souvenir.</li>
+        </ol>
+        <h5>Esprit souhaité par Stéphane &amp; Suzanne (appel du 7 octobre)</h5>
+        <ul>
+          <li>Un dialogue plutôt qu'une lecture : les invités rebondissent sur ce que disent les autres (« ah oui, et moi je me souviens… »).</li>
+          <li>Demander <strong>pourquoi</strong> cette réponse : « Titanic ? Vous pensez qu'on coule ? »</li>
+          <li>Stéphane &amp; Suzanne réagissent et donnent leur version de l'anecdote : on ne l'a pas forcément vécue de la même façon.</li>
+          <li>Aurélien peut participer aussi, même en animant.</li>
+          <li>Ordre de passage indicatif, construit à partir du tour des tables ; les interventions spontanées sont bienvenues.</li>
+        </ul>
+        <p class="part">Sur scène</p>
         <h5>Annonce</h5>
         <div class="round"><p>« Dernier défi, et cette fois ce ne sont pas eux qui jouent. On va raconter Stéphane et Suzanne à travers vos souvenirs. Et Stéphane, Suzanne : vous avez le droit de donner votre version. »</p></div>
         <h5>Ordre de passage</h5>
@@ -679,6 +1133,84 @@
           <li>La portière refermée par Suzanne : « C'est peut-être ce jour-là qu'il a appris à dire "oui chérie". »</li>
         </ul>
         <p class="comment" style="margin-top:4px">Interventions spontanées bienvenues : l'ordre est indicatif.</p>
+        <h5>Si ça s'essouffle</h5>
+        <p>Faire passer Célia ou Sandrine H. (préparées) ; demander « pourquoi ? » ; demander leur version aux mariés ; raconter soi-même une anecdote (la CAF, la portière) ; lire une réponse marquante de questionnaire.</p>
+        <p class="part">Préparation</p>
+        <h5>Le questionnaire (4 par A4)</h5>
+        <p>La fiche liste les 10 questions ; l'invité choisit celles qu'il veut et note leur numéro dans les 2 cadres de réponse (plus au dos si besoin).</p>
+        <div class="paper-wrap">
+          <div class="paper p3" data-card="jeu3">
+            <p class="kicker">15 ans de mariage · Stéphane &amp; Suzanne</p>
+            <h6>15 ans de nous…<br>racontés par vous</h6>
+            <p class="lead" style="font-size:7.8pt">Répondez aux questions qui vous inspirent le plus. On pourra vous demander d'en lire une pendant la soirée, puis les fiches seront offertes aux mariés.</p>
+            <p class="field">Prénom(s) <span class="line"></span></p>
+            <ol class="qs">
+              <li>Mon meilleur souvenir avec vous est…</li>
+              <li>Dans 15 ans, je vous imagine…</li>
+              <li>Le conseil que je vous donne pour les 15 prochaines années…</li>
+              <li>Si je devais raconter une anecdote sur vous, ce serait…</li>
+              <li>Si votre couple était une chanson, ce serait…</li>
+              <li>Si votre couple était un film, ce serait…</li>
+              <li>Si je devais révéler un petit dossier sur vous, ce serait…</li>
+              <li>Si votre couple avait un slogan, ce serait…</li>
+              <li>Le petit défaut de chacun que tout le monde connaît…</li>
+              <li>Si votre couple avait une notice d'utilisation, la première consigne serait…</li>
+            </ol>
+            <div class="answer"><span class="no">Question n°<span></span></span><i></i><i></i><i></i></div>
+            <div class="answer"><span class="no">Question n°<span></span></span><i></i><i></i><i></i></div>
+            <p class="more">Une autre question vous inspire ? Continuez au dos (n° + réponse).</p>
+          </div>
+        </div>
+        <button class="print-btn" type="button" data-print="jeu3">Imprimer la planche (4 questionnaires par A4)</button>
+        <h5>Questions spéciales : Célia et Sandrine H. <span class="ok">contactées</span></h5>
+        <p>Deux invitées dont on sait qu'elles auront une anecdote drôle reçoivent <strong>en amont</strong> une question rien que pour elles, absente du questionnaire, pour la préparer.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Pour</th><th>Question proposée</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Célia</strong><div class="comment">amie depuis 2002 (Stéphane) et 2004 (Suzanne)</div></td><td>« Vous les connaissez depuis plus de 20 ans : racontez-nous LE moment où vous vous êtes dit "ces deux-là, c'est quelque chose". »<div class="comment">Autre option : « Le souvenir de vacances ou de soirée avec eux qui a mal tourné… mais qu'on raconte encore. »</div></td></tr>
+              <tr><td><strong>Sandrine H.</strong><div class="comment">associée de Stéphane depuis 4 ans</div></td><td>« Vous dites que Stéphane est un rebelle : prouvez-le avec une anecdote ! »<div class="comment">Autre option : « Stéphane au bureau : racontez-nous une scène que Suzanne ne connaît sûrement pas. »</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="comment" style="margin-top:8px">Questions à valider. Consigne : 1 à 2 min, drôle, pas de discours, et surprise totale pour les mariés.</p>
+        <p class="prop">Proposition d'ordre : Sandrine H. pour lancer le jeu 3, les réponses des questionnaires, puis Célia pour finir.</p>
+        <h5>Message envoyé (modèle : Sandrine H.)</h5>
+        <div class="round">
+          <p>Bonjour Sandrine, c'est Aurélien, le fils de Sandrine B.</p>
+          <p>J'anime les jeux des 15 ans de mariage de Stéphane et Suzanne samedi soir, et j'aimerais te proposer de prendre la parole pendant l'un d'eux.</p>
+          <p>Le jeu : on raconte Stéphane et Suzanne à travers les souvenirs et les anecdotes de leurs proches. Je donne la parole successivement à différents invités volontaires.</p>
+          <p>Et pour lancer ce moment, j'ai besoin de quelqu'un qui a sûrement des histoires très drôles (donc j'ai pensé à toi)</p>
+          <p>Un exemple de question : « Il paraît que Stéphane est un rebelle : c'est à dire ? » et là tu peux enchaîner sur l'anecdote.</p>
+          <p>Est-ce que tu serais ok pour préparer ça un petit peu en amont ?</p>
+        </div>
+        <p class="comment" style="margin-top:6px">Fait : Célia, Sandrine H. et Sylvie ont été contactées, et toutes les trois ont dit oui.</p>
+        <h5>Autres amis à contacter <span class="tbc">si besoin</span></h5>
+        <p>Amis de Stéphane &amp; Suzanne d'après la liste des invités, pas encore contactés pour préparer une anecdote :</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Qui</th><th>Lien</th><th>Remarque</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Ulrich</strong></td><td>conjoint de Célia</td><td>Passer par Célia. Soir seulement.</td></tr>
+              <tr><td><strong>Eddy</strong></td><td>conjoint de Sandrine H.</td><td>Passer par Sandrine H.</td></tr>
+              <tr><td>Antoine, Matthieu</td><td>fils de Sylvie</td><td>Avec Sarah (copine d'Antoine) : génération de Noah.</td></tr>
+              <tr><td>Maureen, Noa</td><td>fille de Sandrine H. et sa conjointe</td><td></td></tr>
+              <tr><td>Mathilde, Elsa</td><td>filles de Célia et Ulrich</td><td>Soir seulement.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="comment" style="margin-top:6px">La famille commune peut aussi avoir des anecdotes sur le couple.</p>
+        <h5>Préparation</h5>
+        <ul>
+          <li>~20-25 questionnaires attendus : 8 planches A4 (32 fiches)</li>
+          <li>Amorces issues de l'appel de préparation, utiles pour relancer : la portière refermée par Suzanne sur Stéphane, Stéphane « le rebelle » selon Sandrine H.</li>
+        </ul>
+        <h5>Suggestions</h5>
+        <ul>
+          <li class="prop">Ramasser les questionnaires vers 18h45 et choisir 4-5 réponses variées (une drôle, une émouvante, un « petit dossier »…), puis appeler la personne pour qu'elle la lise. Les 2 questions spéciales s'ajoutent.</li>
+          <li class="prop">Remettre les questionnaires et les post-its du jeu 1 dans une boîte ou un livre d'or pour les mariés.</li>
+        </ul>
+  
       </div>
     </li>
 
@@ -714,573 +1246,6 @@
     </li>
   </ol>
   <p class="comment" style="margin-top:4px">Total : ~50 min de 19h00 à 19h50, dont ~6 min d'interludes et ~5 min d'ouverture et de conclusion, plus la pause buffet si on la fait.</p>
-
-  <h2>Fiche règles (sur les tables)</h2>
-  <p class="note">Récapitulatif des 3 jeux laissé sur chaque table, pour ne pas avoir à repasser. 4 par A4, à découper puis plastifier.</p>
-  <div class="paper-wrap">
-    <div class="paper p0" data-card="regles">
-      <p class="kicker">15 ans de mariage · Stéphane &amp; Suzanne</p>
-      <div class="orn" data-orn="coupes"></div>
-      <h6>Les jeux de la soirée</h6>
-      <div class="rule r1"><span class="num"><span>1</span></span><div><b>Le défi des mariés</b><p>Écrivez sur un post-it <strong>un mot</strong> qui décrit Stéphane, Suzanne ou les deux. <strong>Au dos : pour qui et votre prénom.</strong> Les mariés devront deviner qui est visé. Pas d'idée ? Voir la fiche « idées ».</p></div></div>
-      <div class="rule r2"><span class="num"><span>2</span></span><div><b>LUI, ELLE ou les 2 ?</b><p>À chaque question, levez le panneau de <strong>Stéphane</strong>, de <strong>Suzanne</strong>, les deux… ou aucun. Ensuite, les mariés donnent leur réponse.</p></div></div>
-      <div class="rule r3"><span class="num"><span>3</span></span><div><b>15 ans de nous… racontés par vous</b><p>Remplissez le questionnaire : <strong>votre prénom</strong> et les questions qui vous inspirent. On vous demandera peut-être d'en lire une !</p></div></div>
-      <p class="hl">Post-its et questionnaires ramassés <b>avant le début des jeux</b> (~19h).</p>
-      <p class="foot">Merci de laisser cette fiche sur la table.</p>
-    </div>
-  </div>
-  <button class="print-btn" type="button" data-print="regles" style="--c:var(--accent)">Imprimer la planche (4 fiches par A4)</button>
-
-  <h2>Fiches des jeux</h2>
-
-  <!-- ============ JEU 1 ============ -->
-  <section class="game j1">
-    <span class="tag">Jeu 1</span>
-    <h3>Le défi des mariés</h3>
-
-    <h5>En un coup d'œil</h5>
-    <div class="schema">
-      <p class="who-leg"><span><i style="--k:var(--text)"></i>Aurélien</span><span><i style="--k:var(--lui)"></i>Stéphane</span><span><i style="--k:var(--elle)"></i>Suzanne</span></p>
-      <div class="phase">
-        <p class="phase-h"><span>Avant · sur les tables, ~18h00 à 18h45</span></p>
-        <div class="steps">
-          <div class="step">
-            <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
-              <g transform="rotate(-4 42 46)"><rect class="pi" x="8" y="12" width="68" height="68"/><text class="sm ink" x="42" y="25" text-anchor="middle">RECTO</text><text class="hand" x="42" y="48" text-anchor="middle">Tête</text><text class="hand" x="42" y="63" text-anchor="middle">en l'air</text></g>
-              <g transform="rotate(3 118 46)"><rect class="pi2" x="84" y="12" width="68" height="68"/><text class="sm ink" x="118" y="25" text-anchor="middle">VERSO</text><text class="hand s" x="118" y="43" text-anchor="middle">Pour :</text><text class="hand s" x="118" y="56" text-anchor="middle">Stéphane</text><text class="hand s" x="118" y="72" text-anchor="middle">De : Maxime</text></g>
-            </svg>
-            <b>Chaque invité écrit un post-it</b>
-            <p>Recto : un mot. Verso : pour qui (Stéphane, Suzanne ou les 2) et son prénom.</p>
-          </div>
-          <span class="arr"></span>
-          <div class="step">
-            <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
-              <rect class="pi" x="22" y="10" width="20" height="20" transform="rotate(-12 32 20)"/>
-              <rect class="pi2" x="44" y="3" width="20" height="20" transform="rotate(8 54 13)"/>
-              <rect class="pi" x="64" y="12" width="20" height="20" transform="rotate(-5 74 22)"/>
-              <path class="box" d="M12 42h80l-6 42H18z"/>
-              <path class="cs" d="M100 62h16m-6-6 6 6-6 6"/>
-              <rect class="pi" x="122" y="34" width="26" height="26"/><rect class="pi2" x="127" y="39" width="26" height="26"/>
-              <text class="big" x="140" y="84" text-anchor="middle">8-10</text>
-            </svg>
-            <b>~18h45 : Aurélien ramasse et trie</b>
-            <p>Il garde 8-10 post-its : les plus drôles, en mélangeant Stéphane, Suzanne et les 2.</p>
-          </div>
-        </div>
-      </div>
-      <div class="down">↓</div>
-      <div class="phase stage">
-        <p class="phase-h"><span>Pendant · sur scène, ~10 min</span><span class="loop">↻ à refaire pour chaque post-it gardé</span></p>
-        <div class="steps">
-          <div class="step">
-            <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
-              <path class="bub" d="M62 40l-12 14 24-14"/>
-              <rect class="bub" x="52" y="6" width="104" height="36" rx="12"/>
-              <text class="say" x="104" y="29" text-anchor="middle">« Tête en l'air »</text>
-              <use href="#pers" class="ink" x="8" y="36" width="40" height="52"/>
-              <use href="#mic" class="ink" x="40" y="44" width="7" height="16"/>
-              <rect class="pi" x="32" y="64" width="18" height="18" transform="rotate(-8 41 73)"/>
-            </svg>
-            <b>1. Aurélien lit le recto</b>
-            <p>Seulement le mot, sans retourner le post-it.</p>
-          </div>
-          <span class="arr"></span>
-          <div class="step">
-            <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
-              <path class="bub" d="M84 40l-10 14 22-14"/>
-              <rect class="bub" x="70" y="6" width="86" height="36" rx="12"/>
-              <text class="say" x="113" y="29" text-anchor="middle">Stéphane !</text>
-              <use href="#pers" class="lui" x="6" y="38" width="38" height="50"/>
-              <use href="#pers" class="elle" x="38" y="38" width="38" height="50"/>
-            </svg>
-            <b>2. Les mariés devinent qui est visé</b>
-            <p>Stéphane, Suzanne ou les 2.</p>
-          </div>
-          <span class="arr"></span>
-          <div class="step">
-            <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
-              <g transform="rotate(3 56 46)"><rect class="pi2" x="22" y="12" width="68" height="68"/><text class="sm ink" x="56" y="25" text-anchor="middle">VERSO</text><text class="hand s" x="56" y="43" text-anchor="middle">Pour :</text><text class="hand s" x="56" y="56" text-anchor="middle">Stéphane</text><text class="hand s" x="56" y="72" text-anchor="middle">De : Maxime</text></g>
-              <circle class="okc" cx="126" cy="44" r="22"/>
-              <text class="okt" x="126" y="50" text-anchor="middle">+1</text>
-            </svg>
-            <b>3. Aurélien retourne le post-it</b>
-            <p>Bonne cible = 1 point. Bonus : « Et qui l'a écrit ? »</p>
-          </div>
-        </div>
-      </div>
-      <p class="schema-end"><b>Fin :</b> score des mariés annoncé. Les post-its sont gardés pour eux.</p>
-    </div>
-
-    <h5>Principe</h5>
-    <p>Chaque invité écrit sur un post-it <strong>un mot</strong> (adjectif, nom, expression) qui caractérise Stéphane, Suzanne ou les deux.</p>
-    <p>Défi des mariés : pour chaque post-it, trouver <strong>qui est visé</strong> (Stéphane, Suzanne ou les 2). C'est l'enjeu principal. Deviner l'auteur est secondaire (bonus).</p>
-
-    <h5>Au dos : pour qui + prénom <span class="ok">décidé</span></h5>
-    <p>Chaque invité écrit au dos du post-it <strong>qui est visé</strong> (Stéphane, Suzanne ou les 2) et <strong>son prénom</strong>. Personne ne se souviendra de ce qu'il a écrit : en ramassant les post-its, on a tout pour vérifier les réponses des mariés.</p>
-
-    <h5>Exemple de post-it</h5>
-    <div class="postits">
-      <div class="postit"><small>Recto</small>Tête en l'air</div>
-      <div class="postit"><small>Verso</small>Pour : Stéphane<br>De : Maxime</div>
-    </div>
-
-    <h5>Exemple de manche</h5>
-    <div class="round">
-      <p><b>Aurélien</b> lit : « Tête en l'air ».</p>
-      <p><b>Les mariés</b> : « C'est Stéphane ! »</p>
-      <p><b>Aurélien</b> retourne le post-it : « Pour Stéphane : bonne réponse, 1 point ! »</p>
-      <p><b>Bonus</b> (si le temps le permet) : « Et qui l'a écrit ? » « Justin ? » « Raté, c'est Maxime ! »</p>
-    </div>
-
-    <h5>Fiche « idées de mots » pour les invités</h5>
-    <p>Une petite fiche posée sur les tables, pour piocher si on n'a pas d'idée. Elle précise que la liste n'est pas exhaustive.</p>
-    <div class="paper-wrap">
-      <div class="paper p1" data-card="jeu1">
-        <p class="kicker">15 ans de mariage · Stéphane &amp; Suzanne</p>
-        <h6>Le défi des mariés</h6>
-        <div class="orn mini" data-orn="filet"></div>
-        <p class="lead">Écrivez sur un post-it <b>un mot</b> qui caractérise <b>Stéphane</b>, <b>Suzanne</b> ou <b>les deux</b>. Les mariés devront deviner qui est visé !</p>
-        <p class="hl"><b>Au dos</b> : pour qui (Stéphane, Suzanne ou les 2) <b>et votre prénom</b>.</p>
-        <p class="lead" style="margin-top:1mm">Pas d'idée ? Piochez ici :</p>
-        <div class="cols">
-          <div>
-            <p class="grp">Adjectifs</p>
-            <ul class="words">
-              <li>Rebelle</li><li>Têtu(e)</li><li>Bavard(e)</li><li>Gourmand(e)</li><li>Généreux(se)</li><li>Drôle</li><li>Organisé(e)</li><li>Perfectionniste</li><li>Fêtard(e)</li><li>Zen</li><li>Râleur(se)</li><li>Câlin(e)</li><li>Rêveur(se)</li><li>Aventurier(e)</li><li>Distrait(e)</li><li>Ponctuel(le)</li><li>Chaleureux(se)</li>
-            </ul>
-          </div>
-          <div>
-            <p class="grp">Mots &amp; expressions</p>
-            <ul class="words">
-              <li>Tornade</li><li>Soleil</li><li>Fous rires</li><li>Bon vivant</li><li>Tête en l'air</li><li>Pilier</li><li>Cocon</li><li>Apéro</li><li>Voyages</li><li>Douceur</li><li>Complices</li><li>Inséparables</li><li>Chef d'orchestre</li><li>Grand cœur</li><li>Pile électrique</li><li>Duo de choc</li>
-            </ul>
-          </div>
-        </div>
-        <p class="foot">Liste non exhaustive : à vous de trouver mieux !</p>
-      </div>
-    </div>
-    <button class="print-btn" type="button" data-print="jeu1">Imprimer la planche (4 fiches par A4)</button>
-
-    <h5>Matériel</h5>
-    <ul>
-      <li>Post-its (~40), crayons (~35), un contenant pour les ramasser</li>
-      <li>Fiches « idées de mots » : 1 par table (2 planches A4), plastifiées</li>
-    </ul>
-
-    <h5>Suggestions</h5>
-    <ul>
-      <li class="prop">Avec ~25-30 post-its, n'en lire qu'une sélection (~8-10) : les plus drôles, et un équilibre Stéphane / Suzanne / les 2.</li>
-      <li class="prop">1 point par cible trouvée, score des mariés annoncé à la fin. L'auteur seulement en bonus, sur les post-its les plus drôles, pour ne pas rallonger.</li>
-      <li class="prop">Garder tous les post-its et les coller sur une feuille ou un cadre à offrir aux mariés.</li>
-    </ul>
-  </section>
-
-  <!-- ============ JEU 2 ============ -->
-  <section class="game j2">
-    <span class="tag">Jeu 2</span>
-    <h3>LUI, ELLE ou les 2 ?</h3>
-
-    <h5>En un coup d'œil</h5>
-    <div class="schema">
-      <p class="who-leg"><span><i style="--k:var(--text)"></i>Aurélien</span><span><i style="--k:var(--lui)"></i>Stéphane (et son panneau)</span><span><i style="--k:var(--elle)"></i>Suzanne (et son panneau)</span><span><i style="--k:var(--muted)"></i>Invités</span></p>
-      <div class="phase">
-        <p class="phase-h"><span>Juste avant le jeu · chaque invité reçoit 2 panneaux photo</span></p>
-        <p class="cap">Pour voter, on lève :</p>
-        <svg class="sv wide" viewBox="0 10 320 96" aria-hidden="true">
-          <use href="#pan" class="lui" x="45" y="24" width="20" height="44"/>
-          <use href="#pers" class="mut" x="26" y="50" width="28" height="38"/>
-          <text class="lbl" x="40" y="103" text-anchor="middle">Stéphane</text>
-          <use href="#pan" class="elle" x="125" y="24" width="20" height="44"/>
-          <use href="#pers" class="mut" x="106" y="50" width="28" height="38"/>
-          <text class="lbl" x="120" y="103" text-anchor="middle">Suzanne</text>
-          <use href="#pan" class="lui" x="175" y="24" width="20" height="44"/>
-          <use href="#pan" class="elle" x="205" y="24" width="20" height="44"/>
-          <use href="#pers" class="mut" x="186" y="50" width="28" height="38"/>
-          <text class="lbl" x="200" y="103" text-anchor="middle">Les 2</text>
-          <use href="#pers" class="mut" x="266" y="50" width="28" height="38"/>
-          <text class="lbl" x="280" y="103" text-anchor="middle">Aucun</text>
-        </svg>
-      </div>
-      <div class="down">↓</div>
-      <div class="phase stage">
-        <p class="phase-h"><span>Pendant · sur scène, ~10-12 min</span><span class="loop">↻ à refaire pour chacune des 11 questions</span></p>
-        <div class="steps">
-          <div class="step">
-            <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
-              <path class="bub" d="M62 40l-12 14 24-14"/>
-              <rect class="bub" x="52" y="6" width="104" height="36" rx="12"/>
-              <text class="say" x="104" y="29" text-anchor="middle">Qui râle le plus ?</text>
-              <use href="#pers" class="ink" x="8" y="36" width="40" height="52"/>
-              <use href="#mic" class="ink" x="40" y="44" width="7" height="16"/>
-            </svg>
-            <b>1. Aurélien pose la question</b>
-            <p>Lue sur la fiche des questions.</p>
-          </div>
-          <span class="arr"></span>
-          <div class="step">
-            <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
-              <use href="#pan" class="lui" x="2" y="30" width="14" height="31"/>
-              <use href="#pan" class="elle" x="33" y="30" width="14" height="31"/>
-              <use href="#pan" class="lui" x="64" y="30" width="14" height="31"/>
-              <use href="#pan" class="elle" x="82" y="30" width="14" height="31"/>
-              <use href="#pan" class="elle" x="113" y="30" width="14" height="31"/>
-              <use href="#pan" class="lui" x="144" y="30" width="14" height="31"/>
-              <use href="#pers" class="mut" x="8" y="60" width="20" height="28"/>
-              <use href="#pers" class="mut" x="39" y="60" width="20" height="28"/>
-              <use href="#pers" class="mut" x="70" y="60" width="20" height="28"/>
-              <use href="#pers" class="mut" x="101" y="60" width="20" height="28"/>
-              <use href="#pers" class="mut" x="132" y="60" width="20" height="28"/>
-            </svg>
-            <b>2. La salle vote</b>
-            <p>Chacun lève ses panneaux. Aurélien commente la tendance.</p>
-          </div>
-          <span class="arr"></span>
-          <div class="step">
-            <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
-              <use href="#pan" class="elle" x="48" y="4" width="26" height="57"/>
-              <use href="#pan" class="lui" x="120" y="4" width="26" height="57"/>
-              <use href="#pers" class="lui" x="23" y="42" width="34" height="46"/>
-              <use href="#pers" class="elle" x="95" y="42" width="34" height="46"/>
-            </svg>
-            <b>3. Les mariés votent</b>
-            <p>Sur scène, avec leurs grands panneaux. Ici, chacun accuse l'autre.</p>
-          </div>
-          <span class="arr"></span>
-          <div class="step">
-            <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
-              <rect class="paperc" x="28" y="6" width="104" height="80" rx="4"/>
-              <text class="pt" x="80" y="24" text-anchor="middle">RÉPONSE OFFICIELLE</text>
-              <rect x="50" y="33" width="60" height="22" rx="4" fill="#6b665e"/>
-              <text x="80" y="48" text-anchor="middle" style="fill:#fff;font-weight:800">LES 2</text>
-              <text class="pt" x="80" y="72" text-anchor="middle" style="font-weight:500">« LUI d'après elle »</text>
-            </svg>
-            <b>4. Aurélien donne la réponse</b>
-            <p>Celle de la fiche, et il commente les désaccords.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <h5>Déroulé <span class="ok">décidé</span></h5>
-    <ol>
-      <li>Les invités ont des panneaux avec la photo de Stéphane et la photo de Suzanne.</li>
-      <li>Aurélien pose la question <strong>à la salle</strong> : chacun lève le panneau de son choix. On commente la tendance du groupe.</li>
-      <li>Stéphane &amp; Suzanne, côté scène, lèvent à leur tour leur panneau.</li>
-      <li>Aurélien donne la réponse « officielle » (fiche ci-dessous) et commente les désaccords.</li>
-    </ol>
-    <p class="prop">Convention à annoncer : les deux panneaux levés = « les 2 », aucun panneau = « aucun des 2 ».</p>
-
-    <h5>Questions et réponses</h5>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>#</th><th>Question</th><th>Réponse</th></tr></thead>
-        <tbody>
-          <tr><td class="num">1</td><td>Qui a fait le premier pas ?</td><td><span class="ans elle">ELLE</span><div class="comment">« mais ça se discute »</div></td></tr>
-          <tr><td class="num">2</td><td>Qui a toujours raison ?</td><td><span class="ans elle">ELLE</span><div class="comment">ça se discute : elle a toujours raison, et lui n'a jamais tort</div></td></tr>
-          <tr><td class="num">3</td><td>Qui est spécialiste des faux départs ?</td><td><span class="ans lui">LUI</span></td></tr>
-          <tr><td class="num">4</td><td>Qui peut, avec tous ses résultats d'examen, reconstituer son corps en puzzle ?</td><td><span class="ans lui">LUI</span></td></tr>
-          <tr><td class="num">5</td><td>Qui râle le plus souvent ?</td><td><span class="ans both">LES 2</span><div class="comment">LUI d'après elle, mais en vrai les 2</div></td></tr>
-          <tr><td class="num">6</td><td>Qui est le plus jaloux ?</td><td><span class="ans both">AUCUN</span><div class="comment">question piège</div></td></tr>
-          <tr><td class="num">7</td><td>Qui cherche toujours ses affaires ?</td><td><span class="ans lui">LUI</span></td></tr>
-          <tr><td class="num">8</td><td>Qui dit toujours « C'était bien mais... » ?</td><td><span class="ans elle">ELLE</span></td></tr>
-          <tr><td class="num">9</td><td>Qui pourrait tenir 2 mois sans faire une seule lessive ni toucher à un fer à repasser ?</td><td><span class="ans elle">ELLE</span></td></tr>
-          <tr><td class="num">10</td><td>Qui va bientôt faire le grand saut... en parachute ?</td><td><span class="ans elle">ELLE</span></td></tr>
-          <tr><td class="num">11</td><td>Qui pète le plus à la maison ?</td><td><span class="ans ask">à demander</span><div class="comment">ajoutée par Aurélien</div></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="comment" style="margin-top:8px">Bilan des 10 premières : 5 ELLE, 3 LUI, 1 les 2, 1 aucun. Question 11 : réponse à demander aux mariés.</p>
-
-    <h5>Suggestions : questions bonus</h5>
-    <p class="comment">Pas dans le document. Réponses à demander à Stéphane &amp; Suzanne si on les garde.</p>
-    <div class="table-wrap">
-      <table>
-        <tbody>
-          <tr><td class="num">+</td><td>Qui s'endort devant la télé ?</td><td><span class="ans ask">à demander</span></td></tr>
-          <tr><td class="num">+</td><td>Qui est toujours en retard ?</td><td><span class="ans ask">à demander</span></td></tr>
-          <tr><td class="num">+</td><td>Qui cuisine le mieux ?</td><td><span class="ans ask">à demander</span></td></tr>
-          <tr><td class="num">+</td><td>Qui a le dernier mot dans une dispute ?</td><td><span class="ans ask">à demander</span></td></tr>
-          <tr><td class="num">+</td><td>Qui a dit « je t'aime » en premier ?</td><td><span class="ans ask">à demander</span></td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h5>Matériel</h5>
-    <ul>
-      <li>Panneaux photo A5 : 1 de Stéphane + 1 de Suzanne par invité, ~35 paires (33 + marge)</li>
-      <li>Une couleur de feuille par personne (ex. bleu = Stéphane, jaune = Suzanne) : la salle se lit d'un coup d'œil depuis la scène</li>
-      <li>1 paire de panneaux A4 pour les mariés</li>
-      <li>Photos de Stéphane et de Suzanne à récupérer <span class="tbc">à faire</span></li>
-      <li>Fiche des questions (cette page imprimée ou sur téléphone)</li>
-    </ul>
-
-    <h5>Les panneaux</h5>
-    <p>Le cadre et le prénom s'impriment directement sur la feuille de couleur (2 panneaux par A4 paysage). La photo, recadrée à 96 × 94 mm (6 par A4 blanc), se colle dans la fenêtre.</p>
-    <div class="paper-wrap">
-      <div class="panneau" data-panneau="stephane" style="--feuille:#4f9be8">
-        <div class="orn" data-orn="coupes"></div>
-        <div class="fenetre"><div>Photo<br>96 × 94 mm</div></div>
-        <p class="nom">Stéphane</p>
-        <div class="orn mini" data-orn="filet"></div>
-      </div>
-      <div class="panneau" data-panneau="suzanne" style="--feuille:#f2bd3a">
-        <div class="orn" data-orn="coupes"></div>
-        <div class="fenetre"><div>Photo<br>96 × 94 mm</div></div>
-        <p class="nom">Suzanne</p>
-        <div class="orn mini" data-orn="filet"></div>
-      </div>
-    </div>
-    <div class="pan-btns">
-      <button class="print-btn" type="button" data-print="pan-stephane" style="--c:var(--lui)">Panneaux de Stéphane (2 par A4)</button>
-      <button class="print-btn" type="button" data-print="pan-suzanne" style="--c:var(--elle)">Panneaux de Suzanne (2 par A4)</button>
-      <button class="print-btn" type="button" data-print="a4-stephane" style="--c:var(--lui)">Grand panneau A4 de Stéphane</button>
-      <button class="print-btn" type="button" data-print="a4-suzanne" style="--c:var(--elle)">Grand panneau A4 de Suzanne</button>
-    </div>
-  </section>
-
-  <!-- ============ JEU 3 ============ -->
-  <section class="game j3">
-    <span class="tag">Jeu 3</span>
-    <h3>15 ans de nous... racontés par vous</h3>
-
-    <h5>En un coup d'œil</h5>
-    <div class="schema">
-      <p class="who-leg"><span><i style="--k:var(--text)"></i>Aurélien</span><span><i style="--k:var(--j3)"></i>Célia et Sandrine H.</span><span><i style="--k:var(--muted)"></i>Invités</span><span><i style="--k:var(--lui)"></i>Stéphane</span><span><i style="--k:var(--elle)"></i>Suzanne</span></p>
-      <div class="cols2">
-        <div class="phase">
-          <p class="phase-h"><span>Cette semaine · par message</span></p>
-          <div class="steps">
-            <div class="step">
-              <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
-                <rect class="phone" x="8" y="6" width="40" height="78" rx="7"/>
-                <rect class="cf" x="14" y="20" width="28" height="13" rx="4"/>
-                <text x="28" y="30.5" text-anchor="middle" style="fill:#fff;font-weight:800">?</text>
-                <rect class="mut" x="14" y="39" width="20" height="10" rx="4" opacity=".45"/>
-                <path class="cs" d="M56 46h16m-6-6 6 6-6 6"/>
-                <use href="#pers" class="cf" x="72" y="30" width="30" height="40"/>
-                <use href="#pers" class="cf" x="120" y="30" width="30" height="40"/>
-                <text class="sm" x="87" y="84" text-anchor="middle">Célia</text>
-                <text class="sm" x="135" y="84" text-anchor="middle">Sandrine H.</text>
-              </svg>
-              <b>Aurélien leur envoie une question rien qu'à elles</b>
-              <p>Absente du questionnaire.</p>
-            </div>
-            <span class="arr"></span>
-            <div class="step">
-              <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
-                <circle class="bub" cx="44" cy="46" r="3"/>
-                <circle class="bub" cx="53" cy="37" r="4.5"/>
-                <rect class="bub" x="58" y="6" width="96" height="40" rx="14"/>
-                <text class="say" x="106" y="24" text-anchor="middle">Anecdote</text>
-                <text class="sm" x="106" y="37" text-anchor="middle">drôle, 1 à 2 min</text>
-                <use href="#pers" class="cf" x="8" y="40" width="36" height="48"/>
-              </svg>
-              <b>Elles préparent une anecdote</b>
-              <p>Secret : les mariés ne savent rien.</p>
-            </div>
-          </div>
-        </div>
-        <div class="phase">
-          <p class="phase-h"><span>Avant · sur les tables, ~18h00 à 18h45</span></p>
-          <div class="steps">
-            <div class="step">
-              <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
-                <rect class="paperc" x="40" y="4" width="64" height="82" rx="3"/>
-                <text class="pt" x="46" y="17">Prénom</text>
-                <path class="pl" d="M76 18h22M46 27h52M46 33h52M46 39h40"/>
-                <rect x="46" y="48" width="52" height="30" rx="2" fill="none" stroke="#d6d0c4"/>
-                <text class="pt" x="50" y="58" style="fill:#7a4fb0">n° 4</text>
-                <path class="pl" d="M50 66h44M50 73h44"/>
-                <g transform="rotate(30 124 46)"><rect x="120" y="14" width="8" height="46" fill="#e8b93a"/><path d="M120 60l4 10 4-10z" fill="#3a3420"/></g>
-              </svg>
-              <b>Chaque invité remplit le questionnaire</b>
-              <p>Son prénom et les questions qui l'inspirent.</p>
-            </div>
-            <span class="arr"></span>
-            <div class="step">
-              <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
-                <use href="#sheet" x="14" y="22" width="44" height="58"/>
-                <use href="#sheet" x="22" y="15" width="44" height="58"/>
-                <use href="#sheet" x="30" y="8" width="44" height="58"/>
-                <path class="cs" d="M86 46h16m-6-6 6 6-6 6"/>
-                <use href="#sheet" x="112" y="24" width="34" height="44"/>
-                <path d="M142 17l2.2 5.9 6.4.3-5 4 1.7 6.1-5.3-3.5-5.3 3.5 1.7-6.1-5-4 6.4-.3z" fill="#e8b93a"/>
-                <text class="big" x="129" y="84" text-anchor="middle">4-5</text>
-              </svg>
-              <b>~18h45 : Aurélien en choisit 4-5</b>
-              <p>Une drôle, une émouvante, un « petit dossier »…</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="down">↓</div>
-      <div class="phase stage">
-        <p class="phase-h"><span>Pendant · sur scène, ~12 min</span></p>
-        <div class="steps">
-          <div class="step">
-            <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
-              <path class="bub" d="M62 44l-12 12 24-12"/>
-              <rect class="bub" x="52" y="4" width="104" height="42" rx="12"/>
-              <text class="say" x="104" y="22" text-anchor="middle">Stéphane,</text>
-              <text class="say" x="104" y="37" text-anchor="middle">ce rebelle…</text>
-              <use href="#pers" class="cf" x="8" y="36" width="40" height="52"/>
-              <use href="#mic" class="ink" x="40" y="44" width="7" height="16"/>
-            </svg>
-            <b>1. Sandrine H. ouvre</b>
-            <p>Sa question spéciale, 1 à 2 min.</p>
-          </div>
-          <span class="arr"></span>
-          <div class="step">
-            <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
-              <path class="bub" d="M46 30l-8 12 20-12"/>
-              <rect class="bub" x="30" y="4" width="100" height="28" rx="12"/>
-              <text class="say" x="80" y="23" text-anchor="middle">Votre réponse ?</text>
-              <use href="#pers" class="ink" x="4" y="40" width="34" height="46"/>
-              <use href="#mic" class="ink" x="32" y="46" width="6" height="14"/>
-              <use href="#pers" class="mut" x="104" y="40" width="34" height="46"/>
-              <use href="#sheet" x="94" y="58" width="22" height="28"/>
-            </svg>
-            <b>2. 4-5 invités lisent leur réponse</b>
-            <p>Aurélien les appelle un par un.</p>
-          </div>
-          <span class="arr"></span>
-          <div class="step">
-            <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
-              <path class="bub" d="M62 40l-12 14 24-14"/>
-              <rect class="bub" x="52" y="6" width="104" height="36" rx="12"/>
-              <text class="say" x="104" y="29" text-anchor="middle">Ces deux-là…</text>
-              <use href="#pers" class="cf" x="8" y="36" width="40" height="52"/>
-              <use href="#mic" class="ink" x="40" y="44" width="7" height="16"/>
-            </svg>
-            <b>3. Célia conclut</b>
-            <p>Sa question spéciale, pour finir sur un temps fort.</p>
-          </div>
-          <span class="arr"></span>
-          <div class="step">
-            <svg class="sv" viewBox="0 0 160 90" aria-hidden="true">
-              <use href="#sheet" x="22" y="22" width="22" height="28"/>
-              <rect class="pi" x="48" y="26" width="18" height="18" transform="rotate(8 57 35)"/>
-              <use href="#sheet" x="34" y="28" width="22" height="28"/>
-              <path class="box" d="M12 46h68l-5 38H17z"/>
-              <path d="M46 78C32 69 36 57 46 64C56 57 60 69 46 78Z" fill="#c2456b"/>
-              <use href="#pers" class="lui" x="88" y="44" width="32" height="44"/>
-              <use href="#pers" class="elle" x="122" y="44" width="32" height="44"/>
-            </svg>
-            <b>4. Tout est offert aux mariés</b>
-            <p>Questionnaires et post-its du jeu 1, en souvenir.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <h5>Déroulé <span class="ok">décidé</span></h5>
-    <ol>
-      <li>Questionnaires distribués aux invités (sur les tables, dès leur arrivée), avec la liste des questions.</li>
-      <li>Chacun répond aux questions qui l'inspirent le plus et écrit son prénom.</li>
-      <li>Pendant le jeu, Aurélien interroge quelques invités sur une question précise : ils lisent ou racontent leur réponse.</li>
-      <li>À la fin, tous les questionnaires sont remis aux mariés en souvenir.</li>
-    </ol>
-
-    <h5>Esprit souhaité par Stéphane &amp; Suzanne (appel du 7 octobre)</h5>
-    <ul>
-      <li>Un dialogue plutôt qu'une lecture : les invités rebondissent sur ce que disent les autres (« ah oui, et moi je me souviens… »).</li>
-      <li>Demander <strong>pourquoi</strong> cette réponse : « Titanic ? Vous pensez qu'on coule ? »</li>
-      <li>Stéphane &amp; Suzanne réagissent et donnent leur version de l'anecdote : on ne l'a pas forcément vécue de la même façon.</li>
-      <li>Aurélien peut participer aussi, même en animant.</li>
-      <li>Ordre de passage indicatif, construit à partir du tour des tables ; les interventions spontanées sont bienvenues.</li>
-    </ul>
-
-    <h5>Le questionnaire (4 par A4)</h5>
-    <p>La fiche liste les 10 questions ; l'invité choisit celles qu'il veut et note leur numéro dans les 2 cadres de réponse (plus au dos si besoin).</p>
-    <div class="paper-wrap">
-      <div class="paper p3" data-card="jeu3">
-        <p class="kicker">15 ans de mariage · Stéphane &amp; Suzanne</p>
-        <h6>15 ans de nous…<br>racontés par vous</h6>
-        <p class="lead" style="font-size:7.8pt">Répondez aux questions qui vous inspirent le plus. On pourra vous demander d'en lire une pendant la soirée, puis les fiches seront offertes aux mariés.</p>
-        <p class="field">Prénom(s) <span class="line"></span></p>
-        <ol class="qs">
-          <li>Mon meilleur souvenir avec vous est…</li>
-          <li>Dans 15 ans, je vous imagine…</li>
-          <li>Le conseil que je vous donne pour les 15 prochaines années…</li>
-          <li>Si je devais raconter une anecdote sur vous, ce serait…</li>
-          <li>Si votre couple était une chanson, ce serait…</li>
-          <li>Si votre couple était un film, ce serait…</li>
-          <li>Si je devais révéler un petit dossier sur vous, ce serait…</li>
-          <li>Si votre couple avait un slogan, ce serait…</li>
-          <li>Le petit défaut de chacun que tout le monde connaît…</li>
-          <li>Si votre couple avait une notice d'utilisation, la première consigne serait…</li>
-        </ol>
-        <div class="answer"><span class="no">Question n°<span></span></span><i></i><i></i><i></i></div>
-        <div class="answer"><span class="no">Question n°<span></span></span><i></i><i></i><i></i></div>
-        <p class="more">Une autre question vous inspire ? Continuez au dos (n° + réponse).</p>
-      </div>
-    </div>
-    <button class="print-btn" type="button" data-print="jeu3">Imprimer la planche (4 questionnaires par A4)</button>
-
-    <h5>Questions spéciales : Célia et Sandrine H. <span class="ok">contactées</span></h5>
-    <p>Deux invitées dont on sait qu'elles auront une anecdote drôle reçoivent <strong>en amont</strong> une question rien que pour elles, absente du questionnaire, pour la préparer.</p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Pour</th><th>Question proposée</th></tr></thead>
-        <tbody>
-          <tr><td><strong>Célia</strong><div class="comment">amie depuis 2002 (Stéphane) et 2004 (Suzanne)</div></td><td>« Vous les connaissez depuis plus de 20 ans : racontez-nous LE moment où vous vous êtes dit "ces deux-là, c'est quelque chose". »<div class="comment">Autre option : « Le souvenir de vacances ou de soirée avec eux qui a mal tourné… mais qu'on raconte encore. »</div></td></tr>
-          <tr><td><strong>Sandrine H.</strong><div class="comment">associée de Stéphane depuis 4 ans</div></td><td>« Vous dites que Stéphane est un rebelle : prouvez-le avec une anecdote ! »<div class="comment">Autre option : « Stéphane au bureau : racontez-nous une scène que Suzanne ne connaît sûrement pas. »</div></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="comment" style="margin-top:8px">Questions à valider. Consigne : 1 à 2 min, drôle, pas de discours, et surprise totale pour les mariés.</p>
-    <p class="prop">Proposition d'ordre : Sandrine H. pour lancer le jeu 3, les réponses des questionnaires, puis Célia pour finir.</p>
-
-    <h5>Message envoyé (modèle : Sandrine H.)</h5>
-    <div class="round">
-      <p>Bonjour Sandrine, c'est Aurélien, le fils de Sandrine B.</p>
-      <p>J'anime les jeux des 15 ans de mariage de Stéphane et Suzanne samedi soir, et j'aimerais te proposer de prendre la parole pendant l'un d'eux.</p>
-      <p>Le jeu : on raconte Stéphane et Suzanne à travers les souvenirs et les anecdotes de leurs proches. Je donne la parole successivement à différents invités volontaires.</p>
-      <p>Et pour lancer ce moment, j'ai besoin de quelqu'un qui a sûrement des histoires très drôles (donc j'ai pensé à toi)</p>
-      <p>Un exemple de question : « Il paraît que Stéphane est un rebelle : c'est à dire ? » et là tu peux enchaîner sur l'anecdote.</p>
-      <p>Est-ce que tu serais ok pour préparer ça un petit peu en amont ?</p>
-    </div>
-    <p class="comment" style="margin-top:6px">Fait : Célia, Sandrine H. et Sylvie ont été contactées, et toutes les trois ont dit oui.</p>
-
-    <h5>Autres amis à contacter <span class="tbc">si besoin</span></h5>
-    <p>Amis de Stéphane &amp; Suzanne d'après la liste des invités, pas encore contactés pour préparer une anecdote :</p>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Qui</th><th>Lien</th><th>Remarque</th></tr></thead>
-        <tbody>
-          <tr><td><strong>Ulrich</strong></td><td>conjoint de Célia</td><td>Passer par Célia. Soir seulement.</td></tr>
-          <tr><td><strong>Eddy</strong></td><td>conjoint de Sandrine H.</td><td>Passer par Sandrine H.</td></tr>
-          <tr><td>Antoine, Matthieu</td><td>fils de Sylvie</td><td>Avec Sarah (copine d'Antoine) : génération de Noah.</td></tr>
-          <tr><td>Maureen, Noa</td><td>fille de Sandrine H. et sa conjointe</td><td></td></tr>
-          <tr><td>Mathilde, Elsa</td><td>filles de Célia et Ulrich</td><td>Soir seulement.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="comment" style="margin-top:6px">La famille commune peut aussi avoir des anecdotes sur le couple.</p>
-
-    <h5>Préparation</h5>
-    <ul>
-      <li>~20-25 questionnaires attendus : 8 planches A4 (32 fiches)</li>
-      <li>Amorces issues de l'appel de préparation, utiles pour relancer : la portière refermée par Suzanne sur Stéphane, Stéphane « le rebelle » selon Sandrine H.</li>
-    </ul>
-
-    <h5>Suggestions</h5>
-    <ul>
-      <li class="prop">Ramasser les questionnaires vers 18h45 et choisir 4-5 réponses variées (une drôle, une émouvante, un « petit dossier »…), puis appeler la personne pour qu'elle la lise. Les 2 questions spéciales s'ajoutent.</li>
-      <li class="prop">Remettre les questionnaires et les post-its du jeu 1 dans une boîte ou un livre d'or pour les mariés.</li>
-    </ul>
-  </section>
-
-  <h2>Relances si ça s'essouffle</h2>
-  <p class="note">L'intro, les transitions et la conclusion sont dans la timeline des jeux, plus haut.</p>
-  <div class="game" style="--c:var(--accent)">
-    <ul>
-      <li>Règle : finir quand c'est encore drôle. Mieux vaut couper un jeu que l'épuiser.</li>
-      <li>Jeu 1 : garder 5-6 post-its au lieu de 8-10 ; passer plus vite au bonus « qui l'a écrit ? ».</li>
-      <li>Jeu 2 : sauter les questions bonus ; faire voter la salle et les mariés en même temps.</li>
-      <li>Jeu 3 : faire passer Célia ou Sandrine H. (préparées) ; demander « pourquoi ? » ; demander leur version aux mariés ; raconter soi-même une anecdote (la CAF, la portière) ; lire une réponse marquante de questionnaire.</li>
-    </ul>
-  </div>
 
   <h2>Sons</h2>
   <p class="note">Sur la page « Sons des jeux » (<code>jeux-sons.html</code>, onglet Jeux du programme) : un bouton par son, plus un chrono. Ce sont de vrais enregistrements libres de droits (BigSoundBank, Mixkit, Kevin MacLeod : détail dans <code>sons/LICENCES.md</code>), intégrés à la page : ça marche sans réseau une fois la page ouverte. À ouvrir sur un téléphone ou un ordinateur branché à la sono. Rien n'est projeté.</p>
