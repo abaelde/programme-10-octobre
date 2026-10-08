@@ -72,6 +72,9 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
 .b.boucle.on { border-color: var(--c, var(--or)); background: rgba(143, 182, 236, .14); }
 .b.boucle.on b::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--c, var(--or)); margin-right: 6px; vertical-align: 1px; animation: clignote 1.2s ease-in-out infinite; }
 @keyframes clignote { 50% { opacity: .25; } }
+/* Vrai extrait de pop culture rangé dans Gagné, Perdu ou Attente : point doré */
+.b.extrait::before { content: ""; position: absolute; top: 5px; right: 5px; width: 5px; height: 5px; border-radius: 50%; background: var(--or); }
+.b.extrait b { padding-right: 7px; }
 
 /* Chrono : anneau + grille 3 x 3 (tic-tac x durée) */
 .chrono { display: flex; align-items: center; gap: 12px; max-width: 470px; background: var(--carte); border: 1px solid var(--trait); border-radius: 12px; padding: 8px 10px; }
@@ -90,16 +93,12 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
 .neuf button:active { transform: scale(.95); }
 .neuf button.on { color: var(--fond); background: var(--or); border-color: var(--or); }
 
-/* Pop culture : mot de passe une seule fois par téléphone, puis filtres par situation */
+/* Pop culture : mot de passe une seule fois par téléphone */
 .verrou { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 .verrou input { flex: 1; min-width: 140px; max-width: 260px; font: 16px var(--sans); color: var(--texte); background: rgba(255, 255, 255, .06); border: 1px solid var(--trait); border-radius: 8px; padding: 8px 10px; outline: none; }
 .verrou input:focus { border-color: var(--or); }
 .verrou button { font: 600 .8rem/1 var(--titre); letter-spacing: .1em; text-transform: uppercase; color: var(--fond); background: var(--or); border: 0; border-radius: 8px; padding: 11px 14px; cursor: pointer; }
 .verrou small { color: var(--doux); font-size: .8rem; }
-.situations { display: flex; gap: 5px; overflow-x: auto; scrollbar-width: none; margin-bottom: 2px; }
-.situations::-webkit-scrollbar { display: none; }
-.situations button { flex: none; font: .78rem/1 var(--sans); color: var(--doux); background: transparent; border: 1px solid var(--trait); border-radius: 999px; padding: 6px 10px; cursor: pointer; }
-.situations button.on { color: var(--fond); background: var(--or); border-color: var(--or); }
 .vide { color: var(--doux); text-align: center; padding: 20px 0; margin: 0; }
 
 .note { color: var(--doux); font-size: .8rem; margin: 18px 0 0; }
@@ -112,7 +111,7 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
   h1 { display: none; }
   .stop { padding: 11px 12px; font-size: .78rem; letter-spacing: .08em; }
   .grille { grid-template-columns: repeat(4, 1fr); gap: 4px; }
-  .gagne .grille, .perdu .grille, .attente .grille { grid-template-columns: repeat(5, 1fr); }   /* 5, 7 et 5 sons : lignes pleines */
+  .gagne .grille, .perdu .grille, .attente .grille { grid-template-columns: repeat(5, 1fr); }
   .b { min-height: 44px; padding: 4px 4px 5px 6px; border-left-width: 2px; }
   .b b { font-size: .72rem; letter-spacing: 0; }
   .b small { font-size: .6rem; }
@@ -150,7 +149,7 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
 
   <div class="groupe gagne">
     <h2>Gagné</h2>
-    <div class="grille">
+    <div class="grille" data-groupe="gagne">
       <button class="b" data-son="ding" data-k="d"><b>Ding</b><small>Bonne réponse</small><kbd>D</kbd></button>
       <button class="b" data-son="fanfare" data-k="e"><b>Fanfare</b><small>Titre d'un jeu, score</small><kbd>E</kbd></button>
       <button class="b" data-son="bravo" data-k="a"><b>Bravo</b><small>Applaudissements</small><kbd>A</kbd></button>
@@ -161,7 +160,7 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
 
   <div class="groupe perdu">
     <h2>Perdu</h2>
-    <div class="grille">
+    <div class="grille" data-groupe="perdu">
       <button class="b" data-son="buzzer" data-k="x"><b>Buzzer</b><small>Mauvaise réponse</small><kbd>X</kbd></button>
       <button class="b" data-son="trombone" data-k="w"><b>Wah wah wah</b><small>Trombone triste</small><kbd>W</kbd></button>
       <button class="b" data-son="perdu" data-k="g"><b>Game over</b><small>Perdu, arcade</small><kbd>G</kbd></button>
@@ -174,12 +173,20 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
 
   <div class="groupe attente">
     <h2>Attente</h2>
-    <div class="grille">
-      <button class="b" data-son="roulement" data-k="r"><b>Roulement</b><small>« Et qui l'a écrit ? »</small><kbd>R</kbd></button>
-      <button class="b" data-son="tambours" data-k="m"><b>Tambours</b><small>Menace, suspense</small><kbd>M</kbd></button>
-      <button class="b boucle" data-son="ascenseur" data-k="i"><b>Ascenseur</b><small>En boucle, fondu</small><kbd>I</kbd></button>
-      <button class="b boucle" data-son="criquets" data-k="k"><b>Criquets</b><small>En boucle, silence gênant</small><kbd>K</kbd></button>
-      <button class="b boucle" data-son="attente" data-k="p"><b>Attente tél.</b><small>En boucle, la CAF</small><kbd>P</kbd></button>
+    <div class="sous">
+      <h3>Une fois</h3>
+      <div class="grille" data-groupe="attente">
+        <button class="b" data-son="roulement" data-k="r"><b>Roulement</b><small>« Et qui l'a écrit ? »</small><kbd>R</kbd></button>
+        <button class="b" data-son="tambours" data-k="m"><b>Tambours</b><small>Menace, suspense</small><kbd>M</kbd></button>
+      </div>
+    </div>
+    <div class="sous">
+      <h3>En boucle</h3>
+      <div class="grille">
+        <button class="b boucle" data-son="ascenseur" data-k="i"><b>Ascenseur</b><small>Entre et sort en fondu</small><kbd>I</kbd></button>
+        <button class="b boucle" data-son="criquets" data-k="k"><b>Criquets</b><small>Silence gênant</small><kbd>K</kbd></button>
+        <button class="b boucle" data-son="attente" data-k="p"><b>Attente tél.</b><small>Running gag de la CAF</small><kbd>P</kbd></button>
+      </div>
     </div>
   </div>
 
@@ -191,12 +198,11 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
       <button type="submit">Ouvrir</button>
       <small id="verrou-etat">Une seule fois par téléphone.</small>
     </form>
-    <div class="situations" id="situations" hidden></div>
   </section>
   <p class="vide" id="vide" hidden>Aucun son. Échap pour tout réafficher.</p>
 
   <p class="note">Un appui lance le son, un deuxième appui sur le même bouton l'arrête (sons, boucles et chrono). Au clavier : <kbd>/</kbd> pour chercher, <kbd>Entrée</kbd> joue le premier résultat, les lettres sur les boutons, <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> pour le chrono (10, 20, 30 s) avec le dernier tic-tac choisi, <kbd>4</kbd> <kbd>5</kbd> <kbd>6</kbd> pour le tic-tac (suspense, arcade, minuteur), <kbd>Espace</kbd> arrête le chrono, <kbd>Échap</kbd> coupe tout. Sur iPhone, monter le volume du téléphone avant.</p>
-  <p class="note">Sons : <a href="https://bigsoundbank.com">BigSoundBank</a> (CC0) et <a href="https://mixkit.co">Mixkit</a> (licence gratuite Mixkit). Musique d'ascenseur : « Local Forecast - Elevator », Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), licence <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Pop culture : vrais extraits, réservés à la famille.</p>
+  <p class="note">Sons : <a href="https://bigsoundbank.com">BigSoundBank</a> (CC0) et <a href="https://mixkit.co">Mixkit</a> (licence gratuite Mixkit). Musique d'ascenseur : « Local Forecast - Elevator », Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), licence <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Pop culture : vrais extraits, réservés à la famille ; un point doré les signale dans Gagné, Perdu et Attente.</p>
 </main>
 <div id="etat"></div>
 <audio id="muet-ios" src="data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YSADAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA==" loop playsinline preload="auto"></audio>
@@ -380,7 +386,7 @@ function declenche(b) {
   // Deuxième appui pendant que le son joue : on l'arrête
   if (b._lecture) { arreteBouton(b); signale("■ " + b.querySelector("b").textContent + " : arrêt"); return; }
   // Un son de réponse coupe le chrono ; le suspense, la victoire et la pop culture le laissent tourner
-  if (!b.closest("#pop") && !["roulement", "tambours", "fanfare", "bravo"].includes(nom)) arreteChrono(true);
+  if (!b._pop && !["roulement", "tambours", "fanfare", "bravo"].includes(nom)) arreteChrono(true);
   const lecture = {}; b._lecture = lecture;
   joue(nom).then(({ d, g }) => {
     if (b._lecture !== lecture) { libere(g, true); return; }   // arrêté pendant le décodage
@@ -416,33 +422,22 @@ addEventListener("keydown", e => {
 });
 
 /* ---------- Recherche : tous les sons, jeux et pop culture ---------- */
-// Trouver un son en une seconde : recherche (sans accents), filtres par situation, Entrée joue le premier résultat.
-const pop = document.getElementById("pop"), cherche = document.getElementById("cherche"), situationsEl = document.getElementById("situations");
-let situation = null;
+// Trouver un son en une seconde : recherche (sans accents), Entrée joue le premier résultat.
+const pop = document.getElementById("pop"), cherche = document.getElementById("cherche");
 const sansAccent = t => t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 document.querySelectorAll(".groupe .b").forEach(b => {
   b._texte = sansAccent([b.querySelector("b").textContent, b.querySelector("small").textContent, b.closest(".groupe").querySelector("h2").textContent].join(" "));
 });
 
-function choisitSituation(s) {
-  situation = situation === s ? null : s;
-  situationsEl.querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.sit === situation));
-  filtre();
-}
 function filtre() {
   const mots = sansAccent(cherche.value).split(/\s+/).filter(Boolean);
   let total = 0;
-  document.querySelectorAll(".groupe").forEach(g => {
-    let vus = 0;
-    g.querySelectorAll(".b").forEach(b => {
-      const ok = (!situation || b._sit?.includes(situation)) && mots.every(m => b._texte.includes(m));
-      b.hidden = !ok; vus += ok;
-    });
-    g.hidden = !vus; total += vus;
-  });
+  document.querySelectorAll(".b").forEach(b => b.hidden = !mots.every(m => b._texte.includes(m)));
+  document.querySelectorAll(".sous").forEach(g => g.hidden = !g.querySelector(".b:not([hidden])"));
+  document.querySelectorAll(".groupe").forEach(g => { g.hidden = !g.querySelector(".b:not([hidden])"); total += !g.hidden; });
   document.getElementById("vide").hidden = total > 0;
   // Pendant une recherche : le chrono s'efface, et la pop culture aussi si rien n'y correspond
-  const filtrant = mots.length > 0 || !!situation, chronoEl = document.querySelector(".chrono");
+  const filtrant = mots.length > 0, chronoEl = document.querySelector(".chrono");
   chronoEl.hidden = chronoEl.previousElementSibling.hidden = filtrant;
   pop.hidden = filtrant && !pop.querySelector(".groupe:not([hidden])");
 }
@@ -468,7 +463,7 @@ async function dechiffrePop(mdp, octets) {
   const entete = JSON.parse(new TextDecoder().decode(clair.subarray(4, 4 + n)));
   const octetsSons = {};
   for (const s of entete.liste) octetsSons[s.id] = clair.subarray(4 + n + s.pos, 4 + n + s.pos + s.n);
-  return { situations: entete.situations, liste: entete.liste, octets: octetsSons };
+  return { liste: entete.liste, octets: octetsSons };
 }
 async function ouvrePop(mdp, memoriser) {
   const etatEl = document.getElementById("verrou-etat");
@@ -495,24 +490,20 @@ async function ouvrePop(mdp, memoriser) {
 
 function construitPop() {
   document.getElementById("verrou-form").hidden = true;
-  document.getElementById("pop-titre").textContent = `Pop culture (${SONS_POP.liste.length})`;
-  for (const s of SONS_POP.situations) {
-    const b = document.createElement("button"); b.textContent = s; b.dataset.sit = s;
-    b.addEventListener("click", () => choisitSituation(s)); situationsEl.append(b);
-  }
-  situationsEl.hidden = false;
+  document.getElementById("pop-titre").textContent = `Pop culture (${SONS_POP.liste.filter(s => !s.groupe).length})`;
   const groupes = {};
   for (const s of SONS_POP.liste) {
-    let g = groupes[s.cat];
+    // Extrait rangé avec les sons des jeux (Gagné, Perdu, Attente), sinon dans sa catégorie de Pop culture
+    let g = s.groupe ? document.querySelector(`[data-groupe="${s.groupe}"]`).parentNode : groupes[s.cat];
     if (!g) {
       g = groupes[s.cat] = document.createElement("div"); g.className = "groupe";
       g.innerHTML = "<h3></h3><div class=\"grille\"></div>"; g.querySelector("h3").textContent = s.cat; pop.append(g);
     }
-    const b = document.createElement("button"); b.className = "b"; b.dataset.son = s.id;
+    const b = document.createElement("button"); b.className = "b" + (s.groupe ? " extrait" : ""); b.dataset.son = s.id; b._pop = true;
     b.innerHTML = "<b></b><small></small>"; b.querySelector("b").textContent = s.titre; b.querySelector("small").textContent = s.detail;
-    b._sit = s.sit; b._texte = sansAccent([s.titre, s.detail, s.cat, "pop culture", ...s.sit].join(" "));
     b.addEventListener("click", () => declenche(b));
     g.querySelector(".grille").append(b);
+    b._texte = sansAccent([s.titre, s.detail, s.cat, "pop culture", b.closest(".groupe").querySelector("h2")?.textContent || ""].join(" "));
   }
   filtre(); prechargePop();
 }
@@ -529,7 +520,7 @@ cherche.addEventListener("keydown", e => {
     const b = document.querySelector(".groupe:not([hidden]) .b:not([hidden])");
     if (b) declenche(b);
   } else if (e.key === "Escape") {
-    cherche.value = ""; situation = null; choisitSituation(null); cherche.blur();
+    cherche.value = ""; filtre(); cherche.blur();
   }
 });
 if (SONS_POP) construitPop();   // version complète locale : extraits déjà là, pas de mot de passe
