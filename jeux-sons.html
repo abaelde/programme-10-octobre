@@ -84,28 +84,23 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
 .legende .kaamelott::before { background: rgba(190, 74, 46, .6); border-color: rgba(232, 140, 100, .7); }
 .legende .film::before { background: rgba(38, 160, 170, .5); border-color: rgba(110, 210, 215, .7); }
 
-/* En haut : chrono à gauche, Attente à droite (l'un sous l'autre sur téléphone) */
-.duo { display: flex; gap: 18px; align-items: flex-start; }
-.col-chrono { flex: none; width: 470px; }
-.duo > .attente { flex: 1; min-width: 0; }
-@media (max-width: 900px) { .duo { display: block; } .col-chrono { width: auto; } }
-
-/* Chrono : anneau + grille 3 x 3 (tic-tac x durée) */
-.chrono { display: flex; align-items: center; gap: 12px; max-width: 470px; background: var(--carte); border: 1px solid var(--trait); border-radius: 12px; padding: 8px 10px; }
-.anneau { position: relative; width: 92px; height: 92px; flex: none; cursor: pointer; }
+/* Chrono et attente : une durée pour toutes les musiques, puis trois colonnes (musiques, sons, boucles) */
+.minute { --c: var(--bleu); }
+.reglage { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.anneau { position: relative; width: 64px; height: 64px; flex: none; cursor: pointer; }
 .anneau svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
-.anneau .piste { fill: none; stroke: rgba(226, 194, 122, .18); stroke-width: 9; }
-.anneau .arc { fill: none; stroke: var(--or); stroke-width: 9; stroke-linecap: round; transition: stroke .3s; }
-.anneau .s { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; font: 500 2rem/1 var(--titre); }
-.anneau .s small { font: .62rem var(--sans); color: var(--doux); margin-top: 3px; }
+.anneau .piste { fill: none; stroke: rgba(226, 194, 122, .18); stroke-width: 10; }
+.anneau .arc { fill: none; stroke: var(--or); stroke-width: 10; stroke-linecap: round; transition: stroke .3s; }
+.anneau .s { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font: 500 1.5rem/1 var(--titre); }
 .anneau.fin .arc { stroke: var(--rouge); }
 .anneau.fin .s span { color: var(--rouge); }
-.neuf { flex: 1; display: grid; grid-template-columns: auto repeat(3, 1fr); gap: 5px; align-items: center; }
-.neuf span { font: 500 .66rem/1 var(--titre); letter-spacing: .12em; text-transform: uppercase; color: var(--doux); padding-right: 4px; }
-.neuf span.on { color: var(--or); }
-.neuf button { font: 500 .85rem/1 var(--titre); color: var(--texte); background: transparent; border: 1px solid var(--trait); border-radius: 7px; padding: 8px 4px; cursor: pointer; }
-.neuf button:active { transform: scale(.95); }
-.neuf button.on { color: var(--fond); background: var(--or); border-color: var(--or); }
+.curseur { display: inline-flex; border: 1px solid var(--trait); border-radius: 999px; padding: 3px; gap: 3px; background: var(--carte); }
+.curseur button { font: 500 .9rem/1 var(--titre); color: var(--doux); background: transparent; border: 0; border-radius: 999px; padding: 9px 16px; cursor: pointer; }
+.curseur button.on { color: var(--fond); background: var(--or); }
+.reglage small { color: var(--doux); font-size: .74rem; flex: 1; min-width: 200px; }
+.colonnes { display: grid; grid-template-columns: 3fr 1fr 1fr; gap: 14px; align-items: start; }
+.b.minute-on { border-color: var(--or); background: rgba(226, 194, 122, .2); }
+@media (max-width: 900px) { .colonnes { grid-template-columns: 1fr; gap: 0; } }
 
 /* Pop culture : mot de passe une seule fois par téléphone */
 .pop h2 { margin-top: 12px; }
@@ -133,9 +128,10 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
   .b small { font-size: .6rem; }
   .b kbd { display: none; }
   .b:has(kbd) b { padding-right: 0; }
-  .chrono { max-width: none; gap: 8px; padding: 6px 8px; }
-  .anneau { width: 80px; height: 80px; }
-  .anneau .s { font-size: 1.7rem; }
+  .anneau { width: 54px; height: 54px; }
+  .anneau .s { font-size: 1.25rem; }
+  .curseur button { padding: 9px 13px; }
+  .reglage small { display: none; }
 }
 </style>
 </head>
@@ -160,37 +156,32 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
 
   <p class="legende" id="legende" hidden><span>Sons</span><span class="kaamelott">Kaamelott</span><span class="film">Films, séries, jeux télé, jeux vidéo, manga</span></p>
 
-  <!-- En haut : le chrono, et à côté tout ce qui accompagne l'attente -->
-  <div class="duo">
-    <div class="col-chrono">
-    <h2>Chrono</h2>
-    <div class="chrono">
+  <!-- Chrono et attente : la durée choisie s'applique à toutes les musiques et sons de gauche ; les boucles restent libres -->
+  <div class="groupe minute">
+    <h2>Chrono et attente</h2>
+    <div class="reglage">
       <div class="anneau" id="anneau" title="Toucher pour arrêter">
-        <svg viewBox="0 0 150 150"><circle class="piste" cx="75" cy="75" r="66"/><circle class="arc" cx="75" cy="75" r="66"/></svg>
-        <div class="s"><span id="reste">·</span><small id="sous">choisir</small></div>
+        <svg viewBox="0 0 150 150"><circle class="piste" cx="75" cy="75" r="62"/><circle class="arc" cx="75" cy="75" r="62"/></svg>
+        <div class="s"><span id="reste">·</span></div>
       </div>
-      <div class="neuf" id="neuf">
-        <span data-ligne="suspense" class="on">Suspense</span>
-        <button data-style="suspense" data-chrono="10">10 s</button><button data-style="suspense" data-chrono="20">20 s</button><button data-style="suspense" data-chrono="30">30 s</button>
-        <span data-ligne="arcade">Arcade</span>
-        <button data-style="arcade" data-chrono="10">10 s</button><button data-style="arcade" data-chrono="20">20 s</button><button data-style="arcade" data-chrono="30">30 s</button>
-        <span data-ligne="minuteur">Minuteur</span>
-        <button data-style="minuteur" data-chrono="10">10 s</button><button data-style="minuteur" data-chrono="20">20 s</button><button data-style="minuteur" data-chrono="30">30 s</button>
+      <div class="curseur" id="curseur">
+        <button data-duree="10">10 s</button><button data-duree="20" class="on">20 s</button><button data-duree="30">30 s</button>
       </div>
+      <small id="sous">Durée de toutes les musiques et sons ci-dessous (sauf les boucles) : bips sur les 5 dernières secondes, buzzer à zéro. Toucher l'anneau ou la même carte pour arrêter.</small>
     </div>
-    <div class="sous">
-      <h3>Musiques pendant le chrono</h3>
-      <div class="grille" data-groupe="chrono"></div>
-    </div>
-    </div>
-
-    <div class="groupe attente">
-      <h2>Attente</h2>
+    <div class="colonnes">
       <div class="sous">
-        <h3>Une fois</h3>
-        <div class="grille" data-groupe="attente">
-          <button class="b" data-son="roulement" data-k="r"><b>Roulement</b><small>« Et qui l'a écrit ? »</small><kbd>R</kbd></button>
-          <button class="b" data-son="tambours" data-k="m"><b>Tambours</b><small>Menace, suspense</small><kbd>M</kbd></button>
+        <h3>Musiques de films et de télé</h3>
+        <div class="grille" data-groupe="minute"></div>
+      </div>
+      <div class="sous">
+        <h3>Sons</h3>
+        <div class="grille">
+          <button class="b" data-son="chrono-suspense" data-minute data-k="4"><b>Tic-tac suspense</b><small>Chrono</small><kbd>4</kbd></button>
+          <button class="b" data-son="chrono-arcade" data-minute data-k="5"><b>Tic-tac arcade</b><small>Chrono</small><kbd>5</kbd></button>
+          <button class="b" data-son="chrono-minuteur" data-minute data-k="6"><b>Minuteur</b><small>Chrono</small><kbd>6</kbd></button>
+          <button class="b" data-son="roulement" data-minute data-k="r"><b>Roulement</b><small>« Et qui l'a écrit ? »</small><kbd>R</kbd></button>
+          <button class="b" data-son="tambours" data-minute data-k="m"><b>Tambours</b><small>Menace, suspense</small><kbd>M</kbd></button>
         </div>
       </div>
       <div class="sous">
@@ -267,7 +258,7 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
   <section id="pop-reste" class="pop" hidden><h2>Autres extraits</h2></section>
   <p class="vide" id="vide" hidden>Aucun son. Échap pour tout réafficher.</p>
 
-  <p class="note">Un appui lance le son, un deuxième appui sur le même bouton l'arrête (sons, boucles et chrono). Au clavier : <kbd>/</kbd> pour chercher, <kbd>Entrée</kbd> joue le premier résultat, les lettres sur les boutons, <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> pour le chrono (10, 20, 30 s) avec le dernier tic-tac choisi, <kbd>4</kbd> <kbd>5</kbd> <kbd>6</kbd> pour le tic-tac (suspense, arcade, minuteur), <kbd>Espace</kbd> arrête le chrono, <kbd>Échap</kbd> coupe tout. Sur iPhone, monter le volume du téléphone avant.</p>
+  <p class="note">Un appui lance le son, un deuxième appui sur le même bouton l'arrête. Dans Chrono et attente, chaque musique ou son dure le temps choisi (10, 20 ou 30 s), avec bips sur les 5 dernières secondes et buzzer à zéro ; les boucles restent libres. Au clavier : <kbd>/</kbd> pour chercher, <kbd>Entrée</kbd> joue le premier résultat, les lettres sur les boutons, <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> pour la durée (10, 20, 30 s), <kbd>4</kbd> <kbd>5</kbd> <kbd>6</kbd> pour les tic-tac, <kbd>Espace</kbd> arrête le chrono, <kbd>Échap</kbd> coupe tout. Sur iPhone, monter le volume du téléphone avant.</p>
   <p class="note">Sons : <a href="https://bigsoundbank.com">BigSoundBank</a> (CC0) et <a href="https://mixkit.co">Mixkit</a> (licence gratuite Mixkit). Musique d'ascenseur : « Local Forecast - Elevator », Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), licence <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Pop culture : vrais extraits, réservés à la famille ; fond rouille pour Kaamelott, turquoise pour le reste.</p>
 </main>
 <div id="etat"></div>
@@ -372,34 +363,37 @@ function joue(nom) {
   return charge(nom).then(b => { const g = voie(b.duration); lit(nom, g, ac.currentTime + .01); return { d: b.duration, g }; });
 }
 
-/* ---------- Chrono : grille 3 x 3, tic-tac (ligne) x durée (colonne) ---------- */
-const anneau = document.getElementById("anneau"), arcEl = anneau.querySelector(".arc");
-const resteEl = document.getElementById("reste"), sousEl = document.getElementById("sous");
-const TOUR = 2 * Math.PI * 66;
+/* ---------- Chrono : la durée du curseur s'applique à la carte touchée (musique ou son, en boucle jusqu'à zéro) ---------- */
+const anneau = document.getElementById("anneau"), arcEl = anneau.querySelector(".arc"), resteEl = document.getElementById("reste");
+const TOUR = 2 * Math.PI * 62;
 arcEl.style.strokeDasharray = TOUR; arcEl.style.strokeDashoffset = 0;
-let chrono = null, style = "suspense";
+let chrono = null, duree = 20;
 
-function majCases() {
-  document.querySelectorAll("#neuf button").forEach(b => b.classList.toggle("on", !!chrono && chrono.sec === +b.dataset.chrono && chrono.style === b.dataset.style));
-  document.querySelectorAll("[data-ligne]").forEach(s => s.classList.toggle("on", s.dataset.ligne === style));
+function choisitDuree(sec) {
+  duree = sec;
+  document.querySelectorAll("[data-duree]").forEach(b => b.classList.toggle("on", +b.dataset.duree === sec));
+  if (!chrono) resteEl.textContent = "·";
+  signale("Durée : " + sec + " s");
 }
-function lanceChrono(sec) {
+function lanceChrono(b) {
   audio(); arreteChrono(true);
-  const g = voie(), c = { g, t0: 0, sec, style, pret: false };
-  chrono = c; majCases();
-  anneau.classList.remove("fin"); resteEl.textContent = sec; sousEl.textContent = "stop";
-  const nom = "chrono-" + style;
+  const nom = b.dataset.son, sec = duree;
+  const g = voie(), c = { g, t0: 0, sec, b, pret: false };
+  chrono = c; b.classList.add("minute-on");
+  anneau.classList.remove("fin"); resteEl.textContent = sec;
   Promise.all([charge(nom), charge("buzzer")]).then(() => {
     if (chrono !== c) return;
     const t0 = ac.currentTime + .05;
-    // Tic-tac en boucle jusqu'à zéro, coupé net (fondu de 60 ms) juste avant le buzzer
+    // Le son tourne en boucle jusqu'à zéro, puis s'éteint juste avant le buzzer (net pour un tic-tac, en fondu pour une musique)
     const tt = ac.createGain(); tt.connect(g);
     const src = lit(nom, tt, t0, { boucle: true });
     src.loopStart = 0; src.loopEnd = REGLAGES[nom]?.boucleFin || src.buffer.duration;
-    tt.gain.setValueAtTime(1, t0 + sec - .06); tt.gain.linearRampToValueAtTime(0, t0 + sec); src.stop(t0 + sec + .05);
+    const fondu = nom.startsWith("chrono-") ? .06 : .8;
+    tt.gain.setValueAtTime(1, t0 + sec - fondu); tt.gain.linearRampToValueAtTime(0, t0 + sec); src.stop(t0 + sec + .05);
     for (let i = 5; i >= 1; i--) bip(g, t0 + sec - i);
     lit("buzzer", g, t0 + sec);
     c.t0 = t0; c.pret = true;
+    b.classList.remove("joue"); b.offsetWidth; b.style.setProperty("--d", sec + "s"); b.classList.add("joue");
     requestAnimationFrame(tourne);
   });
 }
@@ -410,8 +404,8 @@ function tourne() {
   resteEl.textContent = Math.ceil(r - 1e-3);
   anneau.classList.toggle("fin", r <= 5);
   if (r <= 0) {
-    const c = chrono; chrono = null; majCases();
-    sousEl.textContent = "temps écoulé";
+    const c = chrono; chrono = null;
+    c.b.classList.remove("minute-on", "joue");
     setTimeout(() => libere(c.g), 2500);
     return;
   }
@@ -419,18 +413,13 @@ function tourne() {
 }
 function arreteChrono(vite) {
   if (!chrono) return;
-  libere(chrono.g, vite); chrono = null; majCases();
+  libere(chrono.g, vite); chrono.b.classList.remove("minute-on", "joue"); chrono = null;
   arcEl.style.strokeDashoffset = 0; anneau.classList.remove("fin");
-  resteEl.textContent = "·"; sousEl.textContent = "arrêté";
+  resteEl.textContent = "·";
 }
-// Une case : un deuxième appui sur la même case l'arrête
-function basculeChrono(sec, st = style) {
-  if (chrono && chrono.sec === sec && chrono.style === st) { arreteChrono(true); return; }
-  style = st; lanceChrono(sec);
-}
-function choisitStyle(s) {
-  style = s; majCases();
-  signale("Tic-tac : " + document.querySelector(`[data-ligne="${s}"]`).textContent);
+// Une carte : un deuxième appui sur la même carte arrête
+function basculeChrono(b) {
+  if (chrono && chrono.b === b) arreteChrono(true); else lanceChrono(b);
 }
 
 /* ---------- Boutons ---------- */
@@ -449,6 +438,8 @@ function declenche(b) {
     signale((allume ? "▶ " : "■ ") + b.querySelector("b").textContent + (allume ? "" : REGLAGES[nom].fondu ? " : fondu de sortie" : " : arrêt"));
     return;
   }
+  // Musique ou son de la colonne Chrono et attente : joué pour la durée du curseur
+  if (b.dataset.minute !== undefined) { basculeChrono(b); return; }
   // Deuxième appui pendant que le son joue : on l'arrête
   if (b._lecture) { arreteBouton(b); signale("■ " + b.querySelector("b").textContent + " : arrêt"); return; }
   // Un son de réponse coupe le chrono ; le suspense, la victoire et la pop culture le laissent tourner
@@ -467,7 +458,7 @@ function arreteBouton(b) {
   b._lecture = null; clearTimeout(b._t); b.classList.remove("joue");
 }
 document.querySelectorAll("[data-son]").forEach(b => b.addEventListener("click", () => declenche(b)));
-document.querySelectorAll("#neuf button").forEach(b => b.addEventListener("click", () => basculeChrono(+b.dataset.chrono, b.dataset.style)));
+document.querySelectorAll("[data-duree]").forEach(b => b.addEventListener("click", () => choisitDuree(+b.dataset.duree)));
 anneau.addEventListener("click", () => arreteChrono(true));
 document.getElementById("stop").addEventListener("click", () => {
   if (!ac) return;
@@ -482,8 +473,7 @@ addEventListener("keydown", e => {
   const l = e.key.length === 1 ? e.key.toLowerCase() : e.key;
   const b = document.querySelector(`[data-k="${l}"]`);
   if (b) { e.preventDefault(); declenche(b); }
-  else if (l === "1" || l === "2" || l === "3") basculeChrono(+l * 10);
-  else if (l === "4" || l === "5" || l === "6") choisitStyle(["suspense", "arcade", "minuteur"][+l - 4]);
+  else if (l === "1" || l === "2" || l === "3") choisitDuree(+l * 10);
   else if (l === " ") { e.preventDefault(); audio(); arreteChrono(true); }
   else if (l === "Escape") document.getElementById("stop").click();
 });
@@ -503,9 +493,8 @@ function filtre() {
   document.querySelectorAll(".sous").forEach(g => g.hidden = !g.querySelector(".b:not([hidden])"));
   document.querySelectorAll(".groupe").forEach(g => { g.hidden = !g.querySelector(".b:not([hidden])"); total += !g.hidden; });
   document.getElementById("vide").hidden = total > 0;
-  // Pendant une recherche : le chrono s'efface, et la pop culture aussi si rien n'y correspond
-  const filtrant = mots.length > 0, chronoEl = document.querySelector(".chrono");
-  chronoEl.hidden = chronoEl.previousElementSibling.hidden = filtrant;
+  // Pendant une recherche, la ligne du mot de passe s'efface
+  const filtrant = mots.length > 0;
   pop.hidden = !!SONS_POP || filtrant;   // la ligne du mot de passe, tant que les extraits ne sont pas ouverts
 }
 
@@ -562,7 +551,9 @@ function construitPop() {
   const groupes = {};
   for (const s of SONS_POP.liste) {
     // Extrait rangé dans son groupe (Question, Gagné, Émotions…), sinon dans « Autres extraits »
-    let g = s.groupe ? document.querySelector(`[data-groupe="${s.groupe}"]`).parentNode : groupes[s.cat];
+    // Chrono et attente : une seule colonne de musiques, jouées pour la durée du curseur (sauf Za Warudo, qui arrête le chrono)
+    const cible = s.groupe === "chrono" || s.groupe === "attente" ? "minute" : s.groupe;
+    let g = cible ? document.querySelector(`[data-groupe="${cible}"]`).parentNode : groupes[s.cat];
     if (!s.groupe) reste.hidden = false;
     if (!g) {
       g = groupes[s.cat] = document.createElement("div"); g.className = "groupe";
@@ -570,9 +561,10 @@ function construitPop() {
     }
     const b = document.createElement("button"); b.className = "b " + (/kaamelott/i.test(s.cat + " " + s.titre) ? "kaamelott" : "film"); b.dataset.son = s.id; b._pop = true;
     b.innerHTML = "<b></b><small></small>"; b.querySelector("b").textContent = s.titre; b.querySelector("small").textContent = s.detail;
+    if (cible === "minute" && s.id !== "zawarudo") b.dataset.minute = "";
     b.addEventListener("click", () => declenche(b));
     g.querySelector(".grille").append(b);
-    b._texte = sansAccent([s.titre, s.detail, s.cat, "pop culture", b.closest(".groupe")?.querySelector("h2")?.textContent || "chrono", b.closest(".sous")?.querySelector("h3")?.textContent || ""].join(" "));
+    b._texte = sansAccent([s.titre, s.detail, s.cat, "pop culture", b.closest(".groupe")?.querySelector("h2")?.textContent || "", b.closest(".sous")?.querySelector("h3")?.textContent || ""].join(" "));
   }
   filtre(); prechargePop();
 }
