@@ -7,10 +7,11 @@
 <title>Sons des jeux</title>
 <style>
 /*
-  Table de sons des jeux des 15 ans de mariage : un bouton = un son.
+  Table de sons des jeux des 15 ans de mariage : un bouton = un son, tout sur un seul écran.
   Page à part, sur un téléphone ou un ordinateur branché à la sono. Rien n'est projeté.
-  Vrais enregistrements libres de droits (sons/LICENCES.md), intégrés à la page par scripts/integrer-sons.py :
+  Sons libres de droits (sons/LICENCES.md), intégrés à la page par scripts/integrer-sons.py :
   un seul fichier, marche sans réseau une fois ouvert.
+  Pop culture : vrais extraits, chiffrés (sons-pop.bin, scripts/sons-pop.py).
   Même direction que le diaporama : marine, or, champagne.
 */
 :root {
@@ -22,198 +23,180 @@
   --or: #e2c27a;
   --carte: rgba(255, 255, 255, .04);
   --rouge: #e0825e;
+  --vert: #9fd08a;
+  --bleu: #8fb6ec;
   --titre: Futura, "Century Gothic", "Trebuchet MS", sans-serif;
   --sans: Optima, Candara, "Segoe UI", sans-serif;
 }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html { background: var(--fond); }
-body { margin: 0; min-height: 100vh; color: var(--texte); font: 16px/1.4 var(--sans);
+body { margin: 0; min-height: 100vh; color: var(--texte); font: 15px/1.35 var(--sans);
   background: radial-gradient(ellipse 90% 60% at 50% 0%, #1f3058 0%, var(--marine) 45%, var(--fond) 100%) fixed; }
-main { max-width: 980px; margin: 0 auto; padding: 18px 16px calc(40px + env(safe-area-inset-bottom)); }
-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-h1 { font: 500 1.15rem/1.2 var(--titre); letter-spacing: .3em; text-transform: uppercase; color: var(--or); margin: 0; }
-.stop { font: 600 .95rem/1 var(--titre); letter-spacing: .14em; text-transform: uppercase; color: #fff; background: #8c2f1f; border: 0; border-radius: 10px; padding: 14px 20px; cursor: pointer; }
-.stop:active { transform: scale(.97); }
-h2 { font: 500 .8rem/1 var(--titre); letter-spacing: .3em; text-transform: uppercase; color: var(--doux); margin: 26px 0 10px; display: flex; align-items: center; gap: 12px; }
-h2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--trait), transparent); }
+main { max-width: 1280px; margin: 0 auto; padding: 0 12px calc(40px + env(safe-area-inset-bottom)); }
+[hidden] { display: none !important; }
 
-.grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-.b { position: relative; min-height: 92px; padding: 12px 12px 12px 14px; text-align: left; cursor: pointer; overflow: hidden;
-  font: inherit; color: var(--texte); background: var(--carte); border: 1.5px solid var(--trait); border-radius: 12px;
-  display: flex; flex-direction: column; justify-content: space-between; gap: 6px; transition: border-color .2s, background .2s, transform .08s; user-select: none; }
-.b:active { transform: scale(.97); }
-.b b { font: 500 1.02rem/1.2 var(--titre); letter-spacing: .02em; padding-right: 22px; }
-.b small { color: var(--doux); font-size: .84rem; line-height: 1.25; }
-.b kbd { position: absolute; top: 9px; right: 10px; font: 600 .7rem/1 ui-monospace, Menlo, monospace; color: var(--doux); border: 1px solid var(--trait); border-radius: 4px; padding: 3px 5px; }
+/* Barre du haut, toujours visible : titre, recherche, Tout couper */
+.haut { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 10px; margin: 0 -12px; padding: calc(10px + env(safe-area-inset-top)) 12px 10px;
+  background: rgba(14, 23, 45, .94); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
+h1 { font: 500 1rem/1.2 var(--titre); letter-spacing: .26em; text-transform: uppercase; color: var(--or); margin: 0; flex: none; }
+#cherche { flex: 1; min-width: 0; font: 16px var(--sans); color: var(--texte); background: rgba(255, 255, 255, .06); border: 1.5px solid var(--trait); border-radius: 10px; padding: 10px 12px; outline: none; -webkit-appearance: none; }
+#cherche:focus { border-color: var(--or); }
+.stop { flex: none; font: 600 .85rem/1 var(--titre); letter-spacing: .12em; text-transform: uppercase; color: #fff; background: #8c2f1f; border: 0; border-radius: 10px; padding: 12px 16px; cursor: pointer; }
+.stop:active { transform: scale(.97); }
+
+/* Titres de groupe : une couleur par groupe, reprise sur le bord des boutons */
+h2 { font: 500 .74rem/1 var(--titre); letter-spacing: .26em; text-transform: uppercase; color: var(--c, var(--doux)); margin: 16px 0 7px; display: flex; align-items: center; gap: 10px; }
+h2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--trait), transparent); }
+h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppercase; color: var(--doux); margin: 9px 0 5px; }
+.gagne { --c: var(--vert); }
+.perdu { --c: var(--rouge); }
+.attente { --c: var(--bleu); }
+.pop { --c: var(--or); }
+
+/* Boutons de sons : petits, pour tout voir d'un coup */
+.grille { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 6px; }
+.b { position: relative; min-height: 50px; padding: 6px 8px 7px 10px; text-align: left; cursor: pointer; overflow: hidden;
+  font: inherit; color: var(--texte); background: var(--carte); border: 1px solid var(--trait); border-left: 3px solid var(--c, var(--trait)); border-radius: 8px;
+  display: flex; flex-direction: column; justify-content: center; gap: 2px; transition: border-color .2s, background .2s, transform .08s; user-select: none; }
+.b:active { transform: scale(.96); }
+.b b { font: 500 .84rem/1.15 var(--titre); letter-spacing: .01em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.b small { color: var(--doux); font-size: .7rem; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.b kbd { position: absolute; top: 4px; right: 5px; font: 600 .58rem/1 ui-monospace, Menlo, monospace; color: var(--doux); opacity: .7; }
+.b:has(kbd) b { padding-right: 12px; }
 /* Pendant qu'un son joue : la jauge se vide en bas du bouton */
-.b::after { content: ""; position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--or); transform-origin: left; transform: scaleX(0); }
-.b.joue { border-color: var(--or); background: rgba(226, 194, 122, .12); }
+.b::after { content: ""; position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--c, var(--or)); transform-origin: left; transform: scaleX(0); }
+.b.joue { border-color: var(--c, var(--or)); background: rgba(226, 194, 122, .12); }
 .b.joue::after { animation: jauge var(--d, 1s) linear forwards; }
 @keyframes jauge { from { transform: scaleX(1); } to { transform: scaleX(0); } }
 /* Boucles allumées */
-.b.boucle.on { border-color: var(--or); background: rgba(226, 194, 122, .16); }
-.b.boucle.on b::before { content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--or); margin-right: 8px; vertical-align: 1px; animation: clignote 1.2s ease-in-out infinite; }
+.b.boucle.on { border-color: var(--c, var(--or)); background: rgba(143, 182, 236, .14); }
+.b.boucle.on b::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--c, var(--or)); margin-right: 6px; vertical-align: 1px; animation: clignote 1.2s ease-in-out infinite; }
 @keyframes clignote { 50% { opacity: .25; } }
 
-/* Chrono */
-.chrono { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; background: var(--carte); border: 1.5px solid var(--trait); border-radius: 14px; padding: 14px; }
-.anneau { position: relative; width: 150px; height: 150px; cursor: pointer; }
+/* Chrono : anneau + grille 3 x 3 (tic-tac x durée) */
+.chrono { display: flex; align-items: center; gap: 12px; max-width: 470px; background: var(--carte); border: 1px solid var(--trait); border-radius: 12px; padding: 8px 10px; }
+.anneau { position: relative; width: 92px; height: 92px; flex: none; cursor: pointer; }
 .anneau svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
-.anneau .piste { fill: none; stroke: rgba(226, 194, 122, .18); stroke-width: 8; }
-.anneau .arc { fill: none; stroke: var(--or); stroke-width: 8; stroke-linecap: round; transition: stroke .3s; }
-.anneau .s { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; font: 500 3.2rem/1 var(--titre); }
-.anneau .s small { font: .78rem var(--sans); color: var(--doux); margin-top: 4px; letter-spacing: .05em; }
+.anneau .piste { fill: none; stroke: rgba(226, 194, 122, .18); stroke-width: 9; }
+.anneau .arc { fill: none; stroke: var(--or); stroke-width: 9; stroke-linecap: round; transition: stroke .3s; }
+.anneau .s { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; font: 500 2rem/1 var(--titre); }
+.anneau .s small { font: .62rem var(--sans); color: var(--doux); margin-top: 3px; }
 .anneau.fin .arc { stroke: var(--rouge); }
 .anneau.fin .s span { color: var(--rouge); }
-.reglages { display: grid; gap: 8px; }
-.styles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.styles button { font: 500 .85rem/1.2 var(--titre); letter-spacing: .04em; color: var(--doux); background: transparent; border: 1.5px solid var(--trait); border-radius: 999px; padding: 9px 6px; cursor: pointer; }
-.styles button.on { color: var(--fond); background: var(--or); border-color: var(--or); }
-.durees { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.durees .b { min-height: 64px; align-items: center; justify-content: center; text-align: center; padding: 10px 6px; }
-.durees .b b { font-size: 1.35rem; }
-.chrono p { grid-column: 2; margin: 8px 0 0; color: var(--doux); font-size: .86rem; }
+.neuf { flex: 1; display: grid; grid-template-columns: auto repeat(3, 1fr); gap: 5px; align-items: center; }
+.neuf span { font: 500 .66rem/1 var(--titre); letter-spacing: .12em; text-transform: uppercase; color: var(--doux); padding-right: 4px; }
+.neuf span.on { color: var(--or); }
+.neuf button { font: 500 .85rem/1 var(--titre); color: var(--texte); background: transparent; border: 1px solid var(--trait); border-radius: 7px; padding: 8px 4px; cursor: pointer; }
+.neuf button:active { transform: scale(.95); }
+.neuf button.on { color: var(--fond); background: var(--or); border-color: var(--or); }
 
-.note { color: var(--doux); font-size: .88rem; margin: 26px 0 0; }
+/* Pop culture : mot de passe une seule fois par téléphone, puis filtres par situation */
+.verrou { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.verrou input { flex: 1; min-width: 140px; max-width: 260px; font: 16px var(--sans); color: var(--texte); background: rgba(255, 255, 255, .06); border: 1px solid var(--trait); border-radius: 8px; padding: 8px 10px; outline: none; }
+.verrou input:focus { border-color: var(--or); }
+.verrou button { font: 600 .8rem/1 var(--titre); letter-spacing: .1em; text-transform: uppercase; color: var(--fond); background: var(--or); border: 0; border-radius: 8px; padding: 11px 14px; cursor: pointer; }
+.verrou small { color: var(--doux); font-size: .8rem; }
+.situations { display: flex; gap: 5px; overflow-x: auto; scrollbar-width: none; margin-bottom: 2px; }
+.situations::-webkit-scrollbar { display: none; }
+.situations button { flex: none; font: .78rem/1 var(--sans); color: var(--doux); background: transparent; border: 1px solid var(--trait); border-radius: 999px; padding: 6px 10px; cursor: pointer; }
+.situations button.on { color: var(--fond); background: var(--or); border-color: var(--or); }
+.vide { color: var(--doux); text-align: center; padding: 20px 0; margin: 0; }
+
+.note { color: var(--doux); font-size: .8rem; margin: 18px 0 0; }
 .note a { color: var(--or); }
-.note kbd { font: 600 .75rem ui-monospace, Menlo, monospace; border: 1px solid var(--trait); border-radius: 4px; padding: 1px 5px; }
+.note kbd { font: 600 .7rem ui-monospace, Menlo, monospace; border: 1px solid var(--trait); border-radius: 4px; padding: 1px 4px; }
 #etat { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: rgba(8, 13, 28, .92); border: 1px solid var(--trait); border-radius: 999px; padding: 8px 16px; font-size: .85rem; opacity: 0; transition: opacity .3s; pointer-events: none; white-space: nowrap; }
 #etat.on { opacity: 1; }
-[hidden] { display: none !important; }
-
-/* Barre du haut, toujours visible : Tout couper, onglets, recherche */
-.haut { position: sticky; top: 0; z-index: 5; margin: -18px -16px 0; padding: calc(12px + env(safe-area-inset-top)) 16px 10px;
-  background: rgba(14, 23, 45, .94); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
-.onglets { display: flex; gap: 8px; margin-top: 12px; }
-.onglets button { flex: 1; font: 500 .85rem/1 var(--titre); letter-spacing: .14em; text-transform: uppercase; color: var(--doux); background: transparent; border: 1.5px solid var(--trait); border-radius: 10px; padding: 12px 8px; cursor: pointer; }
-.onglets button.on { color: var(--fond); background: var(--or); border-color: var(--or); }
-.outils { display: grid; gap: 8px; margin-top: 10px; }
-#cherche { width: 100%; font: 16px var(--sans); color: var(--texte); background: rgba(255, 255, 255, .06); border: 1.5px solid var(--trait); border-radius: 10px; padding: 12px 14px; outline: none; -webkit-appearance: none; }
-#cherche:focus { border-color: var(--or); }
-.situations { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
-.situations::-webkit-scrollbar { display: none; }
-.situations button { flex: none; font: .85rem/1 var(--sans); color: var(--doux); background: transparent; border: 1px solid var(--trait); border-radius: 999px; padding: 8px 12px; cursor: pointer; }
-.situations button.on { color: var(--fond); background: var(--or); border-color: var(--or); }
-
-/* Pop culture : boutons plus petits, pour en voir beaucoup d'un coup */
-.pop .grille { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
-.pop .b { min-height: 66px; padding: 10px 10px 10px 12px; }
-.pop .b b { font-size: .95rem; padding-right: 0; }
-.pop .b small { font-size: .78rem; }
-.vide { color: var(--doux); text-align: center; padding: 30px 0; }
-/* Verrou de l'onglet Pop culture (extraits chiffrés, mot de passe de la famille) */
-.verrou { max-width: 420px; margin: 40px auto 0; text-align: center; }
-.verrou p { color: var(--doux); }
-.verrou form { display: flex; gap: 8px; margin-top: 14px; }
-.verrou input { flex: 1; min-width: 0; font: 16px var(--sans); color: var(--texte); background: rgba(255, 255, 255, .06); border: 1.5px solid var(--trait); border-radius: 10px; padding: 12px 14px; outline: none; }
-.verrou input:focus { border-color: var(--or); }
-.verrou button { font: 600 .9rem/1 var(--titre); letter-spacing: .1em; text-transform: uppercase; color: var(--fond); background: var(--or); border: 0; border-radius: 10px; padding: 0 18px; cursor: pointer; }
-.verrou-etat { min-height: 1.4em; margin-top: 12px; }
 
 @media (max-width: 620px) {
-  .grille { grid-template-columns: 1fr 1fr; }
-  .chrono { grid-template-columns: 1fr; justify-items: center; }
-  .chrono p { grid-column: 1; text-align: center; }
-  .reglages { width: 100%; }
+  h1 { display: none; }
+  .stop { padding: 11px 12px; font-size: .78rem; letter-spacing: .08em; }
+  .grille { grid-template-columns: repeat(4, 1fr); gap: 4px; }
+  .gagne .grille, .perdu .grille, .attente .grille { grid-template-columns: repeat(5, 1fr); }   /* 5, 7 et 5 sons : lignes pleines */
+  .b { min-height: 44px; padding: 4px 4px 5px 6px; border-left-width: 2px; }
+  .b b { font-size: .72rem; letter-spacing: 0; }
+  .b small { font-size: .6rem; }
   .b kbd { display: none; }
-  .b b { padding-right: 0; }
-  /* Barre du haut compacte : plus de place pour les boutons */
-  header { flex-wrap: nowrap; }
-  h1 { font-size: .9rem; letter-spacing: .18em; }
-  .stop { padding: 11px 14px; font-size: .85rem; flex: none; }
-  .onglets { margin-top: 10px; }
-  .onglets button { font-size: .78rem; letter-spacing: .08em; padding: 11px 6px; }
-  .pop .b { min-height: 58px; }
+  .b:has(kbd) b { padding-right: 0; }
+  .chrono { max-width: none; gap: 8px; padding: 6px 8px; }
+  .anneau { width: 80px; height: 80px; }
+  .anneau .s { font-size: 1.7rem; }
 }
 </style>
 </head>
 <body>
 <main>
   <div class="haut">
-    <header>
-      <h1>Sons des jeux</h1>
-      <button class="stop" id="stop">Tout couper</button>
-    </header>
-    <!-- Onglet Pop culture : vrais extraits, chiffrés (sons-pop.bin) ou intégrés dans la version complète locale -->
-    <nav class="onglets" id="onglets" hidden>
-      <button class="on" data-onglet="jeux">Jeux</button>
-      <button data-onglet="pop">Pop culture</button>
-    </nav>
-    <div class="outils" id="outils" hidden>
-      <input id="cherche" type="search" placeholder="Chercher : tarzan, kaamelott, suspense…" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="go">
-      <div class="situations" id="situations"></div>
-    </div>
+    <h1>Sons des jeux</h1>
+    <input id="cherche" type="search" placeholder="Chercher : ding, tarzan, kaamelott…" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="go">
+    <button class="stop" id="stop">Tout couper</button>
   </div>
 
-  <section id="jeux">
   <h2>Chrono</h2>
   <div class="chrono">
     <div class="anneau" id="anneau" title="Toucher pour arrêter">
       <svg viewBox="0 0 150 150"><circle class="piste" cx="75" cy="75" r="66"/><circle class="arc" cx="75" cy="75" r="66"/></svg>
       <div class="s"><span id="reste">·</span><small id="sous">choisir</small></div>
     </div>
-    <div class="reglages">
-      <div class="styles">
-        <button class="on" data-style="suspense">Suspense</button>
-        <button data-style="arcade">Arcade</button>
-        <button data-style="minuteur">Minuteur</button>
-      </div>
-      <div class="durees">
-        <button class="b" data-chrono="10"><b>10 s</b><small>vote jeu 2</small></button>
-        <button class="b" data-chrono="20"><b>20 s</b><small>mariés jeu 1</small></button>
-        <button class="b" data-chrono="30"><b>30 s</b><small>si ça cherche</small></button>
-      </div>
+    <div class="neuf" id="neuf">
+      <span data-ligne="suspense" class="on">Suspense</span>
+      <button data-style="suspense" data-chrono="10">10 s</button><button data-style="suspense" data-chrono="20">20 s</button><button data-style="suspense" data-chrono="30">30 s</button>
+      <span data-ligne="arcade">Arcade</span>
+      <button data-style="arcade" data-chrono="10">10 s</button><button data-style="arcade" data-chrono="20">20 s</button><button data-style="arcade" data-chrono="30">30 s</button>
+      <span data-ligne="minuteur">Minuteur</span>
+      <button data-style="minuteur" data-chrono="10">10 s</button><button data-style="minuteur" data-chrono="20">20 s</button><button data-style="minuteur" data-chrono="30">30 s</button>
     </div>
-    <p>Trois tic-tac au choix (suspense, arcade, minuteur), bip sur les 5 dernières secondes, buzzer à zéro. Toucher l'anneau ou la même durée pour arrêter (ils ont trouvé).</p>
   </div>
 
-  <h2>Réponses</h2>
-  <div class="grille">
-    <button class="b" data-son="ding" data-k="d"><b>Ding</b><small>Bonne réponse</small><kbd>D</kbd></button>
-    <button class="b" data-son="buzzer" data-k="x"><b>Buzzer</b><small>Mauvaise réponse</small><kbd>X</kbd></button>
-    <button class="b" data-son="trombone" data-k="w"><b>Wah wah wah</b><small>Trombone triste, raté</small><kbd>W</kbd></button>
-    <button class="b" data-son="ring" data-k="c"><b>Cloche de ring</b><small>Jeu 2 : pas d'accord</small><kbd>C</kbd></button>
-  </div>
-
-  <h2>Suspense et victoire</h2>
-  <div class="grille">
-    <button class="b" data-son="roulement" data-k="r"><b>Roulement</b><small>« Et qui l'a écrit ? »</small><kbd>R</kbd></button>
-    <button class="b" data-son="fanfare" data-k="e"><b>Fanfare</b><small>Titre d'un jeu, score</small><kbd>E</kbd></button>
-    <button class="b" data-son="bravo" data-k="a"><b>Bravo</b><small>Applaudissements, fin d'un jeu</small><kbd>A</kbd></button>
-    <button class="b" data-son="badumtss" data-k="z"><b>Ba-dum-tss</b><small>Jeu 3 : une blague</small><kbd>Z</kbd></button>
-    <button class="b" data-son="verres" data-k="t"><b>Verres qui trinquent</b><small>Ouverture, fin, question suivante</small><kbd>T</kbd></button>
-  </div>
-
-  <h2>Bruitages</h2>
-  <div class="grille">
-    <button class="b" data-son="perdu" data-k="g"><b>Perdu</b><small>Game over d'arcade</small><kbd>G</kbd></button>
-    <button class="b" data-son="bonus" data-k="b"><b>Bonus</b><small>Bonus gagné, jeu vidéo</small><kbd>B</kbd></button>
-    <button class="b" data-son="tambours" data-k="m"><b>Tambours</b><small>Menace, suspense</small><kbd>M</kbd></button>
-    <button class="b" data-son="assomme" data-k="o"><b>Assommé</b><small>Coup sur la tête, petits oiseaux</small><kbd>O</kbd></button>
-    <button class="b" data-son="klaxon" data-k="h"><b>Klaxon de clown</b><small>Pouet pouet</small><kbd>H</kbd></button>
-  </div>
-
-  <h2>Ambiances en boucle</h2>
-  <div class="grille">
-    <button class="b boucle" data-son="ascenseur" data-k="i"><b>Ascenseur</b><small>Interludes. Entre et sort en fondu</small><kbd>I</kbd></button>
-    <button class="b boucle" data-son="criquets" data-k="k"><b>Criquets</b><small>Silence gênant</small><kbd>K</kbd></button>
-    <button class="b boucle" data-son="attente" data-k="p"><b>Attente téléphonique</b><small>Running gag de la CAF</small><kbd>P</kbd></button>
-  </div>
-
-  <p class="note">Un appui lance le son, un deuxième appui sur le même bouton l'arrête (sons, ambiances et chrono). Au clavier : les lettres sur les boutons, <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> pour le chrono (10, 20, 30 s), <kbd>4</kbd> <kbd>5</kbd> <kbd>6</kbd> pour le tic-tac (suspense, arcade, minuteur), <kbd>Espace</kbd> arrête le chrono, <kbd>Échap</kbd> coupe tout. Sur iPhone, monter le volume du téléphone avant.</p>
-  <p class="note">Sons : <a href="https://bigsoundbank.com">BigSoundBank</a> (CC0) et <a href="https://mixkit.co">Mixkit</a> (licence gratuite Mixkit). Musique d'ascenseur : « Local Forecast - Elevator », Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), licence <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
-  </section>
-
-  <section id="pop" class="pop" hidden>
-    <div class="verrou" id="verrou">
-      <p>Les vrais extraits (films, séries, jeux télé, Kaamelott…) sont réservés à la famille.</p>
-      <form id="verrou-form">
-        <input id="verrou-mdp" type="password" placeholder="Mot de passe" autocomplete="current-password">
-        <button type="submit">Ouvrir</button>
-      </form>
-      <p class="verrou-etat" id="verrou-etat"></p>
+  <div class="groupe gagne">
+    <h2>Gagné</h2>
+    <div class="grille">
+      <button class="b" data-son="ding" data-k="d"><b>Ding</b><small>Bonne réponse</small><kbd>D</kbd></button>
+      <button class="b" data-son="fanfare" data-k="e"><b>Fanfare</b><small>Titre d'un jeu, score</small><kbd>E</kbd></button>
+      <button class="b" data-son="bravo" data-k="a"><b>Bravo</b><small>Applaudissements</small><kbd>A</kbd></button>
+      <button class="b" data-son="bonus" data-k="b"><b>Bonus</b><small>Bonus gagné, jeu vidéo</small><kbd>B</kbd></button>
+      <button class="b" data-son="verres" data-k="t"><b>Verres</b><small>Ouverture, fin, question suivante</small><kbd>T</kbd></button>
     </div>
+  </div>
+
+  <div class="groupe perdu">
+    <h2>Perdu</h2>
+    <div class="grille">
+      <button class="b" data-son="buzzer" data-k="x"><b>Buzzer</b><small>Mauvaise réponse</small><kbd>X</kbd></button>
+      <button class="b" data-son="trombone" data-k="w"><b>Wah wah wah</b><small>Trombone triste</small><kbd>W</kbd></button>
+      <button class="b" data-son="perdu" data-k="g"><b>Game over</b><small>Perdu, arcade</small><kbd>G</kbd></button>
+      <button class="b" data-son="ring" data-k="c"><b>Cloche de ring</b><small>Jeu 2 : pas d'accord</small><kbd>C</kbd></button>
+      <button class="b" data-son="assomme" data-k="o"><b>Assommé</b><small>Petits oiseaux</small><kbd>O</kbd></button>
+      <button class="b" data-son="klaxon" data-k="h"><b>Klaxon</b><small>Pouet pouet</small><kbd>H</kbd></button>
+      <button class="b" data-son="badumtss" data-k="z"><b>Ba-dum-tss</b><small>Jeu 3 : une blague</small><kbd>Z</kbd></button>
+    </div>
+  </div>
+
+  <div class="groupe attente">
+    <h2>Attente</h2>
+    <div class="grille">
+      <button class="b" data-son="roulement" data-k="r"><b>Roulement</b><small>« Et qui l'a écrit ? »</small><kbd>R</kbd></button>
+      <button class="b" data-son="tambours" data-k="m"><b>Tambours</b><small>Menace, suspense</small><kbd>M</kbd></button>
+      <button class="b boucle" data-son="ascenseur" data-k="i"><b>Ascenseur</b><small>En boucle, fondu</small><kbd>I</kbd></button>
+      <button class="b boucle" data-son="criquets" data-k="k"><b>Criquets</b><small>En boucle, silence gênant</small><kbd>K</kbd></button>
+      <button class="b boucle" data-son="attente" data-k="p"><b>Attente tél.</b><small>En boucle, la CAF</small><kbd>P</kbd></button>
+    </div>
+  </div>
+
+  <!-- Pop culture : vrais extraits, chiffrés (sons-pop.bin) ou intégrés dans la version complète locale -->
+  <section id="pop" class="pop">
+    <h2 id="pop-titre">Pop culture</h2>
+    <form class="verrou" id="verrou-form">
+      <input id="verrou-mdp" type="password" placeholder="Mot de passe de la famille" autocomplete="current-password">
+      <button type="submit">Ouvrir</button>
+      <small id="verrou-etat">Une seule fois par téléphone.</small>
+    </form>
+    <div class="situations" id="situations" hidden></div>
   </section>
+  <p class="vide" id="vide" hidden>Aucun son. Échap pour tout réafficher.</p>
+
+  <p class="note">Un appui lance le son, un deuxième appui sur le même bouton l'arrête (sons, boucles et chrono). Au clavier : <kbd>/</kbd> pour chercher, <kbd>Entrée</kbd> joue le premier résultat, les lettres sur les boutons, <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> pour le chrono (10, 20, 30 s) avec le dernier tic-tac choisi, <kbd>4</kbd> <kbd>5</kbd> <kbd>6</kbd> pour le tic-tac (suspense, arcade, minuteur), <kbd>Espace</kbd> arrête le chrono, <kbd>Échap</kbd> coupe tout. Sur iPhone, monter le volume du téléphone avant.</p>
+  <p class="note">Sons : <a href="https://bigsoundbank.com">BigSoundBank</a> (CC0) et <a href="https://mixkit.co">Mixkit</a> (licence gratuite Mixkit). Musique d'ascenseur : « Local Forecast - Elevator », Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), licence <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Pop culture : vrais extraits, réservés à la famille.</p>
 </main>
 <div id="etat"></div>
 <audio id="muet-ios" src="data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YSADAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA==" loop playsinline preload="auto"></audio>
@@ -317,18 +300,22 @@ function joue(nom) {
   return charge(nom).then(b => { const g = voie(b.duration); lit(nom, g, ac.currentTime + .01); return { d: b.duration, g }; });
 }
 
-/* ---------- Chrono ---------- */
+/* ---------- Chrono : grille 3 x 3, tic-tac (ligne) x durée (colonne) ---------- */
 const anneau = document.getElementById("anneau"), arcEl = anneau.querySelector(".arc");
 const resteEl = document.getElementById("reste"), sousEl = document.getElementById("sous");
 const TOUR = 2 * Math.PI * 66;
 arcEl.style.strokeDasharray = TOUR; arcEl.style.strokeDashoffset = 0;
 let chrono = null, style = "suspense";
 
+function majCases() {
+  document.querySelectorAll("#neuf button").forEach(b => b.classList.toggle("on", !!chrono && chrono.sec === +b.dataset.chrono && chrono.style === b.dataset.style));
+  document.querySelectorAll("[data-ligne]").forEach(s => s.classList.toggle("on", s.dataset.ligne === style));
+}
 function lanceChrono(sec) {
   audio(); arreteChrono(true);
-  const g = voie(), c = { g, t0: 0, sec, pret: false };
-  chrono = c;
-  anneau.classList.remove("fin"); resteEl.textContent = sec; sousEl.textContent = "toucher : stop";
+  const g = voie(), c = { g, t0: 0, sec, style, pret: false };
+  chrono = c; majCases();
+  anneau.classList.remove("fin"); resteEl.textContent = sec; sousEl.textContent = "stop";
   const nom = "chrono-" + style;
   Promise.all([charge(nom), charge("buzzer")]).then(() => {
     if (chrono !== c) return;
@@ -351,7 +338,7 @@ function tourne() {
   resteEl.textContent = Math.ceil(r - 1e-3);
   anneau.classList.toggle("fin", r <= 5);
   if (r <= 0) {
-    const c = chrono; chrono = null;
+    const c = chrono; chrono = null; majCases();
     sousEl.textContent = "temps écoulé";
     setTimeout(() => libere(c.g), 2500);
     return;
@@ -360,9 +347,18 @@ function tourne() {
 }
 function arreteChrono(vite) {
   if (!chrono) return;
-  libere(chrono.g, vite); chrono = null;
+  libere(chrono.g, vite); chrono = null; majCases();
   arcEl.style.strokeDashoffset = 0; anneau.classList.remove("fin");
   resteEl.textContent = "·"; sousEl.textContent = "arrêté";
+}
+// Une case : un deuxième appui sur la même case l'arrête
+function basculeChrono(sec, st = style) {
+  if (chrono && chrono.sec === sec && chrono.style === st) { arreteChrono(true); return; }
+  style = st; lanceChrono(sec);
+}
+function choisitStyle(s) {
+  style = s; majCases();
+  signale("Tic-tac : " + document.querySelector(`[data-ligne="${s}"]`).textContent);
 }
 
 /* ---------- Boutons ---------- */
@@ -384,7 +380,7 @@ function declenche(b) {
   // Deuxième appui pendant que le son joue : on l'arrête
   if (b._lecture) { arreteBouton(b); signale("■ " + b.querySelector("b").textContent + " : arrêt"); return; }
   // Un son de réponse coupe le chrono ; le suspense, la victoire et la pop culture le laissent tourner
-  if (!b.closest("#pop") && nom !== "roulement" && nom !== "fanfare" && nom !== "bravo") arreteChrono(true);
+  if (!b.closest("#pop") && !["roulement", "tambours", "fanfare", "bravo"].includes(nom)) arreteChrono(true);
   const lecture = {}; b._lecture = lecture;
   joue(nom).then(({ d, g }) => {
     if (b._lecture !== lecture) { libere(g, true); return; }   // arrêté pendant le décodage
@@ -397,18 +393,8 @@ function arreteBouton(b) {
   if (b._lecture?.g) libere(b._lecture.g, true);
   b._lecture = null; clearTimeout(b._t); b.classList.remove("joue");
 }
-function choisitStyle(s) {
-  style = s;
-  document.querySelectorAll("[data-style]").forEach(b => b.classList.toggle("on", b.dataset.style === s));
-  signale("Tic-tac : " + document.querySelector(`[data-style="${s}"]`).textContent);
-}
-// Durée du chrono : un deuxième appui sur la même durée l'arrête
-function basculeChrono(sec) {
-  if (chrono && chrono.sec === sec) arreteChrono(true); else lanceChrono(sec);
-}
 document.querySelectorAll("[data-son]").forEach(b => b.addEventListener("click", () => declenche(b)));
-document.querySelectorAll("[data-chrono]").forEach(b => b.addEventListener("click", () => basculeChrono(+b.dataset.chrono)));
-document.querySelectorAll("[data-style]").forEach(b => b.addEventListener("click", () => choisitStyle(b.dataset.style)));
+document.querySelectorAll("#neuf button").forEach(b => b.addEventListener("click", () => basculeChrono(+b.dataset.chrono, b.dataset.style)));
 anneau.addEventListener("click", () => arreteChrono(true));
 document.getElementById("stop").addEventListener("click", () => {
   if (!ac) return;
@@ -419,7 +405,7 @@ document.getElementById("stop").addEventListener("click", () => {
 
 addEventListener("keydown", e => {
   if (e.metaKey || e.ctrlKey || e.altKey || e.repeat || e.target.closest?.("input")) return;   // on tape dans un champ
-  if (e.key === "/") { e.preventDefault(); onglet("pop"); if (SONS_POP) { cherche.focus(); cherche.select(); } else document.getElementById("verrou-mdp").focus(); return; }
+  if (e.key === "/") { e.preventDefault(); cherche.focus(); cherche.select(); return; }
   const l = e.key.length === 1 ? e.key.toLowerCase() : e.key;
   const b = document.querySelector(`[data-k="${l}"]`);
   if (b) { e.preventDefault(); declenche(b); }
@@ -429,25 +415,15 @@ addEventListener("keydown", e => {
   else if (l === "Escape") document.getElementById("stop").click();
 });
 
-/* ---------- Pop culture : onglet de la version complète locale ---------- */
+/* ---------- Recherche : tous les sons, jeux et pop culture ---------- */
 // Trouver un son en une seconde : recherche (sans accents), filtres par situation, Entrée joue le premier résultat.
 const pop = document.getElementById("pop"), cherche = document.getElementById("cherche"), situationsEl = document.getElementById("situations");
 let situation = null;
-const sansAccent = t => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+const sansAccent = t => t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+document.querySelectorAll(".groupe .b").forEach(b => {
+  b._texte = sansAccent([b.querySelector("b").textContent, b.querySelector("small").textContent, b.closest(".groupe").querySelector("h2").textContent].join(" "));
+});
 
-function onglet(nom) {
-  document.querySelectorAll("[data-onglet]").forEach(b => b.classList.toggle("on", b.dataset.onglet === nom));
-  document.getElementById("jeux").hidden = nom !== "jeux";
-  pop.hidden = nom !== "pop";
-  document.getElementById("outils").hidden = nom !== "pop" || !SONS_POP;
-  scrollTo(0, 0);
-  // Première ouverture : essaie le mot de passe déjà retenu sur ce téléphone
-  if (nom === "pop" && !SONS_POP && !dejaEssaye) {
-    dejaEssaye = true;
-    let m = null; try { m = localStorage.getItem(CLE_MDP); } catch (e) {}
-    if (m) ouvrePop(m, false);
-  }
-}
 function choisitSituation(s) {
   situation = situation === s ? null : s;
   situationsEl.querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.sit === situation));
@@ -456,19 +432,24 @@ function choisitSituation(s) {
 function filtre() {
   const mots = sansAccent(cherche.value).split(/\s+/).filter(Boolean);
   let total = 0;
-  pop.querySelectorAll(".groupe").forEach(g => {
+  document.querySelectorAll(".groupe").forEach(g => {
     let vus = 0;
     g.querySelectorAll(".b").forEach(b => {
-      const ok = (!situation || b._sit.includes(situation)) && mots.every(m => b._texte.includes(m));
+      const ok = (!situation || b._sit?.includes(situation)) && mots.every(m => b._texte.includes(m));
       b.hidden = !ok; vus += ok;
     });
     g.hidden = !vus; total += vus;
   });
-  document.getElementById("pop-vide").hidden = total > 0;
+  document.getElementById("vide").hidden = total > 0;
+  // Pendant une recherche : le chrono s'efface, et la pop culture aussi si rien n'y correspond
+  const filtrant = mots.length > 0 || !!situation, chronoEl = document.querySelector(".chrono");
+  chronoEl.hidden = chronoEl.previousElementSibling.hidden = filtrant;
+  pop.hidden = filtrant && !pop.querySelector(".groupe:not([hidden])");
 }
 
+/* ---------- Pop culture : extraits chiffrés, mot de passe retenu par le téléphone ---------- */
 const CLE_MDP = "sons-pop-mdp";
-let dejaEssaye = false, chiffre = null, prechargeLance = false;
+let chiffre = null, prechargeLance = false;
 
 // Décode les extraits en arrière-plan, un par un, sans ralentir les sons des jeux
 function prechargePop() {
@@ -507,39 +488,35 @@ async function ouvrePop(mdp, memoriser) {
   try {
     etatEl.textContent = "Ouverture…";
     SONS_POP = await dechiffrePop(mdp, chiffre);
-  } catch (e) { etatEl.textContent = memoriser ? "Mot de passe incorrect." : ""; return; }
+  } catch (e) { etatEl.textContent = memoriser ? "Mot de passe incorrect." : "Une seule fois par téléphone."; return; }
   if (memoriser) try { localStorage.setItem(CLE_MDP, mdp); } catch (e) {}
   construitPop();
 }
 
 function construitPop() {
-  document.getElementById("verrou").hidden = true;
-  document.getElementById("outils").hidden = pop.hidden;
-  document.querySelector('[data-onglet="pop"]').textContent = `Pop culture (${SONS_POP.liste.length})`;
+  document.getElementById("verrou-form").hidden = true;
+  document.getElementById("pop-titre").textContent = `Pop culture (${SONS_POP.liste.length})`;
   for (const s of SONS_POP.situations) {
     const b = document.createElement("button"); b.textContent = s; b.dataset.sit = s;
     b.addEventListener("click", () => choisitSituation(s)); situationsEl.append(b);
   }
+  situationsEl.hidden = false;
   const groupes = {};
   for (const s of SONS_POP.liste) {
     let g = groupes[s.cat];
     if (!g) {
       g = groupes[s.cat] = document.createElement("div"); g.className = "groupe";
-      g.innerHTML = "<h2></h2><div class=\"grille\"></div>"; g.querySelector("h2").textContent = s.cat; pop.append(g);
+      g.innerHTML = "<h3></h3><div class=\"grille\"></div>"; g.querySelector("h3").textContent = s.cat; pop.append(g);
     }
     const b = document.createElement("button"); b.className = "b"; b.dataset.son = s.id;
     b.innerHTML = "<b></b><small></small>"; b.querySelector("b").textContent = s.titre; b.querySelector("small").textContent = s.detail;
-    b._sit = s.sit; b._texte = sansAccent([s.titre, s.detail, s.cat, ...s.sit].join(" "));
+    b._sit = s.sit; b._texte = sansAccent([s.titre, s.detail, s.cat, "pop culture", ...s.sit].join(" "));
     b.addEventListener("click", () => declenche(b));
     g.querySelector(".grille").append(b);
   }
-  pop.insertAdjacentHTML("beforeend", '<p class="vide" id="pop-vide" hidden>Aucun son. Échap pour tout réafficher.</p>'
-    + '<p class="note">Vrais extraits, réservés à la famille' + (SONS_POP.mp3 ? " (version complète locale)" : "") + '. Un appui lance, un deuxième arrête. Au clavier : <kbd>/</kbd> pour chercher, <kbd>Entrée</kbd> joue le premier résultat, <kbd>Échap</kbd> efface.</p>');
-  prechargePop();
+  filtre(); prechargePop();
 }
 
-document.getElementById("onglets").hidden = false;
-document.querySelectorAll("[data-onglet]").forEach(b => b.addEventListener("click", () => onglet(b.dataset.onglet)));
 document.getElementById("verrou-form").addEventListener("submit", e => {
   e.preventDefault();
   const champ = document.getElementById("verrou-mdp");
@@ -549,13 +526,18 @@ cherche.addEventListener("input", filtre);
 cherche.addEventListener("keydown", e => {
   if (e.key === "Enter") {
     e.preventDefault();
-    const b = pop.querySelector(".groupe:not([hidden]) .b:not([hidden])");
+    const b = document.querySelector(".groupe:not([hidden]) .b:not([hidden])");
     if (b) declenche(b);
   } else if (e.key === "Escape") {
     cherche.value = ""; situation = null; choisitSituation(null); cherche.blur();
   }
 });
 if (SONS_POP) construitPop();   // version complète locale : extraits déjà là, pas de mot de passe
+else {
+  // Mot de passe déjà retenu sur ce téléphone : les extraits s'ouvrent seuls
+  let m = null; try { m = localStorage.getItem(CLE_MDP); } catch (e) {}
+  if (m) ouvrePop(m, false);
+}
 </script>
 </body>
 </html>
