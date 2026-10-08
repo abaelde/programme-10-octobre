@@ -67,6 +67,9 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
 .b small { color: var(--doux); font-size: .7rem; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .b kbd { position: absolute; top: 4px; right: 5px; font: 600 .58rem/1 ui-monospace, Menlo, monospace; color: var(--doux); opacity: .7; }
 .b:has(kbd) b { padding-right: 12px; }
+/* Numéro de chaque son, pour les désigner facilement */
+.b .num { position: absolute; right: 5px; bottom: 4px; font: 600 .56rem/1 ui-monospace, Menlo, monospace; font-style: normal; color: var(--doux); opacity: .75; }
+.b small { padding-right: 14px; }
 /* Pendant qu'un son joue : la jauge se vide en bas du bouton */
 .b::after { content: ""; position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--c, var(--or)); transform-origin: left; transform: scaleX(0); }
 .b.joue { border-color: var(--c, var(--or)); background: rgba(226, 194, 122, .12); }
@@ -156,6 +159,12 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
 
   <p class="legende" id="legende" hidden><span>Sons</span><span class="kaamelott">Kaamelott</span><span class="film">Films, séries, jeux télé, jeux vidéo, manga</span></p>
 
+  <!-- Entrée en scène : en premier, avant de lancer un jeu -->
+  <div class="groupe entree">
+    <h2>Entrée en scène</h2>
+    <div class="grille" data-groupe="entree"></div>
+  </div>
+
   <!-- Chrono et attente : la durée choisie s'applique à toutes les musiques et sons de gauche ; les boucles restent libres -->
   <div class="groupe minute">
     <h2>Chrono et attente</h2>
@@ -196,7 +205,7 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
   </div>
 
   <div class="groupe question">
-    <h2>Question</h2>
+    <h2>Lancer une question</h2>
     <div class="grille" data-groupe="question">
       <button class="b" data-son="verres" data-k="t"><b>Verres</b><small>Question suivante, ouverture</small><kbd>T</kbd></button>
     </div>
@@ -244,15 +253,15 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
       <div class="grille" data-groupe="colere"></div>
     </div>
     <div class="sous">
+      <h3>Peur</h3>
+      <div class="grille" data-groupe="peur"></div>
+    </div>
+    <div class="sous">
       <h3>Pas compris</h3>
       <div class="grille" data-groupe="pascompris"></div>
     </div>
   </div>
 
-  <div class="groupe entree">
-    <h2>Entrée en scène</h2>
-    <div class="grille" data-groupe="entree"></div>
-  </div>
 
   <!-- Extraits sans groupe (aucun aujourd'hui) -->
   <section id="pop-reste" class="pop" hidden><h2>Autres extraits</h2></section>
@@ -443,7 +452,6 @@ function declenche(b) {
   // Deuxième appui pendant que le son joue : on l'arrête
   if (b._lecture) { arreteBouton(b); signale("■ " + b.querySelector("b").textContent + " : arrêt"); return; }
   // Un son de réponse coupe le chrono ; le suspense, la victoire et la pop culture le laissent tourner
-  if (nom === "zawarudo") arreteChrono(true);   // Dio arrête le temps
   if (!b._pop && !["roulement", "tambours", "fanfare", "bravo"].includes(nom)) arreteChrono(true);
   const lecture = {}; b._lecture = lecture;
   joue(nom).then(({ d, g }) => {
@@ -551,7 +559,7 @@ function construitPop() {
   const groupes = {};
   for (const s of SONS_POP.liste) {
     // Extrait rangé dans son groupe (Question, Gagné, Émotions…), sinon dans « Autres extraits »
-    // Chrono et attente : une seule colonne de musiques, jouées pour la durée du curseur (sauf Za Warudo, qui arrête le chrono)
+    // Chrono et attente : une seule colonne de musiques, jouées pour la durée du curseur
     const cible = s.groupe === "chrono" || s.groupe === "attente" ? "minute" : s.groupe;
     let g = cible ? document.querySelector(`[data-groupe="${cible}"]`).parentNode : groupes[s.cat];
     if (!s.groupe) reste.hidden = false;
@@ -561,12 +569,21 @@ function construitPop() {
     }
     const b = document.createElement("button"); b.className = "b " + (/kaamelott/i.test(s.cat + " " + s.titre) ? "kaamelott" : "film"); b.dataset.son = s.id; b._pop = true;
     b.innerHTML = "<b></b><small></small>"; b.querySelector("b").textContent = s.titre; b.querySelector("small").textContent = s.detail;
-    if (cible === "minute" && s.id !== "zawarudo") b.dataset.minute = "";
+    if (cible === "minute") b.dataset.minute = "";
     b.addEventListener("click", () => declenche(b));
     g.querySelector(".grille").append(b);
     b._texte = sansAccent([s.titre, s.detail, s.cat, "pop culture", b.closest(".groupe")?.querySelector("h2")?.textContent || "", b.closest(".sous")?.querySelector("h3")?.textContent || ""].join(" "));
   }
-  filtre(); prechargePop();
+  filtre(); numerote(); prechargePop();
+}
+// Numéros dans l'ordre de la page (refaits quand les extraits s'ajoutent)
+function numerote() {
+  let n = 0;
+  document.querySelectorAll(".groupe .b").forEach(b => {
+    let i = b.querySelector(".num");
+    if (!i) { i = document.createElement("i"); i.className = "num"; b.append(i); }
+    i.textContent = ++n;
+  });
 }
 
 document.getElementById("verrou-form").addEventListener("submit", e => {
@@ -584,7 +601,7 @@ cherche.addEventListener("keydown", e => {
     cherche.value = ""; filtre(); cherche.blur();
   }
 });
-filtre();   // masque les lignes encore vides (extraits pas encore ouverts)
+numerote(); filtre();   // masque les lignes encore vides (extraits pas encore ouverts)
 if (SONS_POP) construitPop();   // version complète locale : extraits déjà là, pas de mot de passe
 else {
   // Mot de passe déjà retenu sur ce téléphone : les extraits s'ouvrent seuls
