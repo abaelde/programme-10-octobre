@@ -170,8 +170,15 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
 .b.allume { border-color: var(--c, var(--or)); background: rgba(143, 182, 236, .16); }
 .absent { font-size: .72rem; color: var(--doux); opacity: .6; border: 1px dashed var(--trait); border-radius: 6px; padding: 3px 6px; }
 h2.tous { --c: var(--doux); margin-top: 22px; }
+/* Entrée en scène : bandeau d'une ligne au-dessus des onglets des jeux */
+.groupe.entree { display: flex; align-items: center; gap: 10px; margin: 10px 0 4px; padding: 6px 8px; border: 1px solid var(--trait); border-radius: 10px; }
+.groupe.entree h2 { margin: 0; flex: none; }
+.groupe.entree h2::after { display: none; }
+.entree .grille { display: flex; flex: 1; min-width: 0; overflow-x: auto; gap: 5px; scrollbar-width: thin; }
+.entree .grille .b { flex: 0 0 auto; min-height: 40px; max-width: 170px; }
 @media (max-width: 620px) {
   .partout, .mini { display: none; }
+  .groupe.entree { flex-direction: column; align-items: stretch; gap: 6px; }
   .ligne { grid-template-columns: 1fr 1fr; }
   .ligne .lbl { grid-column: 1 / -1; }
 }
@@ -228,16 +235,16 @@ h2.tous { --c: var(--doux); margin-top: 22px; }
 
   <p class="legende" id="legende" hidden><span>Sons</span><span class="kaamelott">Kaamelott</span><span class="film">Films, séries, chansons, pubs, jeux télé, jeux vidéo, manga</span></p>
 
-  <!-- Onglet du jeu choisi : sa conduite son, lue dans la fiche des jeux (rempli par le script) -->
-  <section class="conduite" id="conduite" hidden></section>
-
-  <h2 class="tous">Tous les sons</h2>
-
-  <!-- Entrée en scène : en premier, avant de lancer un jeu -->
+  <!-- Entrée en scène : bandeau en haut, commun à tous les jeux (une ligne, qui défile de côté) -->
   <div class="groupe entree">
     <h2>Entrée en scène</h2>
     <div class="grille" data-groupe="entree"></div>
   </div>
+
+  <!-- Onglet du jeu choisi : sa conduite son, lue dans la fiche des jeux (rempli par le script) -->
+  <section class="conduite" id="conduite" hidden></section>
+
+  <h2 class="tous">Tous les sons</h2>
 
   <!-- Chrono et attente : la durée choisie s'applique à toutes les musiques et sons de gauche, joués en boucle jusqu'à zéro (les autres sons s'arrêtent au bout de ce temps) ; les boucles restent libres -->
   <div class="groupe minute">
