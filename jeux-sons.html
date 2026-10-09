@@ -44,6 +44,17 @@ h1 { font: 500 1rem/1.2 var(--titre); letter-spacing: .26em; text-transform: upp
 #cherche:focus { border-color: var(--or); }
 .stop { flex: none; font: 600 .85rem/1 var(--titre); letter-spacing: .12em; text-transform: uppercase; color: #fff; background: #8c2f1f; border: 0; border-radius: 10px; padding: 12px 16px; cursor: pointer; }
 .stop:active { transform: scale(.97); }
+.outil { flex: none; font: 600 .8rem/1 var(--titre); letter-spacing: .1em; text-transform: uppercase; color: var(--or); background: transparent; border: 1.5px solid var(--trait); border-radius: 10px; padding: 11px 13px; cursor: pointer; }
+.outil.on { color: var(--fond); background: var(--or); border-color: var(--or); }
+
+/* Réglage des raccourcis : on touche une carte, puis la touche du clavier */
+.haut { flex-wrap: wrap; }
+.panneau { flex-basis: 100%; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: .82rem; color: var(--texte); background: rgba(226, 194, 122, .1); border: 1px solid var(--trait); border-radius: 10px; padding: 8px 10px; }
+.panneau span { flex: 1; min-width: 220px; }
+.panneau button { font: 600 .74rem/1 var(--titre); letter-spacing: .08em; text-transform: uppercase; color: var(--or); background: transparent; border: 1px solid var(--trait); border-radius: 8px; padding: 8px 10px; cursor: pointer; }
+.panneau button.fin { color: var(--fond); background: var(--or); border-color: var(--or); }
+.touches .groupe .b { border-style: dashed; border-left-style: solid; }
+.touches .b.choisi { outline: 2px solid var(--or); outline-offset: 1px; background: rgba(226, 194, 122, .22); }
 
 /* Titres de groupe : une couleur par groupe, reprise sur le bord des boutons */
 h2 { font: 500 .74rem/1 var(--titre); letter-spacing: .26em; text-transform: uppercase; color: var(--c, var(--doux)); margin: 16px 0 7px; display: flex; align-items: center; gap: 10px; }
@@ -66,7 +77,7 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
 .b b { font: 500 .84rem/1.15 var(--titre); letter-spacing: .01em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .b small { color: var(--doux); font-size: .7rem; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .b kbd { position: absolute; top: 4px; right: 5px; font: 600 .58rem/1 ui-monospace, Menlo, monospace; color: var(--doux); opacity: .7; }
-.b:has(kbd) b { padding-right: 12px; }
+.b:has(kbd) b { padding-right: 18px; }
 /* Numéro de chaque son, pour les désigner facilement */
 .b .num { position: absolute; right: 5px; bottom: 4px; font: 600 .56rem/1 ui-monospace, Menlo, monospace; font-style: normal; color: var(--doux); opacity: .75; }
 .b small { padding-right: 14px; }
@@ -129,7 +140,7 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
   .b { min-height: 44px; padding: 4px 4px 5px 6px; border-left-width: 2px; }
   .b b { font-size: .72rem; letter-spacing: 0; }
   .b small { font-size: .6rem; }
-  .b kbd { display: none; }
+  .b kbd, .outil, .panneau { display: none !important; }
   .b:has(kbd) b { padding-right: 0; }
   .anneau { width: 54px; height: 54px; }
   .anneau .s { font-size: 1.25rem; }
@@ -142,7 +153,16 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
   <div class="haut">
     <h1>Sons des jeux</h1>
     <input id="cherche" type="search" placeholder="Chercher : ding, tarzan, kaamelott…" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="go">
+    <button class="outil" id="raccourcis" title="Choisir la touche du clavier de chaque son">Raccourcis</button>
     <button class="stop" id="stop">Tout couper</button>
+    <div class="panneau" id="panneau" hidden>
+      <span id="panneau-aide">Clique sur un son, puis appuie sur sa touche (lettre, chiffre, Maj + lettre). Retour arrière : retirer la touche.</span>
+      <button id="t-exporter" title="Enregistrer les raccourcis dans un fichier">Exporter</button>
+      <button id="t-importer" title="Recharger un fichier de raccourcis">Importer</button>
+      <button id="t-defaut" title="Revenir aux touches d'origine">Par défaut</button>
+      <button id="t-fin" class="fin">Terminé</button>
+      <input id="t-fichier" type="file" accept=".json,application/json" hidden>
+    </div>
   </div>
 
   <!-- Pop culture : vrais extraits, chiffrés (sons-pop.bin) ou intégrés dans la version complète locale.
@@ -184,19 +204,19 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
       <div class="sous">
         <h3>Sons</h3>
         <div class="grille">
-          <button class="b" data-son="chrono-suspense" data-minute data-k="4"><b>Tic-tac suspense</b><small>Chrono</small><kbd>4</kbd></button>
-          <button class="b" data-son="chrono-arcade" data-minute data-k="5"><b>Tic-tac arcade</b><small>Chrono</small><kbd>5</kbd></button>
-          <button class="b" data-son="chrono-minuteur" data-minute data-k="6"><b>Minuteur</b><small>Chrono</small><kbd>6</kbd></button>
-          <button class="b" data-son="roulement" data-minute data-k="r"><b>Roulement</b><small>« Et qui l'a écrit ? »</small><kbd>R</kbd></button>
-          <button class="b" data-son="tambours" data-minute data-k="m"><b>Tambours</b><small>Menace, suspense</small><kbd>M</kbd></button>
+          <button class="b" data-son="chrono-suspense" data-minute data-k="4"><b>Tic-tac suspense</b><small>Chrono</small></button>
+          <button class="b" data-son="chrono-arcade" data-minute data-k="5"><b>Tic-tac arcade</b><small>Chrono</small></button>
+          <button class="b" data-son="chrono-minuteur" data-minute data-k="6"><b>Minuteur</b><small>Chrono</small></button>
+          <button class="b" data-son="roulement" data-minute data-k="r"><b>Roulement</b><small>« Et qui l'a écrit ? »</small></button>
+          <button class="b" data-son="tambours" data-minute data-k="m"><b>Tambours</b><small>Menace, suspense</small></button>
         </div>
       </div>
       <div class="sous">
         <h3>En boucle</h3>
         <div class="grille">
-          <button class="b boucle" data-son="ascenseur" data-k="i"><b>Ascenseur</b><small>Entre et sort en fondu</small><kbd>I</kbd></button>
-          <button class="b boucle" data-son="criquets" data-k="k"><b>Criquets</b><small>Silence gênant</small><kbd>K</kbd></button>
-          <button class="b boucle" data-son="attente" data-k="p"><b>Attente tél.</b><small>Running gag de la CAF</small><kbd>P</kbd></button>
+          <button class="b boucle" data-son="ascenseur" data-k="i"><b>Ascenseur</b><small>Entre et sort en fondu</small></button>
+          <button class="b boucle" data-son="criquets" data-k="k"><b>Criquets</b><small>Silence gênant</small></button>
+          <button class="b boucle" data-son="attente" data-k="p"><b>Attente tél.</b><small>Running gag de la CAF</small></button>
         </div>
       </div>
     </div>
@@ -205,30 +225,30 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
   <div class="groupe question">
     <h2>Lancer une question</h2>
     <div class="grille" data-groupe="question">
-      <button class="b" data-son="verres" data-k="t"><b>Verres</b><small>Question suivante, ouverture</small><kbd>T</kbd></button>
+      <button class="b" data-son="verres" data-k="t"><b>Verres</b><small>Question suivante, ouverture</small></button>
     </div>
   </div>
 
   <div class="groupe gagne">
     <h2>Gagné</h2>
     <div class="grille" data-groupe="gagne">
-      <button class="b" data-son="ding" data-k="d"><b>Ding</b><small>Bonne réponse</small><kbd>D</kbd></button>
-      <button class="b" data-son="fanfare" data-k="e"><b>Fanfare</b><small>Titre d'un jeu, score</small><kbd>E</kbd></button>
-      <button class="b" data-son="bravo" data-k="a"><b>Bravo</b><small>Applaudissements</small><kbd>A</kbd></button>
-      <button class="b" data-son="bonus" data-k="b"><b>Bonus</b><small>Bonus gagné, jeu vidéo</small><kbd>B</kbd></button>
+      <button class="b" data-son="ding" data-k="d"><b>Ding</b><small>Bonne réponse</small></button>
+      <button class="b" data-son="fanfare" data-k="e"><b>Fanfare</b><small>Titre d'un jeu, score</small></button>
+      <button class="b" data-son="bravo" data-k="a"><b>Bravo</b><small>Applaudissements</small></button>
+      <button class="b" data-son="bonus" data-k="b"><b>Bonus</b><small>Bonus gagné, jeu vidéo</small></button>
     </div>
   </div>
 
   <div class="groupe perdu">
     <h2>Perdu</h2>
     <div class="grille" data-groupe="perdu">
-      <button class="b" data-son="buzzer" data-k="x"><b>Buzzer</b><small>Mauvaise réponse</small><kbd>X</kbd></button>
-      <button class="b" data-son="trombone" data-k="w"><b>Wah wah wah</b><small>Trombone triste</small><kbd>W</kbd></button>
-      <button class="b" data-son="perdu" data-k="g"><b>Game over</b><small>Perdu, arcade</small><kbd>G</kbd></button>
-      <button class="b" data-son="ring" data-k="c"><b>Cloche de ring</b><small>Jeu 2 : pas d'accord</small><kbd>C</kbd></button>
-      <button class="b" data-son="assomme" data-k="o"><b>Assommé</b><small>Petits oiseaux</small><kbd>O</kbd></button>
-      <button class="b" data-son="klaxon" data-k="h"><b>Klaxon</b><small>Pouet pouet</small><kbd>H</kbd></button>
-      <button class="b" data-son="badumtss" data-k="z"><b>Ba-dum-tss</b><small>Jeu 3 : une blague</small><kbd>Z</kbd></button>
+      <button class="b" data-son="buzzer" data-k="x"><b>Buzzer</b><small>Mauvaise réponse</small></button>
+      <button class="b" data-son="trombone" data-k="w"><b>Wah wah wah</b><small>Trombone triste</small></button>
+      <button class="b" data-son="perdu" data-k="g"><b>Game over</b><small>Perdu, arcade</small></button>
+      <button class="b" data-son="ring" data-k="c"><b>Cloche de ring</b><small>Jeu 2 : pas d'accord</small></button>
+      <button class="b" data-son="assomme" data-k="o"><b>Assommé</b><small>Petits oiseaux</small></button>
+      <button class="b" data-son="klaxon" data-k="h"><b>Klaxon</b><small>Pouet pouet</small></button>
+      <button class="b" data-son="badumtss" data-k="z"><b>Ba-dum-tss</b><small>Jeu 3 : une blague</small></button>
     </div>
   </div>
 
@@ -265,7 +285,7 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
   <section id="pop-reste" class="pop" hidden><h2>Autres extraits</h2></section>
   <p class="vide" id="vide" hidden>Aucun son. Échap pour tout réafficher.</p>
 
-  <p class="note">Un appui lance le son, un deuxième appui sur le même bouton l'arrête. Dans Chrono et attente, chaque musique ou son dure le temps choisi (10, 20 ou 30 s), avec bips sur les 5 dernières secondes et buzzer à zéro ; les boucles restent libres. Au clavier : <kbd>/</kbd> pour chercher, <kbd>Entrée</kbd> joue le premier résultat, les lettres sur les boutons, <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> pour la durée (10, 20, 30 s), <kbd>4</kbd> <kbd>5</kbd> <kbd>6</kbd> pour les tic-tac, <kbd>Espace</kbd> arrête le chrono, <kbd>Échap</kbd> coupe tout. Sur iPhone, monter le volume du téléphone avant.</p>
+  <p class="note">Un appui lance le son, un deuxième appui sur le même bouton l'arrête. Dans Chrono et attente, chaque musique ou son dure le temps choisi (10, 20 ou 30 s), avec bips sur les 5 dernières secondes et buzzer à zéro ; les boucles restent libres. Au clavier : <kbd>/</kbd> pour chercher, <kbd>Entrée</kbd> joue le premier résultat, la touche écrite sur chaque bouton (à régler avec « Raccourcis », retenus par ce navigateur et affichés dans le programme des jeux), <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> pour la durée (10, 20, 30 s), <kbd>Espace</kbd> arrête le chrono, <kbd>Échap</kbd> coupe tout. Sur iPhone, monter le volume du téléphone avant.</p>
   <p class="note">Sons : <a href="https://bigsoundbank.com">BigSoundBank</a> (CC0) et <a href="https://mixkit.co">Mixkit</a> (licence gratuite Mixkit). Musique d'ascenseur : « Local Forecast - Elevator », Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), licence <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Pop culture : vrais extraits, réservés à la famille ; fond rouille pour Kaamelott, turquoise pour le reste.</p>
 </main>
 <div id="etat"></div>
@@ -437,6 +457,7 @@ function majBoucles() {
   document.querySelectorAll(".b.boucle").forEach(b => b.classList.toggle("on", !!boucles[b.dataset.son]));
 }
 function declenche(b) {
+  if (modeTouches) { choisitCarte(b); return; }   // réglage des raccourcis : la carte attend sa touche
   const nom = b.dataset.son;
   if (REGLAGES[nom]?.boucle) {
     const allume = !boucles[nom];
@@ -474,13 +495,123 @@ document.getElementById("stop").addEventListener("click", () => {
 
 addEventListener("keydown", e => {
   if (e.metaKey || e.ctrlKey || e.altKey || e.repeat || e.target.closest?.("input")) return;   // on tape dans un champ
+  if (modeTouches) { regleTouche(e); return; }
   if (e.key === "/") { e.preventDefault(); cherche.focus(); cherche.select(); return; }
-  const l = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-  const b = document.querySelector(`[data-k="${l}"]`);
-  if (b) { e.preventDefault(); declenche(b); }
-  else if (l === "1" || l === "2" || l === "3") choisitDuree(+l * 10);
+  const l = toucheDe(e);
+  if (l === "1" || l === "2" || l === "3") choisitDuree(+l * 10);
   else if (l === " ") { e.preventDefault(); audio(); arreteChrono(true); }
   else if (l === "Escape") document.getElementById("stop").click();
+  else {
+    const b = carteDe(touches[l]);
+    if (b) { e.preventDefault(); declenche(b); }
+  }
+});
+
+/* ---------- Raccourcis clavier : réglés dans la page, retenus par ce navigateur ---------- */
+// Touches d'origine : data-k des boutons. Les réglages de Maxime les remplacent (localStorage), Exporter / Importer pour les garder.
+// Le programme des jeux (jeux-mariage.html, même site) lit "sons-touches-programme" pour afficher la touche devant chaque son.
+const CLE_TOUCHES = "sons-touches", CLE_TITRES = "sons-titres", CLE_PROGRAMME = "sons-touches-programme";
+const RESERVEES = ["1", "2", "3", " ", "/"];
+const TOUCHES_DEFAUT = {};
+document.querySelectorAll(".b[data-k]").forEach(b => TOUCHES_DEFAUT[b.dataset.k] = b.dataset.son);
+let touches = { ...TOUCHES_DEFAUT }, modeTouches = false, carteChoisie = null;
+try { const m = JSON.parse(localStorage.getItem(CLE_TOUCHES)); if (m && typeof m === "object") touches = nettoieTouches(m); } catch (e) {}
+
+// Chiffres lus sur la position de la touche (sur un clavier AZERTY, pas besoin de Maj), lettres sur la lettre ; Maj + lettre = autre touche
+function toucheDe(e) {
+  const c = e.code?.match(/^(?:Digit|Numpad)(\d)$/);
+  if (c) return c[1];
+  if (e.key.length !== 1) return e.key;
+  const l = e.key.toLowerCase();
+  return e.shiftKey && l !== e.key.toUpperCase() ? "⇧" + l : l;
+}
+const afficheTouche = t => t === " " ? "Espace" : t.toUpperCase();
+const carteDe = son => son ? document.querySelector(`.groupe .b[data-son="${CSS.escape(son)}"]`) : null;
+const titreCarte = b => b.querySelector("b").textContent;
+function nettoieTouches(m) {
+  const r = {};
+  for (const [k, son] of Object.entries(m)) if (typeof son === "string" && /^⇧?.$/u.test(k) && !RESERVEES.includes(k)) r[k] = son;
+  return r;
+}
+
+function appliqueTouches() {
+  const parSon = {};
+  for (const k in touches) parSon[touches[k]] = k;
+  document.querySelectorAll(".groupe .b").forEach(b => {
+    const k = parSon[b.dataset.son]; let kbd = b.querySelector("kbd");
+    if (!k) { kbd?.remove(); return; }
+    if (!kbd) { kbd = document.createElement("kbd"); b.prepend(kbd); }
+    kbd.textContent = afficheTouche(k);
+  });
+  // Pour le programme : titre et détail de chaque son (gardés d'une visite à l'autre, même si les extraits ne sont pas ouverts) et sa touche
+  try {
+    const titres = JSON.parse(localStorage.getItem(CLE_TITRES) || "{}");
+    document.querySelectorAll(".groupe .b").forEach(b => titres[b.dataset.son] = [titreCarte(b), b.querySelector("small").textContent]);
+    localStorage.setItem(CLE_TITRES, JSON.stringify(titres));
+    localStorage.setItem(CLE_PROGRAMME, JSON.stringify(Object.entries(titres).map(([son, [t, d]]) => [parSon[son] ? afficheTouche(parSon[son]) : "", t, d])));
+  } catch (e) {}
+}
+function sauveTouches() {
+  try { localStorage.setItem(CLE_TOUCHES, JSON.stringify(touches)); } catch (e) {}
+  appliqueTouches();
+}
+
+const panneau = document.getElementById("panneau"), aide = document.getElementById("panneau-aide"), AIDE = aide.textContent;
+function basculeTouches(on) {
+  modeTouches = on; choisitCarte(null);
+  document.body.classList.toggle("touches", on);
+  document.getElementById("raccourcis").classList.toggle("on", on);
+  panneau.hidden = !on;
+  if (on) { toutCouper(); majBoucles(); }
+}
+function choisitCarte(b) {
+  carteChoisie?.classList.remove("choisi");
+  carteChoisie = b; b?.classList.add("choisi");
+  aide.textContent = b ? `${titreCarte(b)} : appuie sur sa touche (Retour arrière : la retirer, Échap : annuler).` : AIDE;
+}
+function regleTouche(e) {
+  if (e.key === "Escape") { e.preventDefault(); if (carteChoisie) choisitCarte(null); else basculeTouches(false); return; }
+  if (!carteChoisie) return;
+  const son = carteChoisie.dataset.son, titre = titreCarte(carteChoisie);
+  const retire = () => { for (const k in touches) if (touches[k] === son) delete touches[k]; };   // une seule touche par son
+  if (e.key === "Backspace" || e.key === "Delete") {
+    e.preventDefault(); retire(); sauveTouches(); signale(titre + " : sans touche"); choisitCarte(null); return;
+  }
+  const k = toucheDe(e);
+  if (!/^⇧?.$/u.test(k)) return;   // Maj seule, flèches…
+  e.preventDefault();
+  if (RESERVEES.includes(k)) { signale(afficheTouche(k) + " est réservée (durées, chrono, recherche)"); return; }
+  const avant = carteDe(touches[k]);
+  retire(); touches[k] = son; sauveTouches();
+  signale(afficheTouche(k) + " : " + titre + (avant && avant.dataset.son !== son ? " (retirée de " + titreCarte(avant) + ")" : ""));
+  choisitCarte(null);
+}
+
+document.getElementById("raccourcis").addEventListener("click", () => basculeTouches(!modeTouches));
+document.getElementById("t-fin").addEventListener("click", () => basculeTouches(false));
+document.getElementById("t-defaut").addEventListener("click", () => {
+  if (!confirm("Revenir aux touches d'origine ? Les raccourcis réglés ici seront perdus (sauf s'ils sont exportés).")) return;
+  touches = { ...TOUCHES_DEFAUT };
+  try { localStorage.removeItem(CLE_TOUCHES); } catch (e) {}
+  appliqueTouches(); signale("Touches d'origine");
+});
+document.getElementById("t-exporter").addEventListener("click", () => {
+  const lisible = {};
+  for (const [k, son] of Object.entries(touches)) { const b = carteDe(son); lisible[afficheTouche(k)] = b ? titreCarte(b) + " (" + b.querySelector("small").textContent + ")" : son; }
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([JSON.stringify({ touches, lisible }, null, 2)], { type: "application/json" }));
+  a.download = "raccourcis-sons.json"; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+});
+const fichier = document.getElementById("t-fichier");
+document.getElementById("t-importer").addEventListener("click", () => fichier.click());
+fichier.addEventListener("change", async () => {
+  try {
+    const d = JSON.parse(await fichier.files[0].text());
+    touches = nettoieTouches(d.touches || d); sauveTouches();
+    signale(Object.keys(touches).length + " raccourcis importés");
+  } catch (e) { signale("Fichier de raccourcis illisible"); }
+  fichier.value = "";
 });
 
 /* ---------- Recherche : tous les sons, jeux et pop culture ---------- */
@@ -571,7 +702,7 @@ function construitPop() {
     g.querySelector(".grille").append(b);
     b._texte = sansAccent([s.titre, s.detail, s.cat, "pop culture", b.closest(".groupe")?.querySelector("h2")?.textContent || "", b.closest(".sous")?.querySelector("h3")?.textContent || ""].join(" "));
   }
-  filtre(); numerote(); prechargePop();
+  filtre(); numerote(); appliqueTouches(); prechargePop();
 }
 // Numéros dans l'ordre de la page (refaits quand les extraits s'ajoutent)
 function numerote() {
@@ -598,7 +729,7 @@ cherche.addEventListener("keydown", e => {
     cherche.value = ""; filtre(); cherche.blur();
   }
 });
-numerote(); filtre();   // masque les lignes encore vides (extraits pas encore ouverts)
+numerote(); appliqueTouches(); filtre();   // masque les lignes encore vides (extraits pas encore ouverts)
 if (SONS_POP) construitPop();   // version complète locale : extraits déjà là, pas de mot de passe
 else {
   // Mot de passe déjà retenu sur ce téléphone : les extraits s'ouvrent seuls
