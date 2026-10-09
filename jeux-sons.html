@@ -803,7 +803,7 @@ let plan = null, onglet = 1, preferes = {}, proxies = {};
 const derniere = {};   // dernière ligne jouée, par jeu
 try { const o = localStorage.getItem(CLE_ONGLET); if (o !== null) onglet = +o || 0; } catch (e) {}
 // Sons principaux choisis d'avance (jeu|ligne : son) ; un clic droit de Maxime les remplace
-const PREFERES_DEFAUT = { "2|q3": "k2000", "2|q10": "mission" };   // faux départs, saut en parachute
+const PREFERES_DEFAUT = { "2|q1": "malibu", "2|q2": "millions-dernier", "2|q3": "k2000", "2|q5": "k-gueuler", "2|q6": "jaws", "2|q8": "maillon-consternant", "2|q10": "mission", "2|q11": "ghostbusters" };
 try { preferes = JSON.parse(localStorage.getItem(CLE_PREFERES)) || {}; } catch (e) {}
 preferes = { ...PREFERES_DEFAUT, ...preferes };
 function sauvePreferes() { try { localStorage.setItem(CLE_PREFERES, JSON.stringify(preferes)); } catch (e) {} }

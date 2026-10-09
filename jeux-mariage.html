@@ -114,6 +114,8 @@
   .comment { color: var(--muted); font-size: .88rem; }
   .sn { display: inline-block; font-style: normal; font-weight: 600; font-size: .78rem; line-height: 1.4; color: var(--son); background: color-mix(in srgb, var(--son) 11%, transparent); border: 1px solid color-mix(in srgb, var(--son) 38%, transparent); border-radius: 999px; padding: 0 8px 0 6px; margin: 2px 1px; vertical-align: 1px; white-space: nowrap; }
   .sn::before { content: "\266A\00a0"; opacity: .7; }
+  /* Conduite son : gérée dans la table de sons (jeux-sons.html), qui la lit dans cette page. Gardée ici, masquée à l'affichage. */
+  .conduite, .sn, .qtab th.snd, .qtab td.snd { display: none !important; }
   .ctab td:first-child { width: 34%; }
   .ctab td.sons { line-height: 1.5; }
   .ctab tr.sep td { padding: 14px 10px 4px; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--son); border-bottom: 1px solid color-mix(in srgb, var(--son) 40%, transparent); }
@@ -188,6 +190,28 @@
   .tl .round p { font-style: italic; }
   .tl .part { margin: 18px 0 2px; padding-top: 10px; border-top: 1px dashed var(--line); font-size: .8rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--c, var(--muted)); }
   .tl .paper-wrap { margin-top: 4px; }
+  /* Jeux sur deux colonnes : texte à gauche, schémas à droite (une seule colonne, schémas en premier, sous 980px) */
+  main:has(> #vue-timeline:not([hidden])) { max-width: 1240px; }
+  .tl .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 400px); gap: 0 22px; }
+  .tl .vis { align-self: start; border-left: 1px dashed var(--line); padding-left: 18px; }
+  .tl .vis > h5:first-child { margin-top: 18px; }
+  .tl .vis .postits { gap: 10px; }
+  .tl .vis .postit { width: 104px; height: 104px; font-size: .9rem; padding: 8px; }
+  @media (min-width: 981px) {
+    .vis .steps { flex-direction: column; }
+    .vis .arr { width: auto; line-height: 1; }
+    .vis .arr::before { content: "↓"; }
+    .vis .step { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 0 10px; align-content: center; padding: 6px 9px 6px 6px; }
+    .vis .step .sv { grid-row: 1 / span 2; height: 68px; margin: 0; align-self: center; }
+    .vis .step b { align-self: end; }
+    .vis .step p { align-self: start; }
+    .vis .schema .cols2 { grid-template-columns: 1fr; gap: 8px; }
+  }
+  @media (max-width: 980px) {
+    .tl .cols { grid-template-columns: 1fr; }
+    .tl .vis { order: -1; border-left: 0; padding-left: 0; }
+    .tl .vis > h5:first-child { margin-top: 10px; }
+  }
   @media (max-width: 620px) {
     .tl::before, .tl > li::after { display: none; }
     .tl > li { grid-template-columns: 1fr; }
@@ -382,72 +406,14 @@
   </header>
 
   <nav class="tabs" role="tablist">
-    <button type="button" role="tab" data-vue="fiche" aria-selected="true">Fiche des jeux</button>
+    <button type="button" role="tab" data-vue="timeline" aria-selected="true">Timeline des jeux</button>
+    <button type="button" role="tab" data-vue="contexte" aria-selected="false">Contexte</button>
+    <button type="button" role="tab" data-vue="fiches" aria-selected="false">Fiches imprimées</button>
     <button type="button" role="tab" data-vue="todo" aria-selected="false">To do</button>
   </nav>
 
-  <div class="vue" id="vue-fiche">
-  <h2>Qui joue</h2>
-  <p><strong>35 personnes le soir, dont 33 joueurs</strong> (+ enfants). Le cœur du jeu : 12 amis du couple et 10 de la famille commune, qui les connaissent bien. Les 11 du côté de Sandrine les connaissent moins : à l'aise pour voter au jeu 2, moins pour les jeux 1 et 3.</p>
-  <p><strong>~35 min de jeux</strong> : jeu 1 ~10 min (8-10 post-its lus sur ~25), jeu 2 ~10-12 min (11 questions), jeu 3 ~12-15 min (4-5 réponses lues + 3 anecdotes préparées).</p>
-
-  <h2>Enchaînement</h2>
-  <p class="note">Durées estimées. Ouverture par Stéphane, un interlude de Stéphane &amp; Suzanne entre chaque jeu. Tout à la suite ou pause buffet avant le jeu 3 : à décider (Aurélien &amp; Floriane).</p>
-  <div class="flow">
-    <div class="card j1">
-      <span class="n">Jeu 1</span>
-      <h4>Le défi des mariés</h4>
-      <p>Les invités écrivent un mot, les mariés devinent qui est visé.</p>
-      <p class="dur">~10 min</p>
-    </div>
-    <div class="card j2">
-      <span class="n">Jeu 2</span>
-      <h4>LUI, ELLE ou les 2 ?</h4>
-      <p>La salle vote avec des panneaux photo, puis les mariés.</p>
-      <p class="dur">~10-12 min</p>
-    </div>
-    <div class="card j3">
-      <span class="n">Jeu 3</span>
-      <h4>15 ans de nous... racontés par vous</h4>
-      <p>Questionnaires remplis, quelques invités interrogés, 3 anecdotes préparées.</p>
-      <p class="dur">~12-15 min, ou plus si ça prend</p>
-    </div>
-  </div>
-
-  <h2>Ton animation</h2>
-  <p class="note">Propositions pour le rôle de maître de cérémonie d'Aurélien. Les blagues sont à piocher : elles sont rangées dans la timeline, étape par étape (rubrique « Blagues à piocher »).</p>
-
-  <div class="before" style="border-left-color:var(--accent)">
-    <h4>Les running gags</h4>
-    <ul>
-      <li><strong>« Oui chérie »</strong> (Stéphane) : « C'est très important d'avoir le dernier mot avec sa femme. Et ce dernier mot, c'est : oui chérie. » À placer au premier désaccord des mariés au jeu 1, sinon à la question 2 du jeu 2 au plus tard. Puis on fait participer la salle : « À chaque cloche de ring, je dis "Stéphane ?" et vous répondez "Oui chérie !". On essaie. » On répète une fois, plus fort (« Suzanne ne vous a pas entendus »). Chute à la conclusion.</li>
-      <li><strong>« C'était bien mais… »</strong> (Suzanne, question 8 du jeu 2) : pour équilibrer, Stéphane ne doit pas être le seul visé. À ressortir à la fin.</li>
-      <li><strong>La CAF</strong> : par petites touches (ils s'y sont rencontrés), surtout avec les acronymes du bloc suivant. Pas un fil rouge : on n'en fait pas toute la soirée. <span class="comment" style="font-style:normal">Son : </span><span class="sn">Attente tél.</span></li>
-    </ul>
-  </div>
-
-  <div class="before" style="border-left-color:var(--accent)">
-    <h4>CAF : les autres définitions</h4>
-    <p style="margin:0 0 6px">Les 5 marquées « placée » sont déjà écrites dans la timeline. Les autres restent en réserve : pas plus d'une ou deux en plus. Formule : « La CAF, ici, ça veut dire… » <span class="comment" style="font-style:normal">Son : </span><span class="sn">Attente tél.</span><span class="comment" style="font-style:normal"> deux secondes.</span></p>
-    <ul>
-      <li><strong>Cuisses, Abdos, Fessiers</strong> · intro : « Pas la CAF de la salle de sport… quoique, 22 ans de couple, c'est du sport. »</li>
-      <li><strong>Cuisine, Apéro, Flirt</strong> · intro : le vrai programme du restaurant « en tout bien tout honneur ».</li>
-      <li><strong>Coup de foudre Assez Flemmard</strong> · intro : 7 ans entre la rencontre et le mariage.</li>
-      <li><strong>Chérie A Forcément raison</strong> <span class="ok">placée</span> · jeu 2, question 2 (qui a toujours raison), juste avant « oui chérie ».</li>
-      <li><strong>Comité des Allers-retours Fréquents</strong> · jeu 2, question 3 (faux départs) : président, Stéphane.</li>
-      <li><strong>Collection Anatomique Fragmentée</strong> <span class="ok">placée</span> · jeu 2, question 4 (corps en puzzle avec les radios).</li>
-      <li><strong>Cherche, Appelle, Fouille</strong> · jeu 2, question 7 : la méthode de Stéphane pour retrouver ses affaires.</li>
-      <li><strong>Commentaire d'Après-Fête</strong> · jeu 2, question 8 : « C'était bien mais… », signé Suzanne.</li>
-      <li><strong>Club Anti-Fer à repasser</strong> · jeu 2, question 9 (lessive) : présidente, Suzanne.</li>
-      <li><strong>Chute Avec Frissons</strong> <span class="ok">placée</span> · jeu 2, question 10 (le saut en parachute de Suzanne).</li>
-      <li><strong>Contestataire À Fond</strong> <span class="ok">placée</span> · jeu 3, après Sandrine H. : Stéphane le rebelle, et Noah qui mène un mouvement de grève au lycée.</li>
-      <li><strong>Câlins, Apéro, Fous rires</strong> · jeu 3, après un souvenir tendre.</li>
-      <li><strong>Ça A Fonctionné</strong> <span class="ok">placée</span> · conclusion, en ouverture.</li>
-    </ul>
-  </div>
-
-  <h2>Timeline des jeux</h2>
-  <div class="before" style="border-left-color:var(--son)">
+  <div class="vue" id="vue-timeline">
+  <div class="before conduite" style="border-left-color:var(--son)">
     <h4>Conduite son : mode d'emploi</h4>
     <p style="margin:0 0 6px">Document de travail pour Aurélien et Maxime (page « Sons des jeux » sur son ordinateur). Chaque jeu a son tableau « Conduite son » : pour chaque action, plusieurs sons possibles, Maxime choisit selon l'ambiance. Les noms sont ceux de la page des sons.</p>
     <h5>Entrées en scène</h5>
@@ -487,20 +453,6 @@
         </ul>
         <h5>Annonce rapide au micro</h5>
         <div class="round"><p>« Sur vos tables : des post-its et un questionnaire. Un mot sur Stéphane, sur Suzanne ou sur les deux, au dos pour qui et votre prénom. Et vos souvenirs sur le questionnaire. On ramasse vers 18h45. »</p></div>
-        <h5>Fiche règles (sur les tables)</h5>
-        <p>Récapitulatif des 3 jeux laissé sur chaque table, pour ne pas avoir à repasser. 4 par A4, à découper puis plastifier.</p>
-        <div class="paper-wrap">
-          <div class="paper p0" data-card="regles">
-            <p class="kicker">15 ans de mariage · Stéphane &amp; Suzanne</p>
-            <div class="orn" data-orn="coupes"></div>
-            <h6>Les jeux de la soirée</h6>
-            <div class="rule r1"><span class="num"><span>1</span></span><div><b>Le défi des mariés</b><p>Écrivez sur un post-it <strong>un mot</strong> qui décrit Stéphane, Suzanne ou les deux. <strong>Au dos : pour qui et votre prénom.</strong> Les mariés devront deviner qui est visé. Pas d'idée ? Voir la fiche « idées ».</p></div></div>
-            <div class="rule r2"><span class="num"><span>2</span></span><div><b>LUI, ELLE ou les 2 ?</b><p>À chaque question, levez le panneau de <strong>Stéphane</strong>, de <strong>Suzanne</strong>, les deux… ou aucun. Ensuite, les mariés donnent leur réponse.</p></div></div>
-            <div class="rule r3"><span class="num"><span>3</span></span><div><b>15 ans de nous… racontés par vous</b><p>Remplissez le questionnaire : <strong>votre prénom</strong> et les questions qui vous inspirent. On vous demandera peut-être d'en lire une !</p></div></div>
-            <p class="hl">Post-its et questionnaires ramassés <b>avant le début des jeux</b> (~19h).</p>
-          </div>
-        </div>
-        <button class="print-btn" type="button" data-print="regles" style="--c:var(--accent)">Imprimer la planche (4 fiches par A4)</button>
       </div>
     </li>
 
@@ -552,7 +504,97 @@
         <span class="k">Jeu 1 · ~10 min</span>
         <h4>Le défi des mariés</h4>
         <p class="meta">Aurélien anime, les mariés devinent · Écran : « Jeu 1 », « règle », puis « score »</p>
+        <div class="cols">
+        <div class="txt">
         <p class="part">Le principe</p>
+        <h5>Principe</h5>
+        <p>Chaque invité écrit sur un post-it <strong>un mot</strong> (adjectif, nom, expression) qui caractérise Stéphane, Suzanne ou les deux.</p>
+        <p>Défi des mariés : pour chaque post-it, trouver <strong>qui est visé</strong> (Stéphane, Suzanne ou les 2). C'est l'enjeu principal. Deviner l'auteur est secondaire (bonus).</p>
+        <h5>Au dos : pour qui + prénom <span class="ok">décidé</span></h5>
+        <p>Chaque invité écrit au dos du post-it <strong>qui est visé</strong> (Stéphane, Suzanne ou les 2) et <strong>son prénom</strong>. Personne ne se souviendra de ce qu'il a écrit : en ramassant les post-its, on a tout pour vérifier les réponses des mariés.</p>
+        <h5>Exemple de manche</h5>
+        <div class="round">
+          <p><b>Aurélien</b> lit : « Tête en l'air ».</p>
+          <p><b>Les mariés</b> : « C'est Stéphane ! »</p>
+          <p><b>Aurélien</b> retourne le post-it : « Pour Stéphane : bonne réponse, 1 point ! »</p>
+          <p><b>Bonus</b> (si le temps le permet) : « Et qui l'a écrit ? » « Justin ? » « Raté, c'est Maxime ! »</p>
+        </div>
+        <p class="part">Sur scène</p>
+        <h5>Annonce</h5>
+        <div class="round"><p>« Premier défi, le jeu de l'apéro. Vous avez écrit un mot sur eux. Stéphane, Suzanne : à vous de deviner qui il visait. »</p></div>
+        <h5>Pour chaque post-it (8-10)</h5>
+        <ol>
+          <li>Aurélien lit le mot, sans retourner le post-it.</li>
+          <li>Les mariés répondent : Stéphane, Suzanne ou les 2.</li>
+          <li>Aurélien retourne le post-it : 1 point si c'est la bonne cible.</li>
+          <li>Bonus si le temps le permet : « Et qui l'a écrit ? »</li>
+        </ol>
+        <h5>Questions pour relancer</h5>
+        <ul>
+          <li>« Vous êtes d'accord tous les deux ? »</li>
+          <li>Si ça vise l'autre : « Suzanne, tu as l'air bien sûre que c'est lui. »</li>
+          <li>À l'auteur : « Tu peux nous dire pourquoi ce mot-là ? »</li>
+        </ul>
+        <h5>Blagues à piocher</h5>
+        <ul class="gags">
+          <li>Premier désaccord des mariés : placer <strong>« oui chérie »</strong> (voir « Ton animation »).</li>
+          <li>Mot très flatteur pour Stéphane : « On vérifie l'écriture : Stéphane l'a peut-être écrit lui-même. »</li>
+          <li>Bonus « qui l'a écrit ? » : « Les post-its sont anonymes. Enfin, anonymes avec le prénom au dos. »</li>
+          <li>Score : « … sur … À la CAF, on appelle ça un dossier incomplet. On vous recontactera. »</li>
+        </ul>
+        <h5>Sortie</h5>
+        <div class="round"><p>« Score des mariés : … sur … Ils se connaissent, à peu près. On leur laisse un moment pour s'en remettre. »</p></div>
+        <h5>Si ça s'essouffle</h5>
+        <p>Garder 5-6 post-its au lieu de 8-10 ; passer plus vite au bonus « qui l'a écrit ? ».</p>
+        <div class="conduite">
+        <p class="part">Conduite son</p>
+        <div class="table-wrap">
+          <table class="ctab">
+            <thead><tr><th>Action</th><th>Sons possibles</th></tr></thead>
+            <tbody>
+              <tr class="sep"><td colspan="2">Mise en place</td></tr>
+              <tr><td>Annonce du jeu</td><td class="sons"><span class="sn">Jingle qui monte</span> <span class="sn">« Let's play ! »</span> <span class="sn">Fanfare</span> <span class="sn">Récré A2</span></td></tr>
+              <tr><td>Les mariés s'installent face à la salle</td><td class="sons"><span class="sn">Fort Boyard</span> <span class="sn">Rocky, Eye of the Tiger</span> <span class="sn">Top Gun</span> <span class="sn">Koh-Lanta</span></td></tr>
+              <tr><td>Aurélien montre la boîte de post-its</td><td class="sons"><span class="sn">Tambours</span> <span class="sn">Question à un million</span> <span class="sn">Les Dents de la mer</span> <span class="sn">X-Files</span></td></tr>
+              <tr class="sep"><td colspan="2">À chaque post-it</td></tr>
+              <tr><td>Aurélien pioche un post-it</td><td class="sons"><span class="sn">Gong</span> <span class="sn">Verres</span> <span class="sn">Question suivante</span> <span class="sn">Jingle grave</span> <span class="sn">Coup de musique</span></td></tr>
+              <tr><td>Les mariés réfléchissent</td><td class="sons"><span class="sn">Tic-tac suspense</span> <span class="sn">Tic-tac arcade</span> <span class="sn">Minuteur</span> <span class="sn">Jeopardy</span> <span class="sn">Musique des questions</span> <span class="sn">Cœur qui bat, calme</span> <span class="sn">Musique de la manche</span></td></tr>
+              <tr><td>Ils se concertent à voix basse</td><td class="sons"><span class="sn">Mission impossible</span> <span class="sn">La Panthère rose</span> <span class="sn">Inspecteur Gadget</span> <span class="sn">X-Files</span> <span class="sn">SOS Fantômes</span></td></tr>
+              <tr><td>Ça part dans tous les sens</td><td class="sons"><span class="sn">Benny Hill</span> <span class="sn">K2000</span> <span class="sn">MacGyver</span> <span class="sn">Mario, Thème</span> <span class="sn">Les Cités d'or</span></td></tr>
+              <tr><td>Ça traîne</td><td class="sons"><span class="sn">« C'est votre dernier mot ? »</span> <span class="sn">Criquets</span> <span class="sn">Attente tél.</span></td></tr>
+              <tr><td>Ils ne sont pas d'accord</td><td class="sons"><span class="sn">Cloche de ring</span> <span class="sn">« Objection ! »</span> <span class="sn">« Oui… Ben non ! »</span> <span class="sn">« Nan c'est n'importe quoi »</span> <span class="sn">« Quoi ?! Mais c'est un scandale ! »</span> <span class="sn">« Hadouken ! »</span></td></tr>
+              <tr><td>« Stéphane ? » Salle : « Oui chérie ! »</td><td class="sons"><span class="sn">« Ah voui, vous avez raison »</span> <span class="sn">« Très bien »</span> <span class="sn">« OK ? OK ! »</span> <span class="sn">« Vous l'avez bien mérité »</span></td></tr>
+              <tr><td>Aurélien retourne le post-it</td><td class="sons"><span class="sn">Roulement</span> <span class="sn">Cœur qui bat</span> <span class="sn">Question à un million</span> <span class="sn">Tambours</span></td></tr>
+              <tr><td>Bonne cible</td><td class="sons"><span class="sn">Ding</span> <span class="sn">Bonus</span> <span class="sn">Zelda, Secret découvert</span> <span class="sn">Mario, Niveau terminé</span> <span class="sn">« Il est fort ce con »</span> <span class="sn">« C'est dingue ! Ah, dingue. »</span> <span class="sn">« Oh p… oui ! »</span></td></tr>
+              <tr><td>Ratée</td><td class="sons"><span class="sn">Buzzer</span> <span class="sn">Wah wah wah</span> <span class="sn">Mario, Mario meurt</span> <span class="sn">Pac-Man</span> <span class="sn">Bip d'erreur</span> <span class="sn">Ding d'erreur</span> <span class="sn">« Nani ?! »</span> <span class="sn">Windows XP</span></td></tr>
+              <tr class="sep"><td colspan="2">Selon le mot</td></tr>
+              <tr><td>Mot tendre ou flatteur</td><td class="sons"><span class="sn">« Oh la vache ! »</span> <span class="sn">« C'est mortel ! »</span> <span class="sn">« Merciiiii ! »</span> <span class="sn">« Quand je suis content, je vomis »</span> <span class="sn">« Une serpillière, c'est formidable ! »</span></td></tr>
+              <tr><td>Mot piquant</td><td class="sons"><span class="sn">« Oh c'est la vacherie ça ! »</span> <span class="sn">« C'est honteux ! »</span> <span class="sn">« C'est très fin, ça se mange sans faim »</span> <span class="sn">« Vous allez pas bouder ?! »</span></td></tr>
+              <tr><td>La personne visée proteste</td><td class="sons"><span class="sn">« Objection ! »</span> <span class="sn">« On est en République, bordel de m… ! »</span> <span class="sn">« Aujourd'hui ça passera pas »</span> <span class="sn">« On en a gros ! »</span></td></tr>
+              <tr><td>Mot que personne ne comprend</td><td class="sons"><span class="sn">« C'est pas faux », Perceval</span> <span class="sn">« Binz ? »</span> <span class="sn">« J'ai rien compris ! »</span> <span class="sn">« Il s'appelle Juste Leblanc »</span> <span class="sn">« Cuillère »</span> <span class="sn">« Oui enfin… j'me comprends »</span></td></tr>
+              <tr><td>Série de bonnes réponses</td><td class="sons"><span class="sn">We Are the Champions</span> <span class="sn">Rocky, Gonna Fly Now</span> <span class="sn">Victoire de rap lourde</span> <span class="sn">Dragon Ball Z</span> <span class="sn">Les Chevaliers du Zodiaque</span></td></tr>
+              <tr><td>Série de ratés</td><td class="sons"><span class="sn">Violon triste</span> <span class="sn">Sortie du perdant</span> <span class="sn">« Vous êtes un gros nul »</span> <span class="sn">« C'est pas moi qui explique mal… »</span></td></tr>
+              <tr class="sep"><td colspan="2">Bonus « Et qui l'a écrit ? »</td></tr>
+              <tr><td>La question tombe</td><td class="sons"><span class="sn">Roulement</span> <span class="sn">Tambours</span> <span class="sn">X-Files</span> <span class="sn">Les Dents de la mer</span></td></tr>
+              <tr><td>L'auteur se lève</td><td class="sons"><span class="sn">Une famille en or</span> <span class="sn">Le Juste Prix</span> <span class="sn">Tarzan, version MGM</span> <span class="sn">Top Gun</span></td></tr>
+              <tr><td>Auteur trouvé</td><td class="sons"><span class="sn">Bonus</span> <span class="sn">Ding</span> <span class="sn">Zelda, Secret découvert</span> <span class="sn">Indiana Jones</span></td></tr>
+              <tr><td>Pas trouvé</td><td class="sons"><span class="sn">Buzzer</span> <span class="sn">Pac-Man</span> <span class="sn">« Nani ?! »</span> <span class="sn">Cri qui tombe</span></td></tr>
+              <tr class="sep"><td colspan="2">Fin du jeu</td></tr>
+              <tr><td>Score annoncé</td><td class="sons"><span class="sn">Fanfare</span> <span class="sn">Bravo</span> <span class="sn">We Are the Champions</span> <span class="sn">Rocky, Gonna Fly Now</span> <span class="sn">Indiana Jones</span></td></tr>
+              <tr><td>Score faible</td><td class="sons"><span class="sn">« En un mot, consternant. »</span> <span class="sn">« …en un mot : désastreuse. »</span> <span class="sn">Sortie du perdant</span> <span class="sn">Fin de partie</span> <span class="sn">Game over</span></td></tr>
+              <tr><td>Blague de la CAF (« dossier incomplet »)</td><td class="sons"><span class="sn">Attente tél.</span> <span class="sn">Ba-dum-tss</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        </div>
+        <h5>Suggestions</h5>
+        <ul>
+          <li class="prop">Avec ~25-30 post-its, n'en lire qu'une sélection (~8-10) : les plus drôles, et un équilibre Stéphane / Suzanne / les 2.</li>
+          <li class="prop">1 point par cible trouvée, score des mariés annoncé à la fin. L'auteur seulement en bonus, sur les post-its les plus drôles, pour ne pas rallonger.</li>
+          <li class="prop">Garder tous les post-its et les coller sur une feuille ou un cadre à offrir aux mariés.</li>
+        </ul>
+        </div>
+        <aside class="vis">
         <h5>En un coup d'œil</h5>
         <div class="schema">
           <p class="who-leg"><span><i style="--k:var(--text)"></i>Aurélien</span><span><i style="--k:var(--lui)"></i>Stéphane</span><span><i style="--k:var(--elle)"></i>Suzanne</span></p>
@@ -625,130 +667,13 @@
           </div>
           <p class="schema-end"><b>Fin :</b> score des mariés annoncé. Les post-its sont gardés pour eux.</p>
         </div>
-        <h5>Principe</h5>
-        <p>Chaque invité écrit sur un post-it <strong>un mot</strong> (adjectif, nom, expression) qui caractérise Stéphane, Suzanne ou les deux.</p>
-        <p>Défi des mariés : pour chaque post-it, trouver <strong>qui est visé</strong> (Stéphane, Suzanne ou les 2). C'est l'enjeu principal. Deviner l'auteur est secondaire (bonus).</p>
-        <h5>Au dos : pour qui + prénom <span class="ok">décidé</span></h5>
-        <p>Chaque invité écrit au dos du post-it <strong>qui est visé</strong> (Stéphane, Suzanne ou les 2) et <strong>son prénom</strong>. Personne ne se souviendra de ce qu'il a écrit : en ramassant les post-its, on a tout pour vérifier les réponses des mariés.</p>
         <h5>Exemple de post-it</h5>
         <div class="postits">
           <div class="postit"><small>Recto</small>Tête en l'air</div>
           <div class="postit"><small>Verso</small>Pour : Stéphane<br>De : Maxime</div>
         </div>
-        <h5>Exemple de manche</h5>
-        <div class="round">
-          <p><b>Aurélien</b> lit : « Tête en l'air ».</p>
-          <p><b>Les mariés</b> : « C'est Stéphane ! »</p>
-          <p><b>Aurélien</b> retourne le post-it : « Pour Stéphane : bonne réponse, 1 point ! »</p>
-          <p><b>Bonus</b> (si le temps le permet) : « Et qui l'a écrit ? » « Justin ? » « Raté, c'est Maxime ! »</p>
+        </aside>
         </div>
-        <p class="part">Sur scène</p>
-        <h5>Annonce</h5>
-        <div class="round"><p>« Premier défi, le jeu de l'apéro. Vous avez écrit un mot sur eux. Stéphane, Suzanne : à vous de deviner qui il visait. »</p></div>
-        <h5>Pour chaque post-it (8-10)</h5>
-        <ol>
-          <li>Aurélien lit le mot, sans retourner le post-it.</li>
-          <li>Les mariés répondent : Stéphane, Suzanne ou les 2.</li>
-          <li>Aurélien retourne le post-it : 1 point si c'est la bonne cible.</li>
-          <li>Bonus si le temps le permet : « Et qui l'a écrit ? »</li>
-        </ol>
-        <h5>Questions pour relancer</h5>
-        <ul>
-          <li>« Vous êtes d'accord tous les deux ? »</li>
-          <li>Si ça vise l'autre : « Suzanne, tu as l'air bien sûre que c'est lui. »</li>
-          <li>À l'auteur : « Tu peux nous dire pourquoi ce mot-là ? »</li>
-        </ul>
-        <h5>Blagues à piocher</h5>
-        <ul class="gags">
-          <li>Premier désaccord des mariés : placer <strong>« oui chérie »</strong> (voir « Ton animation »).</li>
-          <li>Mot très flatteur pour Stéphane : « On vérifie l'écriture : Stéphane l'a peut-être écrit lui-même. »</li>
-          <li>Bonus « qui l'a écrit ? » : « Les post-its sont anonymes. Enfin, anonymes avec le prénom au dos. »</li>
-          <li>Score : « … sur … À la CAF, on appelle ça un dossier incomplet. On vous recontactera. »</li>
-        </ul>
-        <h5>Sortie</h5>
-        <div class="round"><p>« Score des mariés : … sur … Ils se connaissent, à peu près. On leur laisse un moment pour s'en remettre. »</p></div>
-        <h5>Si ça s'essouffle</h5>
-        <p>Garder 5-6 post-its au lieu de 8-10 ; passer plus vite au bonus « qui l'a écrit ? ».</p>
-        <p class="part">Conduite son</p>
-        <div class="table-wrap">
-          <table class="ctab">
-            <thead><tr><th>Action</th><th>Sons possibles</th></tr></thead>
-            <tbody>
-              <tr class="sep"><td colspan="2">Mise en place</td></tr>
-              <tr><td>Annonce du jeu</td><td class="sons"><span class="sn">Jingle qui monte</span> <span class="sn">« Let's play ! »</span> <span class="sn">Fanfare</span> <span class="sn">Récré A2</span></td></tr>
-              <tr><td>Les mariés s'installent face à la salle</td><td class="sons"><span class="sn">Fort Boyard</span> <span class="sn">Rocky, Eye of the Tiger</span> <span class="sn">Top Gun</span> <span class="sn">Koh-Lanta</span></td></tr>
-              <tr><td>Aurélien montre la boîte de post-its</td><td class="sons"><span class="sn">Tambours</span> <span class="sn">Question à un million</span> <span class="sn">Les Dents de la mer</span> <span class="sn">X-Files</span></td></tr>
-              <tr class="sep"><td colspan="2">À chaque post-it</td></tr>
-              <tr><td>Aurélien pioche un post-it</td><td class="sons"><span class="sn">Gong</span> <span class="sn">Verres</span> <span class="sn">Question suivante</span> <span class="sn">Jingle grave</span> <span class="sn">Coup de musique</span></td></tr>
-              <tr><td>Les mariés réfléchissent</td><td class="sons"><span class="sn">Tic-tac suspense</span> <span class="sn">Tic-tac arcade</span> <span class="sn">Minuteur</span> <span class="sn">Jeopardy</span> <span class="sn">Musique des questions</span> <span class="sn">Cœur qui bat, calme</span> <span class="sn">Musique de la manche</span></td></tr>
-              <tr><td>Ils se concertent à voix basse</td><td class="sons"><span class="sn">Mission impossible</span> <span class="sn">La Panthère rose</span> <span class="sn">Inspecteur Gadget</span> <span class="sn">X-Files</span> <span class="sn">SOS Fantômes</span></td></tr>
-              <tr><td>Ça part dans tous les sens</td><td class="sons"><span class="sn">Benny Hill</span> <span class="sn">K2000</span> <span class="sn">MacGyver</span> <span class="sn">Mario, Thème</span> <span class="sn">Les Cités d'or</span></td></tr>
-              <tr><td>Ça traîne</td><td class="sons"><span class="sn">« C'est votre dernier mot ? »</span> <span class="sn">Criquets</span> <span class="sn">Attente tél.</span></td></tr>
-              <tr><td>Ils ne sont pas d'accord</td><td class="sons"><span class="sn">Cloche de ring</span> <span class="sn">« Objection ! »</span> <span class="sn">« Oui… Ben non ! »</span> <span class="sn">« Nan c'est n'importe quoi »</span> <span class="sn">« Quoi ?! Mais c'est un scandale ! »</span> <span class="sn">« Hadouken ! »</span></td></tr>
-              <tr><td>« Stéphane ? » Salle : « Oui chérie ! »</td><td class="sons"><span class="sn">« Ah voui, vous avez raison »</span> <span class="sn">« Très bien »</span> <span class="sn">« OK ? OK ! »</span> <span class="sn">« Vous l'avez bien mérité »</span></td></tr>
-              <tr><td>Aurélien retourne le post-it</td><td class="sons"><span class="sn">Roulement</span> <span class="sn">Cœur qui bat</span> <span class="sn">Question à un million</span> <span class="sn">Tambours</span></td></tr>
-              <tr><td>Bonne cible</td><td class="sons"><span class="sn">Ding</span> <span class="sn">Bonus</span> <span class="sn">Zelda, Secret découvert</span> <span class="sn">Mario, Niveau terminé</span> <span class="sn">« Il est fort ce con »</span> <span class="sn">« C'est dingue ! Ah, dingue. »</span> <span class="sn">« Oh p… oui ! »</span></td></tr>
-              <tr><td>Ratée</td><td class="sons"><span class="sn">Buzzer</span> <span class="sn">Wah wah wah</span> <span class="sn">Mario, Mario meurt</span> <span class="sn">Pac-Man</span> <span class="sn">Bip d'erreur</span> <span class="sn">Ding d'erreur</span> <span class="sn">« Nani ?! »</span> <span class="sn">Windows XP</span></td></tr>
-              <tr class="sep"><td colspan="2">Selon le mot</td></tr>
-              <tr><td>Mot tendre ou flatteur</td><td class="sons"><span class="sn">« Oh la vache ! »</span> <span class="sn">« C'est mortel ! »</span> <span class="sn">« Merciiiii ! »</span> <span class="sn">« Quand je suis content, je vomis »</span> <span class="sn">« Une serpillière, c'est formidable ! »</span></td></tr>
-              <tr><td>Mot piquant</td><td class="sons"><span class="sn">« Oh c'est la vacherie ça ! »</span> <span class="sn">« C'est honteux ! »</span> <span class="sn">« C'est très fin, ça se mange sans faim »</span> <span class="sn">« Vous allez pas bouder ?! »</span></td></tr>
-              <tr><td>La personne visée proteste</td><td class="sons"><span class="sn">« Objection ! »</span> <span class="sn">« On est en République, bordel de m… ! »</span> <span class="sn">« Aujourd'hui ça passera pas »</span> <span class="sn">« On en a gros ! »</span></td></tr>
-              <tr><td>Mot que personne ne comprend</td><td class="sons"><span class="sn">« C'est pas faux », Perceval</span> <span class="sn">« Binz ? »</span> <span class="sn">« J'ai rien compris ! »</span> <span class="sn">« Il s'appelle Juste Leblanc »</span> <span class="sn">« Cuillère »</span> <span class="sn">« Oui enfin… j'me comprends »</span></td></tr>
-              <tr><td>Série de bonnes réponses</td><td class="sons"><span class="sn">We Are the Champions</span> <span class="sn">Rocky, Gonna Fly Now</span> <span class="sn">Victoire de rap lourde</span> <span class="sn">Dragon Ball Z</span> <span class="sn">Les Chevaliers du Zodiaque</span></td></tr>
-              <tr><td>Série de ratés</td><td class="sons"><span class="sn">Violon triste</span> <span class="sn">Sortie du perdant</span> <span class="sn">« Vous êtes un gros nul »</span> <span class="sn">« C'est pas moi qui explique mal… »</span></td></tr>
-              <tr class="sep"><td colspan="2">Bonus « Et qui l'a écrit ? »</td></tr>
-              <tr><td>La question tombe</td><td class="sons"><span class="sn">Roulement</span> <span class="sn">Tambours</span> <span class="sn">X-Files</span> <span class="sn">Les Dents de la mer</span></td></tr>
-              <tr><td>L'auteur se lève</td><td class="sons"><span class="sn">Une famille en or</span> <span class="sn">Le Juste Prix</span> <span class="sn">Tarzan, version MGM</span> <span class="sn">Top Gun</span></td></tr>
-              <tr><td>Auteur trouvé</td><td class="sons"><span class="sn">Bonus</span> <span class="sn">Ding</span> <span class="sn">Zelda, Secret découvert</span> <span class="sn">Indiana Jones</span></td></tr>
-              <tr><td>Pas trouvé</td><td class="sons"><span class="sn">Buzzer</span> <span class="sn">Pac-Man</span> <span class="sn">« Nani ?! »</span> <span class="sn">Cri qui tombe</span></td></tr>
-              <tr class="sep"><td colspan="2">Fin du jeu</td></tr>
-              <tr><td>Score annoncé</td><td class="sons"><span class="sn">Fanfare</span> <span class="sn">Bravo</span> <span class="sn">We Are the Champions</span> <span class="sn">Rocky, Gonna Fly Now</span> <span class="sn">Indiana Jones</span></td></tr>
-              <tr><td>Score faible</td><td class="sons"><span class="sn">« En un mot, consternant. »</span> <span class="sn">« …en un mot : désastreuse. »</span> <span class="sn">Sortie du perdant</span> <span class="sn">Fin de partie</span> <span class="sn">Game over</span></td></tr>
-              <tr><td>Blague de la CAF (« dossier incomplet »)</td><td class="sons"><span class="sn">Attente tél.</span> <span class="sn">Ba-dum-tss</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="part">Préparation</p>
-        <h5>Fiche « idées de mots » pour les invités</h5>
-        <p>Une petite fiche posée sur les tables, pour piocher si on n'a pas d'idée. Elle précise que la liste n'est pas exhaustive.</p>
-        <div class="paper-wrap">
-          <div class="paper p1" data-card="jeu1">
-            <p class="kicker">15 ans de mariage · Stéphane &amp; Suzanne</p>
-            <h6>Le défi des mariés</h6>
-            <div class="orn mini" data-orn="filet"></div>
-            <p class="lead">Écrivez sur un post-it <b>un mot</b> qui caractérise <b>Stéphane</b>, <b>Suzanne</b> ou <b>les deux</b>. <b>Au dos</b>, notez <b>qui vous visez</b> et <b>votre prénom</b>. Les mariés devront deviner qui est visé !</p>
-            <div class="ex">
-              <span class="lbl">Exemple</span>
-              <div class="pi"><small>Devant</small>Tête<br>en l'air</div>
-              <div class="turn"><b>→</b>au dos</div>
-              <div class="pi v"><small>Au dos</small>Pour : Stéphane<br>De : Maxime</div>
-            </div>
-            <p class="lead" style="margin:0 0 1mm">Pas d'idée ? Piochez ici :</p>
-            <div class="cols">
-              <div>
-                <p class="grp">Adjectifs</p>
-                <ul class="words">
-                  <li>Rebelle</li><li>Têtu(e)</li><li>Bavard(e)</li><li>Gourmand(e)</li><li>Généreux(se)</li><li>Drôle</li><li>Organisé(e)</li><li>Perfectionniste</li><li>Fêtard(e)</li><li>Zen</li><li>Râleur(se)</li><li>Câlin(e)</li><li>Rêveur(se)</li><li>Aventurier(e)</li><li>Distrait(e)</li>
-                </ul>
-              </div>
-              <div>
-                <p class="grp">Mots &amp; expressions</p>
-                <ul class="words">
-                  <li>Tornade</li><li>Soleil</li><li>Fous rires</li><li>Bon vivant</li><li>Tête en l'air</li><li>Pilier</li><li>Apéro</li><li>Voyages</li><li>Douceur</li><li>Complices</li><li>Inséparables</li><li>Chef d'orchestre</li><li>Grand cœur</li><li>Pile électrique</li><li>Duo de choc</li>
-                </ul>
-              </div>
-            </div>
-            <p class="foot">Liste non exhaustive : à vous de trouver mieux !</p>
-          </div>
-        </div>
-        <button class="print-btn" type="button" data-print="jeu1">Imprimer la planche (4 fiches par A4)</button>
-        <h5>Suggestions</h5>
-        <ul>
-          <li class="prop">Avec ~25-30 post-its, n'en lire qu'une sélection (~8-10) : les plus drôles, et un équilibre Stéphane / Suzanne / les 2.</li>
-          <li class="prop">1 point par cible trouvée, score des mariés annoncé à la fin. L'auteur seulement en bonus, sur les post-its les plus drôles, pour ne pas rallonger.</li>
-          <li class="prop">Garder tous les post-its et les coller sur une feuille ou un cadre à offrir aux mariés.</li>
-        </ul>
-  
       </div>
     </li>
 
@@ -774,7 +699,101 @@
         <span class="k">Jeu 2 · ~10-12 min</span>
         <h4>LUI, ELLE ou les 2 ?</h4>
         <p class="meta">La salle vote, puis les mariés · Écran : « Jeu 2 », « règle », puis « questions » (compteur)</p>
+        <div class="cols">
+        <div class="txt">
         <p class="part">Le principe</p>
+        <h5>Déroulé <span class="ok">décidé</span></h5>
+        <ol>
+          <li>Les invités ont des panneaux avec la photo de Stéphane et la photo de Suzanne.</li>
+          <li>Aurélien pose la question <strong>à la salle</strong> : chacun lève le panneau de son choix. On commente la tendance du groupe.</li>
+          <li>Stéphane &amp; Suzanne, côté scène, lèvent à leur tour leur panneau.</li>
+          <li>Aurélien donne la réponse « officielle » (fiche ci-dessous) et commente les désaccords.</li>
+        </ol>
+        <p class="prop">Convention à annoncer : les deux panneaux levés = « les 2 », aucun panneau = « aucun des 2 ».</p>
+        <p class="part">Sur scène</p>
+        <h5>Annonce</h5>
+        <div class="round"><p>« Deuxième défi : c'est vous qui votez. Je pose une question, vous levez Stéphane, Suzanne, les deux… ou aucun. Ensuite, c'est à eux. »</p></div>
+        <h5>Pour chaque question (11, dans l'ordre du tableau du jeu 2)</h5>
+        <ol>
+          <li>Aurélien lit la question.</li>
+          <li>La salle lève ses panneaux. Aurélien commente la tendance : « Majorité de Suzanne… »</li>
+          <li>Les mariés lèvent leurs panneaux.</li>
+          <li>Aurélien donne la réponse officielle et commente.</li>
+        </ol>
+        <h5>Questions pour relancer</h5>
+        <ul>
+          <li>Désaccord des mariés : « Stéphane, plaide ta cause. »</li>
+          <li>Question 2 (qui a toujours raison) : « Elle a toujours raison… et lui n'a jamais tort. »</li>
+          <li>Question 6 (le plus jaloux), réponse « aucun » : « Question piège. »</li>
+          <li>À quelqu'un de la salle : « Pourquoi tu as levé Stéphane ? »</li>
+        </ul>
+        <h5>Blagues à piocher</h5>
+        <ul class="gags">
+          <li>Convention : « Deux panneaux levés : les deux. Aucun : aucun. Un panneau à l'envers : vous avez trop pris l'apéro. »</li>
+          <li>Questions 1 à 11 : la blague de chaque question est dans le tableau des questions, plus bas, en face de la réponse.</li>
+          <li>Sortie : « Gardez vos panneaux : c'est la seule allocation de la soirée. »</li>
+        </ul>
+        <h5>Sortie</h5>
+        <div class="round"><p>« Gardez vos panneaux, ils sont pour vous. On laisse la scène aux mariés. »</p></div>
+        <h5>Questions et réponses</h5>
+        <div class="table-wrap">
+          <table class="qtab">
+            <thead><tr><th>#</th><th>Question</th><th>Réponse</th><th>Blague</th><th class="snd">Son</th></tr></thead>
+            <tbody>
+              <tr><td class="num">1</td><td>Qui a fait le premier pas ?</td><td><span class="ans elle">ELLE</span><div class="comment">« mais ça se discute »</div></td><td class="gag">« Elle l'invite au restaurant, en tout bien tout honneur. Stéphane, lui, n'a fait qu'un pas : celui vers la table. »</td><td class="snd"><span class="sn">Alerte à Malibu</span> <span class="sn">Top Gun</span> <span class="sn">« Oublie que t'as aucune chance, vas-y fonce ! »</span> <span class="sn">Les Dents de la mer</span></td></tr>
+              <tr><td class="num">2</td><td>Qui a toujours raison ?</td><td><span class="ans elle">ELLE</span><div class="comment">ça se discute : elle a toujours raison, et lui n'a jamais tort</div></td><td class="gag">« Évidemment. D'ailleurs, la CAF, ici, ça veut dire : <strong>Chérie A Forcément raison</strong>. »<br>Si « oui chérie » n'est pas encore placé : « Donc Stéphane, c'est très important d'avoir le dernier mot avec sa femme. Et ce dernier mot, c'est : oui chérie. » Puis faire répéter la salle. S'il est déjà placé : « Stéphane ? » Salle : « Oui chérie ! »</td><td class="snd"><span class="sn">« C'est votre dernier mot ? »</span> <span class="sn">Attente tél.</span> <span class="sn">« Ah voui, vous avez raison »</span> <span class="sn">« Il est fort ce con »</span></td></tr>
+              <tr><td class="num">3</td><td>Qui est spécialiste des faux départs ?</td><td><span class="ans lui">LUI</span></td><td class="gag">« Heureusement, à la mairie, il y a 15 ans, il n'a pas fait de faux départ. »<br><span class="comment">Réserve CAF : Comité des Allers-retours Fréquents (président : Stéphane).</span></td><td class="snd"><span class="sn">Benny Hill</span> <span class="sn">K2000</span> <span class="sn">« Top chrono ! »</span></td></tr>
+              <tr><td class="num">4</td><td>Qui peut, avec tous ses résultats d'examen, reconstituer son corps en puzzle ?</td><td><span class="ans lui">LUI</span></td><td class="gag">« Pour Stéphane, la CAF, ça veut dire : <strong>Collection Anatomique Fragmentée</strong>. »</td><td class="snd"><span class="sn">Il était une fois la vie</span> <span class="sn">Attente tél.</span> <span class="sn">Assommé</span> <span class="sn">Windows XP</span></td></tr>
+              <tr><td class="num">5</td><td>Qui râle le plus souvent ?</td><td><span class="ans both">LES 2</span><div class="comment">LUI d'après elle, mais en vrai les 2</div></td><td class="gag">« Officiellement : les deux. D'après Suzanne : lui. Stéphane ? » Salle : « Oui chérie ! »</td><td class="snd"><span class="sn">« Et si vous arrêtiez de gueuler ? »</span> <span class="sn">« On en a gros ! »</span> <span class="sn">« J'en ai marre ! Ça va pas bientôt finir ? »</span> <span class="sn">« C'est honteux ! »</span></td></tr>
+              <tr><td class="num">6</td><td>Qui est le plus jaloux ?</td><td><span class="ans both">AUCUN</span><div class="comment">question piège</div></td><td class="gag">« Question piège. Ou alors ils le cachent très bien. »</td><td class="snd"><span class="sn">Les Dents de la mer</span> <span class="sn">X-Files</span> <span class="sn">La Panthère rose</span></td></tr>
+              <tr><td class="num">7</td><td>Qui cherche toujours ses affaires ?</td><td><span class="ans lui">LUI</span></td><td class="gag">« Suzanne, c'est le service des objets trouvés de la maison. »<br><span class="comment">Réserve CAF : Cherche, Appelle, Fouille.</span></td><td class="snd"><span class="sn">Inspecteur Gadget</span> <span class="sn">Indiana Jones</span> <span class="sn">La Panthère rose</span> <span class="sn">Zelda, Secret découvert</span></td></tr>
+              <tr><td class="num">8</td><td>Qui dit toujours « C'était bien mais... » ?</td><td><span class="ans elle">ELLE</span></td><td class="gag">« Bon, Suzanne : jusqu'à présent, c'est bien ? » La laisser répondre. Si elle tombe dans le piège (« C'était bien mais… ») : « On le note pour la fin. »<br><span class="comment">Réserve CAF : Commentaire d'Après-Fête.</span></td><td class="snd"><span class="sn">« En un mot, consternant. »</span> <span class="sn">« Oui… Ben non ! »</span> <span class="sn">« C'est très fin, ça se mange sans faim »</span> <span class="sn">« Oh la vache, mais c'est nul ! »</span></td></tr>
+              <tr><td class="num">9</td><td>Qui pourrait tenir 2 mois sans faire une seule lessive ni toucher à un fer à repasser ?</td><td><span class="ans elle">ELLE</span></td><td class="gag">« Donc Stéphane cherche ses affaires… mais au moins elles sont propres. »<br><span class="comment">Réserve CAF : Club Anti-Fer à repasser (présidente : Suzanne).</span></td><td class="snd"><span class="sn">« Une serpillière, c'est formidable ! »</span> <span class="sn">« J'voudrais pas faire ma raclette… »</span></td></tr>
+              <tr><td class="num">10</td><td>Qui va bientôt faire le grand saut... en parachute ?</td><td><span class="ans elle">ELLE</span></td><td class="gag">« Suzanne va faire le grand saut… en parachute. Pour elle, la CAF, ça veut dire : <strong>Chute Avec Frissons</strong>. Et Stéphane était d'accord ? » Salle : « Oui chérie ! »</td><td class="snd"><span class="sn">Cri qui tombe</span> <span class="sn">Top Gun</span> <span class="sn">Mission impossible</span> <span class="sn">Attente tél.</span></td></tr>
+              <tr><td class="num">11</td><td>Qui pète le plus à la maison ?</td><td><span class="ans ask">à demander</span><div class="comment">ajoutée par Aurélien</div></td><td class="gag">« Petit rappel scientifique : le premier qui lève son panneau, c'est souvent le coupable. »</td><td class="snd"><span class="sn">SOS Fantômes</span> <span class="sn">Klaxon</span> <span class="sn">T-Rex</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="comment" style="margin-top:8px">Bilan des 10 premières : 5 ELLE, 3 LUI, 1 les 2, 1 aucun. Question 11 : réponse à demander aux mariés.</p>
+        <h5>Suggestions : questions bonus</h5>
+        <p class="comment">Pas dans le document. Réponses à demander à Stéphane &amp; Suzanne si on les garde.</p>
+        <div class="table-wrap">
+          <table>
+            <tbody>
+              <tr><td class="num">+</td><td>Qui s'endort devant la télé ?</td><td><span class="ans ask">à demander</span></td></tr>
+              <tr><td class="num">+</td><td>Qui est toujours en retard ?</td><td><span class="ans ask">à demander</span></td></tr>
+              <tr><td class="num">+</td><td>Qui cuisine le mieux ?</td><td><span class="ans ask">à demander</span></td></tr>
+              <tr><td class="num">+</td><td>Qui a le dernier mot dans une dispute ?</td><td><span class="ans ask">à demander</span></td></tr>
+              <tr><td class="num">+</td><td>Qui a dit « je t'aime » en premier ?</td><td><span class="ans ask">à demander</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h5>Si ça s'essouffle</h5>
+        <p>Sauter les questions bonus ; faire voter la salle et les mariés en même temps.</p>
+        <div class="conduite">
+        <p class="part">Conduite son</p>
+        <p class="comment" style="margin:0">Le son propre à chaque question est dans la colonne Son du tableau des questions.</p>
+        <div class="table-wrap">
+          <table class="ctab">
+            <thead><tr><th>Action</th><th>Sons possibles</th></tr></thead>
+            <tbody>
+              <tr><td>Annonce du jeu</td><td class="sons"><span class="sn">« Let's play ! »</span> <span class="sn">Jingle qui monte</span> <span class="sn">Fanfare</span> <span class="sn">Récré A2</span></td></tr>
+              <tr><td>Aurélien lit la question</td><td class="sons"><span class="sn">Gong</span> <span class="sn">Verres</span> <span class="sn">Question suivante</span> <span class="sn">Jingle grave</span> <span class="sn">Coup de musique</span> <span class="sn">« Top chrono ! »</span></td></tr>
+              <tr><td>La salle vote</td><td class="sons"><span class="sn">Vote du public</span> <span class="sn">Musique des questions</span> <span class="sn">Jeopardy</span> <span class="sn">Cœur qui bat, calme</span> <span class="sn">Benny Hill</span></td></tr>
+              <tr><td>La salle est unanime</td><td class="sons"><span class="sn">Bravo</span> <span class="sn">« OK ? OK ! »</span> <span class="sn">« C'est dingue ! Ah, dingue. »</span></td></tr>
+              <tr><td>La salle est partagée</td><td class="sons"><span class="sn">« Non sans déconner ? »</span> <span class="sn">« Oh mais vous êtes des malades ! »</span> <span class="sn">Cloche de ring</span></td></tr>
+              <tr><td>Les mariés vont lever leurs panneaux</td><td class="sons"><span class="sn">Roulement</span> <span class="sn">Cœur qui bat</span> <span class="sn">Question à un million</span> <span class="sn">« C'est votre dernier mot ? »</span></td></tr>
+              <tr><td>Les mariés ne sont pas d'accord</td><td class="sons"><span class="sn">Cloche de ring</span> <span class="sn">« Objection ! »</span> <span class="sn">« Hadouken ! »</span> <span class="sn">« Oui… Ben non ! »</span></td></tr>
+              <tr><td>« Stéphane ? » Salle : « Oui chérie ! »</td><td class="sons"><span class="sn">« Ah voui, vous avez raison »</span> <span class="sn">« Très bien »</span> <span class="sn">« OK ? OK ! »</span></td></tr>
+              <tr><td>Les mariés ont la réponse officielle</td><td class="sons"><span class="sn">Ding</span> <span class="sn">Bonus</span> <span class="sn">Zelda, Secret découvert</span> <span class="sn">« Il est fort ce con »</span></td></tr>
+              <tr><td>Les mariés se trompent</td><td class="sons"><span class="sn">Buzzer</span> <span class="sn">Bip d'erreur</span> <span class="sn">« Nani ?! »</span> <span class="sn">Wah wah wah</span></td></tr>
+              <tr><td>Fin du jeu</td><td class="sons"><span class="sn">Bravo</span> <span class="sn">We Are the Champions</span> <span class="sn">Fanfare</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        </div>
+        </div>
+        <aside class="vis">
         <h5>En un coup d'œil</h5>
         <div class="schema">
           <p class="who-leg"><span><i style="--k:var(--text)"></i>Aurélien</span><span><i style="--k:var(--lui)"></i>Stéphane (et son panneau)</span><span><i style="--k:var(--elle)"></i>Suzanne (et son panneau)</span><span><i style="--k:var(--muted)"></i>Invités</span></p>
@@ -855,136 +874,8 @@
             </div>
           </div>
         </div>
-        <h5>Déroulé <span class="ok">décidé</span></h5>
-        <ol>
-          <li>Les invités ont des panneaux avec la photo de Stéphane et la photo de Suzanne.</li>
-          <li>Aurélien pose la question <strong>à la salle</strong> : chacun lève le panneau de son choix. On commente la tendance du groupe.</li>
-          <li>Stéphane &amp; Suzanne, côté scène, lèvent à leur tour leur panneau.</li>
-          <li>Aurélien donne la réponse « officielle » (fiche ci-dessous) et commente les désaccords.</li>
-        </ol>
-        <p class="prop">Convention à annoncer : les deux panneaux levés = « les 2 », aucun panneau = « aucun des 2 ».</p>
-        <p class="part">Sur scène</p>
-        <h5>Annonce</h5>
-        <div class="round"><p>« Deuxième défi : c'est vous qui votez. Je pose une question, vous levez Stéphane, Suzanne, les deux… ou aucun. Ensuite, c'est à eux. »</p></div>
-        <h5>Pour chaque question (11, dans l'ordre du tableau du jeu 2)</h5>
-        <ol>
-          <li>Aurélien lit la question.</li>
-          <li>La salle lève ses panneaux. Aurélien commente la tendance : « Majorité de Suzanne… »</li>
-          <li>Les mariés lèvent leurs panneaux.</li>
-          <li>Aurélien donne la réponse officielle et commente.</li>
-        </ol>
-        <h5>Questions pour relancer</h5>
-        <ul>
-          <li>Désaccord des mariés : « Stéphane, plaide ta cause. »</li>
-          <li>Question 2 (qui a toujours raison) : « Elle a toujours raison… et lui n'a jamais tort. »</li>
-          <li>Question 6 (le plus jaloux), réponse « aucun » : « Question piège. »</li>
-          <li>À quelqu'un de la salle : « Pourquoi tu as levé Stéphane ? »</li>
-        </ul>
-        <h5>Blagues à piocher</h5>
-        <ul class="gags">
-          <li>Convention : « Deux panneaux levés : les deux. Aucun : aucun. Un panneau à l'envers : vous avez trop pris l'apéro. »</li>
-          <li>Questions 1 à 11 : la blague de chaque question est dans le tableau des questions, plus bas, en face de la réponse.</li>
-          <li>Sortie : « Gardez vos panneaux : c'est la seule allocation de la soirée. »</li>
-        </ul>
-        <h5>Sortie</h5>
-        <div class="round"><p>« Gardez vos panneaux, ils sont pour vous. On laisse la scène aux mariés. »</p></div>
-        <h5>Questions et réponses</h5>
-        <div class="table-wrap">
-          <table class="qtab">
-            <thead><tr><th>#</th><th>Question</th><th>Réponse</th><th>Blague</th><th>Son</th></tr></thead>
-            <tbody>
-              <tr><td class="num">1</td><td>Qui a fait le premier pas ?</td><td><span class="ans elle">ELLE</span><div class="comment">« mais ça se discute »</div></td><td class="gag">« Elle l'invite au restaurant, en tout bien tout honneur. Stéphane, lui, n'a fait qu'un pas : celui vers la table. »</td><td class="snd"><span class="sn">Les Dents de la mer</span> <span class="sn">Top Gun</span> <span class="sn">Alerte à Malibu</span></td></tr>
-              <tr><td class="num">2</td><td>Qui a toujours raison ?</td><td><span class="ans elle">ELLE</span><div class="comment">ça se discute : elle a toujours raison, et lui n'a jamais tort</div></td><td class="gag">« Évidemment. D'ailleurs, la CAF, ici, ça veut dire : <strong>Chérie A Forcément raison</strong>. »<br>Si « oui chérie » n'est pas encore placé : « Donc Stéphane, c'est très important d'avoir le dernier mot avec sa femme. Et ce dernier mot, c'est : oui chérie. » Puis faire répéter la salle. S'il est déjà placé : « Stéphane ? » Salle : « Oui chérie ! »</td><td class="snd"><span class="sn">Attente tél.</span> <span class="sn">« Ah voui, vous avez raison »</span> <span class="sn">« Il est fort ce con »</span></td></tr>
-              <tr><td class="num">3</td><td>Qui est spécialiste des faux départs ?</td><td><span class="ans lui">LUI</span></td><td class="gag">« Heureusement, à la mairie, il y a 15 ans, il n'a pas fait de faux départ. »<br><span class="comment">Réserve CAF : Comité des Allers-retours Fréquents (président : Stéphane).</span></td><td class="snd"><span class="sn">Benny Hill</span> <span class="sn">K2000</span> <span class="sn">« Top chrono ! »</span></td></tr>
-              <tr><td class="num">4</td><td>Qui peut, avec tous ses résultats d'examen, reconstituer son corps en puzzle ?</td><td><span class="ans lui">LUI</span></td><td class="gag">« Pour Stéphane, la CAF, ça veut dire : <strong>Collection Anatomique Fragmentée</strong>. »</td><td class="snd"><span class="sn">Il était une fois la vie</span> <span class="sn">Attente tél.</span> <span class="sn">Assommé</span> <span class="sn">Windows XP</span></td></tr>
-              <tr><td class="num">5</td><td>Qui râle le plus souvent ?</td><td><span class="ans both">LES 2</span><div class="comment">LUI d'après elle, mais en vrai les 2</div></td><td class="gag">« Officiellement : les deux. D'après Suzanne : lui. Stéphane ? » Salle : « Oui chérie ! »</td><td class="snd"><span class="sn">« On en a gros ! »</span> <span class="sn">« J'en ai marre ! Ça va pas bientôt finir ? »</span> <span class="sn">« C'est honteux ! »</span></td></tr>
-              <tr><td class="num">6</td><td>Qui est le plus jaloux ?</td><td><span class="ans both">AUCUN</span><div class="comment">question piège</div></td><td class="gag">« Question piège. Ou alors ils le cachent très bien. »</td><td class="snd"><span class="sn">X-Files</span> <span class="sn">La Panthère rose</span> <span class="sn">Les Dents de la mer</span></td></tr>
-              <tr><td class="num">7</td><td>Qui cherche toujours ses affaires ?</td><td><span class="ans lui">LUI</span></td><td class="gag">« Suzanne, c'est le service des objets trouvés de la maison. »<br><span class="comment">Réserve CAF : Cherche, Appelle, Fouille.</span></td><td class="snd"><span class="sn">Inspecteur Gadget</span> <span class="sn">Indiana Jones</span> <span class="sn">La Panthère rose</span> <span class="sn">Zelda, Secret découvert</span></td></tr>
-              <tr><td class="num">8</td><td>Qui dit toujours « C'était bien mais... » ?</td><td><span class="ans elle">ELLE</span></td><td class="gag">« Bon, Suzanne : jusqu'à présent, c'est bien ? » La laisser répondre. Si elle tombe dans le piège (« C'était bien mais… ») : « On le note pour la fin. »<br><span class="comment">Réserve CAF : Commentaire d'Après-Fête.</span></td><td class="snd"><span class="sn">« Oui… Ben non ! »</span> <span class="sn">« C'est très fin, ça se mange sans faim »</span> <span class="sn">« Oh la vache, mais c'est nul ! »</span></td></tr>
-              <tr><td class="num">9</td><td>Qui pourrait tenir 2 mois sans faire une seule lessive ni toucher à un fer à repasser ?</td><td><span class="ans elle">ELLE</span></td><td class="gag">« Donc Stéphane cherche ses affaires… mais au moins elles sont propres. »<br><span class="comment">Réserve CAF : Club Anti-Fer à repasser (présidente : Suzanne).</span></td><td class="snd"><span class="sn">« Une serpillière, c'est formidable ! »</span> <span class="sn">« J'voudrais pas faire ma raclette… »</span></td></tr>
-              <tr><td class="num">10</td><td>Qui va bientôt faire le grand saut... en parachute ?</td><td><span class="ans elle">ELLE</span></td><td class="gag">« Suzanne va faire le grand saut… en parachute. Pour elle, la CAF, ça veut dire : <strong>Chute Avec Frissons</strong>. Et Stéphane était d'accord ? » Salle : « Oui chérie ! »</td><td class="snd"><span class="sn">Cri qui tombe</span> <span class="sn">Top Gun</span> <span class="sn">Mission impossible</span> <span class="sn">Attente tél.</span></td></tr>
-              <tr><td class="num">11</td><td>Qui pète le plus à la maison ?</td><td><span class="ans ask">à demander</span><div class="comment">ajoutée par Aurélien</div></td><td class="gag">« Petit rappel scientifique : le premier qui lève son panneau, c'est souvent le coupable. »</td><td class="snd"><span class="sn">Klaxon</span> <span class="sn">SOS Fantômes</span> <span class="sn">T-Rex</span></td></tr>
-            </tbody>
-          </table>
+        </aside>
         </div>
-        <p class="comment" style="margin-top:8px">Bilan des 10 premières : 5 ELLE, 3 LUI, 1 les 2, 1 aucun. Question 11 : réponse à demander aux mariés.</p>
-        <h5>Suggestions : questions bonus</h5>
-        <p class="comment">Pas dans le document. Réponses à demander à Stéphane &amp; Suzanne si on les garde.</p>
-        <div class="table-wrap">
-          <table>
-            <tbody>
-              <tr><td class="num">+</td><td>Qui s'endort devant la télé ?</td><td><span class="ans ask">à demander</span></td></tr>
-              <tr><td class="num">+</td><td>Qui est toujours en retard ?</td><td><span class="ans ask">à demander</span></td></tr>
-              <tr><td class="num">+</td><td>Qui cuisine le mieux ?</td><td><span class="ans ask">à demander</span></td></tr>
-              <tr><td class="num">+</td><td>Qui a le dernier mot dans une dispute ?</td><td><span class="ans ask">à demander</span></td></tr>
-              <tr><td class="num">+</td><td>Qui a dit « je t'aime » en premier ?</td><td><span class="ans ask">à demander</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-        <h5>Si ça s'essouffle</h5>
-        <p>Sauter les questions bonus ; faire voter la salle et les mariés en même temps.</p>
-        <p class="part">Conduite son</p>
-        <p class="comment" style="margin:0">Le son propre à chaque question est dans la colonne Son du tableau des questions.</p>
-        <div class="table-wrap">
-          <table class="ctab">
-            <thead><tr><th>Action</th><th>Sons possibles</th></tr></thead>
-            <tbody>
-              <tr><td>Annonce du jeu</td><td class="sons"><span class="sn">« Let's play ! »</span> <span class="sn">Jingle qui monte</span> <span class="sn">Fanfare</span> <span class="sn">Récré A2</span></td></tr>
-              <tr><td>Aurélien lit la question</td><td class="sons"><span class="sn">Gong</span> <span class="sn">Verres</span> <span class="sn">Question suivante</span> <span class="sn">Jingle grave</span> <span class="sn">Coup de musique</span> <span class="sn">« Top chrono ! »</span></td></tr>
-              <tr><td>La salle vote</td><td class="sons"><span class="sn">Vote du public</span> <span class="sn">Musique des questions</span> <span class="sn">Jeopardy</span> <span class="sn">Cœur qui bat, calme</span> <span class="sn">Benny Hill</span></td></tr>
-              <tr><td>La salle est unanime</td><td class="sons"><span class="sn">Bravo</span> <span class="sn">« OK ? OK ! »</span> <span class="sn">« C'est dingue ! Ah, dingue. »</span></td></tr>
-              <tr><td>La salle est partagée</td><td class="sons"><span class="sn">« Non sans déconner ? »</span> <span class="sn">« Oh mais vous êtes des malades ! »</span> <span class="sn">Cloche de ring</span></td></tr>
-              <tr><td>Les mariés vont lever leurs panneaux</td><td class="sons"><span class="sn">Roulement</span> <span class="sn">Cœur qui bat</span> <span class="sn">Question à un million</span> <span class="sn">« C'est votre dernier mot ? »</span></td></tr>
-              <tr><td>Les mariés ne sont pas d'accord</td><td class="sons"><span class="sn">Cloche de ring</span> <span class="sn">« Objection ! »</span> <span class="sn">« Hadouken ! »</span> <span class="sn">« Oui… Ben non ! »</span></td></tr>
-              <tr><td>« Stéphane ? » Salle : « Oui chérie ! »</td><td class="sons"><span class="sn">« Ah voui, vous avez raison »</span> <span class="sn">« Très bien »</span> <span class="sn">« OK ? OK ! »</span></td></tr>
-              <tr><td>Les mariés ont la réponse officielle</td><td class="sons"><span class="sn">Ding</span> <span class="sn">Bonus</span> <span class="sn">Zelda, Secret découvert</span> <span class="sn">« Il est fort ce con »</span></td></tr>
-              <tr><td>Les mariés se trompent</td><td class="sons"><span class="sn">Buzzer</span> <span class="sn">Bip d'erreur</span> <span class="sn">« Nani ?! »</span> <span class="sn">Wah wah wah</span></td></tr>
-              <tr><td>Fin du jeu</td><td class="sons"><span class="sn">Bravo</span> <span class="sn">We Are the Champions</span> <span class="sn">Fanfare</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="part">Préparation</p>
-        <h5>Les panneaux</h5>
-        <p>Imprimés en couleur sur papier blanc, photo comprise : portrait détouré sur fond à rayons, vert pour Stéphane, jaune pour Suzanne. Un panneau A5 par A4 paysage, l'autre moitié blanche : on plie en deux (plus rigide) et on colle sur un carton A5. Les PDF avec les photos sont générés en local (<code>python3 scripts/panneaux-photo.py</code>, dossier <code>jeux-mariage-impression/</code>) : les photos ne sont pas publiées.</p>
-        <div class="paper-wrap">
-          <div class="panneau" data-panneau="stephane" style="--feuille:#4f9be8">
-            <div class="orn" data-orn="coupes"></div>
-            <div class="fenetre"><div>Photo<br>96 × 94 mm</div></div>
-            <p class="nom">Stéphane</p>
-            <div class="orn mini" data-orn="filet"></div>
-          </div>
-          <div class="panneau" data-panneau="suzanne" style="--feuille:#f2bd3a">
-            <div class="orn" data-orn="coupes"></div>
-            <div class="fenetre"><div>Photo<br>96 × 94 mm</div></div>
-            <p class="nom">Suzanne</p>
-            <div class="orn mini" data-orn="filet"></div>
-          </div>
-        </div>
-        <div class="pan-btns">
-          <button class="print-btn" type="button" data-print="pan-stephane" style="--c:var(--lui)">Panneaux de Stéphane (2 par A4)</button>
-          <button class="print-btn" type="button" data-print="pan-suzanne" style="--c:var(--elle)">Panneaux de Suzanne (2 par A4)</button>
-          <button class="print-btn" type="button" data-print="a4-stephane" style="--c:var(--lui)">Grand panneau A4 de Stéphane</button>
-          <button class="print-btn" type="button" data-print="a4-suzanne" style="--c:var(--elle)">Grand panneau A4 de Suzanne</button>
-        </div>
-        <h5>Fiche de table « LUI, ELLE ou les 2 ? »</h5>
-        <p>Posée sur les tables avec les autres fiches : comment voter avec les panneaux. Aucune question dessus, pour garder la surprise.</p>
-        <div class="paper-wrap">
-          <div class="paper p2" data-card="jeu2">
-            <p class="kicker">15 ans de mariage · Stéphane &amp; Suzanne</p>
-            <h6>LUI, ELLE ou les 2 ?</h6>
-            <div class="orn mini" data-orn="filet"></div>
-            <p class="lead">Je pose une question sur le couple. <b>Vous votez</b> en levant vos panneaux photo, puis <b>les mariés</b> donnent leur réponse.</p>
-            <div class="votes">
-              <div class="vote"><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M28.5 30L26 17M35.5 30L38 17" stroke="#15223f" stroke-width="1.5" stroke-linecap="round" fill="none"/><g transform="translate(20 1) rotate(0 12 8.5)"><rect width="24" height="17" fill="#fff" stroke="#15223f" stroke-width=".8"/><circle cx="12" cy="6.2" r="3.4" fill="#e2c27a"/><text x="12" y="14.8" font-size="3.5" letter-spacing=".2" text-anchor="middle" fill="#15223f" font-family="Futura, Century Gothic, Trebuchet MS, sans-serif">STÉPHANE</text></g><use href="#pers" x="25" y="20" width="14" height="20" fill="#15223f"/></svg><b>Stéphane</b><small>son panneau levé</small></div>
-              <div class="vote"><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M28.5 30L26 17M35.5 30L38 17" stroke="#15223f" stroke-width="1.5" stroke-linecap="round" fill="none"/><g transform="translate(20 1) rotate(0 12 8.5)"><rect width="24" height="17" fill="#fff" stroke="#15223f" stroke-width=".8"/><circle cx="12" cy="6.2" r="3.4" fill="#e2c27a"/><text x="12" y="14.8" font-size="3.5" letter-spacing=".2" text-anchor="middle" fill="#15223f" font-family="Futura, Century Gothic, Trebuchet MS, sans-serif">SUZANNE</text></g><use href="#pers" x="25" y="20" width="14" height="20" fill="#15223f"/></svg><b>Suzanne</b><small>son panneau levé</small></div>
-              <div class="vote"><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M28.5 30L15 18M35.5 30L49 18" stroke="#15223f" stroke-width="1.5" stroke-linecap="round" fill="none"/><g transform="translate(2 2) rotate(-8 12 8.5)"><rect width="24" height="17" fill="#fff" stroke="#15223f" stroke-width=".8"/><circle cx="12" cy="6.2" r="3.4" fill="#e2c27a"/><text x="12" y="14.8" font-size="3.5" letter-spacing=".2" text-anchor="middle" fill="#15223f" font-family="Futura, Century Gothic, Trebuchet MS, sans-serif">STÉPHANE</text></g><g transform="translate(38 2) rotate(8 12 8.5)"><rect width="24" height="17" fill="#fff" stroke="#15223f" stroke-width=".8"/><circle cx="12" cy="6.2" r="3.4" fill="#e2c27a"/><text x="12" y="14.8" font-size="3.5" letter-spacing=".2" text-anchor="middle" fill="#15223f" font-family="Futura, Century Gothic, Trebuchet MS, sans-serif">SUZANNE</text></g><use href="#pers" x="25" y="20" width="14" height="20" fill="#15223f"/></svg><b>Les deux</b><small>les 2 panneaux levés</small></div>
-              <div class="vote"><svg viewBox="0 0 64 40" aria-hidden="true"><rect x="20" y="1" width="24" height="17" fill="none" stroke="#a5823a" stroke-width=".6" stroke-dasharray="1.6 1.2"/><text x="32" y="12" font-size="7" text-anchor="middle" fill="#a5823a" font-family="Futura, Century Gothic, Trebuchet MS, sans-serif">?</text><use href="#pers" x="25" y="20" width="14" height="20" fill="#15223f"/></svg><b>Aucun</b><small>rien de levé</small></div>
-            </div>
-            <p class="hl">Les panneaux sont distribués <b>juste avant le jeu</b>. Ensuite, ils sont à vous : <b>gardez-les !</b></p>
-          </div>
-        </div>
-        <button class="print-btn" type="button" data-print="jeu2">Imprimer la planche (4 fiches par A4)</button>
-  
       </div>
     </li>
 
@@ -1010,7 +901,78 @@
         <span class="k">Jeu 3 · ~12 min ou plus</span>
         <h4>15 ans de nous... racontés par vous</h4>
         <p class="meta">Aurélien interroge, le micro circule, les mariés réagissent · Écran : « Jeu 3 », « règle », puis « Vous avez la parole »</p>
+        <div class="cols">
+        <div class="txt">
         <p class="part">Le principe</p>
+        <h5>Déroulé <span class="ok">décidé</span></h5>
+        <ol>
+          <li>Questionnaires distribués aux invités (sur les tables, dès leur arrivée), avec la liste des questions.</li>
+          <li>Chacun répond aux questions qui l'inspirent le plus et écrit son prénom.</li>
+          <li>Pendant le jeu, Aurélien interroge quelques invités sur une question précise : ils lisent ou racontent leur réponse.</li>
+          <li>À la fin, tous les questionnaires sont remis aux mariés en souvenir.</li>
+        </ol>
+        <h5>Esprit souhaité par Stéphane &amp; Suzanne (appel du 7 octobre)</h5>
+        <ul>
+          <li>Un dialogue plutôt qu'une lecture : les invités rebondissent sur ce que disent les autres (« ah oui, et moi je me souviens… »).</li>
+          <li>Demander <strong>pourquoi</strong> cette réponse : « Titanic ? Tu penses qu'on coule ? »</li>
+          <li>Stéphane &amp; Suzanne réagissent et donnent leur version de l'anecdote : on ne l'a pas forcément vécue de la même façon.</li>
+          <li>Aurélien peut participer aussi, même en animant.</li>
+          <li>Ordre de passage indicatif, construit à partir du tour des tables ; les interventions spontanées sont bienvenues.</li>
+        </ul>
+        <p class="part">Sur scène</p>
+        <h5>Annonce</h5>
+        <div class="round"><p>« Dernier défi, et cette fois ce ne sont pas eux qui jouent. On va raconter Stéphane et Suzanne à travers vos souvenirs. Et Stéphane, Suzanne : vous avez le droit de donner votre version. »</p></div>
+        <h5>Ordre de passage</h5>
+        <ol>
+          <li><strong>Sandrine H.</strong> ouvre (1 à 2 min). Question envoyée : « Il paraît que Stéphane est un rebelle : c'est-à-dire ? »</li>
+          <li><strong>Sylvie</strong> (a dit oui). Question envoyée : « Tu as connu Stéphane avant Suzanne : il était comment à l'époque ? »</li>
+          <li><strong>4-5 invités</strong> choisis à 18h45 : Aurélien les appelle par leur prénom et leur numéro de question, ils lisent ou racontent.</li>
+          <li><strong>Célia</strong> finit sur un temps fort : « Raconte-nous LE moment où tu t'es dit "ces deux-là, c'est quelque chose". »</li>
+        </ol>
+        <h5>Questions pour relancer (appel du 7 octobre)</h5>
+        <ul>
+          <li>À l'invité : « Pourquoi cette réponse ? » Exemple des mariés : « Titanic ? Tu penses qu'on coule ? »</li>
+          <li>Aux mariés : « C'est comme ça que vous l'avez vécu ? »</li>
+          <li>À la salle : « Quelqu'un était là ? Il s'est passé quoi ensuite ? »</li>
+          <li>Aurélien peut raconter lui aussi : la CAF, la portière refermée par Suzanne sur Stéphane.</li>
+        </ul>
+        <h5>Blagues à piocher</h5>
+        <ul class="gags">
+          <li><strong>Question 5, la chanson</strong> : faire lire une réponse à « Si votre couple était une chanson, ce serait… », puis : « Et leur chanson de mariage, quelqu'un sait ? » Laisser la salle chercher, puis lancer quelques secondes de l'intro de Dirty Dancing. <span class="comment" style="font-style:normal">Playlist : The Time of My Life, l'intro seulement. On la garde entière pour la fin.</span></li>
+          <li><strong>Après Sandrine H. (Stéphane le rebelle)</strong> : « Et ça se transmet : Noah mène en ce moment un mouvement de grève au lycée. Chez les Bauduin, la CAF, ça veut dire : <strong>Contestataire À Fond</strong>. De père en fils. »</li>
+        </ul>
+        <p class="comment" style="margin-top:4px">Interventions spontanées bienvenues : l'ordre est indicatif.</p>
+        <h5>Si ça s'essouffle</h5>
+        <p>Faire passer Célia ou Sandrine H. (préparées) ; demander « pourquoi ? » ; demander leur version aux mariés ; raconter soi-même une anecdote (la CAF, la portière) ; lire une réponse marquante de questionnaire.</p>
+        <div class="conduite">
+        <p class="part">Conduite son</p>
+        <div class="table-wrap">
+          <table class="ctab">
+            <thead><tr><th>Action</th><th>Sons possibles</th></tr></thead>
+            <tbody>
+              <tr><td>Annonce du jeu</td><td class="sons"><span class="sn">Il était une fois la vie</span> <span class="sn">Récré A2</span> <span class="sn">Les Cités d'or</span></td></tr>
+              <tr><td>Un invité se lève pour parler</td><td class="sons"><span class="sn">Une famille en or</span> <span class="sn">Le Juste Prix</span> <span class="sn">Tarzan, version MGM</span> <span class="sn">Rocky, Eye of the Tiger</span></td></tr>
+              <tr><td>Sandrine H. se lève (Stéphane le rebelle)</td><td class="sons"><span class="sn">Albator</span> <span class="sn">Goldorak</span> <span class="sn">« On est en République, bordel de m… ! »</span></td></tr>
+              <tr><td>Noah et la grève au lycée (Contestataire À Fond)</td><td class="sons"><span class="sn">« Pays de Galles indépendant ! »</span> <span class="sn">« On est en République, bordel de m… ! »</span> <span class="sn">Attente tél.</span></td></tr>
+              <tr><td>Célia se lève (temps fort final)</td><td class="sons"><span class="sn">Jurassic Park</span> <span class="sn">Les Chevaliers du Zodiaque</span> <span class="sn">Il était une fois la vie</span></td></tr>
+              <tr><td>Une anecdote drôle</td><td class="sons"><span class="sn">Ba-dum-tss</span> <span class="sn">« C'est dingue ! Ah, dingue. »</span> <span class="sn">« Quand je suis content, je vomis »</span> <span class="sn">« Oh la vache ! »</span></td></tr>
+              <tr><td>Les mariés contestent la version de l'invité</td><td class="sons"><span class="sn">« Objection ! »</span> <span class="sn">« Oui… Ben non ! »</span> <span class="sn">« Nan c'est n'importe quoi »</span> <span class="sn">« Non sans déconner ? »</span></td></tr>
+              <tr><td>Une anecdote que personne ne comprend</td><td class="sons"><span class="sn">« Binz ? »</span> <span class="sn">« C'est pas faux », Perceval</span> <span class="sn">« Il s'appelle Juste Leblanc »</span></td></tr>
+              <tr><td>Silence après une question à la salle</td><td class="sons"><span class="sn">Criquets</span> <span class="sn">Jeopardy</span> <span class="sn">Ascenseur</span></td></tr>
+              <tr><td>« Leur chanson de mariage, quelqu'un sait ? »</td><td class="sons"><span class="sn">Criquets</span> <span class="sn">Jeopardy</span></td></tr>
+              <tr><td>Fin du jeu</td><td class="sons"><span class="sn">Bravo</span> <span class="sn">We Are the Champions</span> <span class="sn">Rocky, Gonna Fly Now</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="comment" style="margin-top:4px">Souvenirs émouvants : aucun son. Leur chanson de mariage : The Time of My Life, sur la playlist (pas sur la page des sons).</p>
+        </div>
+        <h5>Suggestions</h5>
+        <ul>
+          <li class="prop">Ramasser les questionnaires vers 18h45 et choisir 4-5 réponses variées (une drôle, une émouvante, un « petit dossier »…), puis appeler la personne pour qu'elle la lise. Les 3 anecdotes préparées (Sandrine H., Sylvie, Célia) s'ajoutent.</li>
+          <li class="prop">Remettre les questionnaires et les post-its du jeu 1 dans une boîte ou un livre d'or pour les mariés.</li>
+        </ul>
+        </div>
+        <aside class="vis">
         <h5>En un coup d'œil</h5>
         <div class="schema">
           <p class="who-leg"><span><i style="--k:var(--text)"></i>Aurélien</span><span><i style="--k:var(--j3)"></i>Célia et Sandrine H.</span><span><i style="--k:var(--muted)"></i>Invités</span><span><i style="--k:var(--lui)"></i>Stéphane</span><span><i style="--k:var(--elle)"></i>Suzanne</span></p>
@@ -1140,98 +1102,8 @@
             </div>
           </div>
         </div>
-        <h5>Déroulé <span class="ok">décidé</span></h5>
-        <ol>
-          <li>Questionnaires distribués aux invités (sur les tables, dès leur arrivée), avec la liste des questions.</li>
-          <li>Chacun répond aux questions qui l'inspirent le plus et écrit son prénom.</li>
-          <li>Pendant le jeu, Aurélien interroge quelques invités sur une question précise : ils lisent ou racontent leur réponse.</li>
-          <li>À la fin, tous les questionnaires sont remis aux mariés en souvenir.</li>
-        </ol>
-        <h5>Esprit souhaité par Stéphane &amp; Suzanne (appel du 7 octobre)</h5>
-        <ul>
-          <li>Un dialogue plutôt qu'une lecture : les invités rebondissent sur ce que disent les autres (« ah oui, et moi je me souviens… »).</li>
-          <li>Demander <strong>pourquoi</strong> cette réponse : « Titanic ? Tu penses qu'on coule ? »</li>
-          <li>Stéphane &amp; Suzanne réagissent et donnent leur version de l'anecdote : on ne l'a pas forcément vécue de la même façon.</li>
-          <li>Aurélien peut participer aussi, même en animant.</li>
-          <li>Ordre de passage indicatif, construit à partir du tour des tables ; les interventions spontanées sont bienvenues.</li>
-        </ul>
-        <p class="part">Sur scène</p>
-        <h5>Annonce</h5>
-        <div class="round"><p>« Dernier défi, et cette fois ce ne sont pas eux qui jouent. On va raconter Stéphane et Suzanne à travers vos souvenirs. Et Stéphane, Suzanne : vous avez le droit de donner votre version. »</p></div>
-        <h5>Ordre de passage</h5>
-        <ol>
-          <li><strong>Sandrine H.</strong> ouvre (1 à 2 min). Question envoyée : « Il paraît que Stéphane est un rebelle : c'est-à-dire ? »</li>
-          <li><strong>Sylvie</strong> (a dit oui). Question envoyée : « Tu as connu Stéphane avant Suzanne : il était comment à l'époque ? »</li>
-          <li><strong>4-5 invités</strong> choisis à 18h45 : Aurélien les appelle par leur prénom et leur numéro de question, ils lisent ou racontent.</li>
-          <li><strong>Célia</strong> finit sur un temps fort : « Raconte-nous LE moment où tu t'es dit "ces deux-là, c'est quelque chose". »</li>
-        </ol>
-        <h5>Questions pour relancer (appel du 7 octobre)</h5>
-        <ul>
-          <li>À l'invité : « Pourquoi cette réponse ? » Exemple des mariés : « Titanic ? Tu penses qu'on coule ? »</li>
-          <li>Aux mariés : « C'est comme ça que vous l'avez vécu ? »</li>
-          <li>À la salle : « Quelqu'un était là ? Il s'est passé quoi ensuite ? »</li>
-          <li>Aurélien peut raconter lui aussi : la CAF, la portière refermée par Suzanne sur Stéphane.</li>
-        </ul>
-        <h5>Blagues à piocher</h5>
-        <ul class="gags">
-          <li><strong>Question 5, la chanson</strong> : faire lire une réponse à « Si votre couple était une chanson, ce serait… », puis : « Et leur chanson de mariage, quelqu'un sait ? » Laisser la salle chercher, puis lancer quelques secondes de l'intro de Dirty Dancing. <span class="comment" style="font-style:normal">Playlist : The Time of My Life, l'intro seulement. On la garde entière pour la fin.</span></li>
-          <li><strong>Après Sandrine H. (Stéphane le rebelle)</strong> : « Et ça se transmet : Noah mène en ce moment un mouvement de grève au lycée. Chez les Bauduin, la CAF, ça veut dire : <strong>Contestataire À Fond</strong>. De père en fils. »</li>
-        </ul>
-        <p class="comment" style="margin-top:4px">Interventions spontanées bienvenues : l'ordre est indicatif.</p>
-        <h5>Si ça s'essouffle</h5>
-        <p>Faire passer Célia ou Sandrine H. (préparées) ; demander « pourquoi ? » ; demander leur version aux mariés ; raconter soi-même une anecdote (la CAF, la portière) ; lire une réponse marquante de questionnaire.</p>
-        <p class="part">Conduite son</p>
-        <div class="table-wrap">
-          <table class="ctab">
-            <thead><tr><th>Action</th><th>Sons possibles</th></tr></thead>
-            <tbody>
-              <tr><td>Annonce du jeu</td><td class="sons"><span class="sn">Il était une fois la vie</span> <span class="sn">Récré A2</span> <span class="sn">Les Cités d'or</span></td></tr>
-              <tr><td>Un invité se lève pour parler</td><td class="sons"><span class="sn">Une famille en or</span> <span class="sn">Le Juste Prix</span> <span class="sn">Tarzan, version MGM</span> <span class="sn">Rocky, Eye of the Tiger</span></td></tr>
-              <tr><td>Sandrine H. se lève (Stéphane le rebelle)</td><td class="sons"><span class="sn">Albator</span> <span class="sn">Goldorak</span> <span class="sn">« On est en République, bordel de m… ! »</span></td></tr>
-              <tr><td>Noah et la grève au lycée (Contestataire À Fond)</td><td class="sons"><span class="sn">« Pays de Galles indépendant ! »</span> <span class="sn">« On est en République, bordel de m… ! »</span> <span class="sn">Attente tél.</span></td></tr>
-              <tr><td>Célia se lève (temps fort final)</td><td class="sons"><span class="sn">Jurassic Park</span> <span class="sn">Les Chevaliers du Zodiaque</span> <span class="sn">Il était une fois la vie</span></td></tr>
-              <tr><td>Une anecdote drôle</td><td class="sons"><span class="sn">Ba-dum-tss</span> <span class="sn">« C'est dingue ! Ah, dingue. »</span> <span class="sn">« Quand je suis content, je vomis »</span> <span class="sn">« Oh la vache ! »</span></td></tr>
-              <tr><td>Les mariés contestent la version de l'invité</td><td class="sons"><span class="sn">« Objection ! »</span> <span class="sn">« Oui… Ben non ! »</span> <span class="sn">« Nan c'est n'importe quoi »</span> <span class="sn">« Non sans déconner ? »</span></td></tr>
-              <tr><td>Une anecdote que personne ne comprend</td><td class="sons"><span class="sn">« Binz ? »</span> <span class="sn">« C'est pas faux », Perceval</span> <span class="sn">« Il s'appelle Juste Leblanc »</span></td></tr>
-              <tr><td>Silence après une question à la salle</td><td class="sons"><span class="sn">Criquets</span> <span class="sn">Jeopardy</span> <span class="sn">Ascenseur</span></td></tr>
-              <tr><td>« Leur chanson de mariage, quelqu'un sait ? »</td><td class="sons"><span class="sn">Criquets</span> <span class="sn">Jeopardy</span></td></tr>
-              <tr><td>Fin du jeu</td><td class="sons"><span class="sn">Bravo</span> <span class="sn">We Are the Champions</span> <span class="sn">Rocky, Gonna Fly Now</span></td></tr>
-            </tbody>
-          </table>
+        </aside>
         </div>
-        <p class="comment" style="margin-top:4px">Souvenirs émouvants : aucun son. Leur chanson de mariage : The Time of My Life, sur la playlist (pas sur la page des sons).</p>
-        <p class="part">Préparation</p>
-        <h5>Le questionnaire (4 par A4)</h5>
-        <p>La fiche liste les 10 questions ; l'invité répond à une ou plusieurs questions de son choix, dans un seul grand cadre, en notant le numéro devant chaque réponse (plus au dos si besoin).</p>
-        <div class="paper-wrap">
-          <div class="paper p3" data-card="jeu3">
-            <p class="kicker">15 ans de mariage · Stéphane &amp; Suzanne</p>
-            <h6>15 ans de nous…<br>racontés par vous</h6>
-            <p class="lead" style="font-size:7.8pt">Répondez à <b>une ou plusieurs questions</b>, celles qui vous inspirent. On pourra vous demander d'en lire une pendant la soirée, puis les fiches seront offertes aux mariés.</p>
-            <p class="field">Prénom(s) <span class="line"></span></p>
-            <ol class="qs">
-              <li>Mon meilleur souvenir avec vous est…</li>
-              <li>Dans 15 ans, je vous imagine…</li>
-              <li>Le conseil que je vous donne pour les 15 prochaines années…</li>
-              <li>Si je devais raconter une anecdote sur vous, ce serait…</li>
-              <li>Si votre couple était une chanson, ce serait…</li>
-              <li>Si votre couple était un film, ce serait…</li>
-              <li>Si je devais révéler un petit dossier sur vous, ce serait…</li>
-              <li>Si votre couple avait un slogan, ce serait…</li>
-              <li>Le petit défaut de chacun que tout le monde connaît…</li>
-              <li>Si votre couple avait une notice d'utilisation, la première consigne serait…</li>
-            </ol>
-            <div class="answer big"><span class="no">Vos réponses (n° de la question + réponse)</span><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-            <p class="more">Plus de place ? Continuez au dos.</p>
-          </div>
-        </div>
-        <button class="print-btn" type="button" data-print="jeu3">Imprimer la planche (4 questionnaires par A4)</button>
-        <h5>Suggestions</h5>
-        <ul>
-          <li class="prop">Ramasser les questionnaires vers 18h45 et choisir 4-5 réponses variées (une drôle, une émouvante, un « petit dossier »…), puis appeler la personne pour qu'elle la lise. Les 3 anecdotes préparées (Sandrine H., Sylvie, Célia) s'ajoutent.</li>
-          <li class="prop">Remettre les questionnaires et les post-its du jeu 1 dans une boîte ou un livre d'or pour les mariés.</li>
-        </ul>
-  
       </div>
     </li>
 
@@ -1265,6 +1137,68 @@
   </ol>
   <p class="comment" style="margin-top:4px">Total : ~50 min de 19h00 à 19h50, dont ~6 min d'interludes et ~5 min d'ouverture et de conclusion, plus la pause buffet si on la fait.</p>
 
+  </div>
+
+  <div class="vue" id="vue-contexte" hidden>
+  <h2>Qui joue</h2>
+  <p><strong>35 personnes le soir, dont 33 joueurs</strong> (+ enfants). Le cœur du jeu : 12 amis du couple et 10 de la famille commune, qui les connaissent bien. Les 11 du côté de Sandrine les connaissent moins : à l'aise pour voter au jeu 2, moins pour les jeux 1 et 3.</p>
+  <p><strong>~35 min de jeux</strong> : jeu 1 ~10 min (8-10 post-its lus sur ~25), jeu 2 ~10-12 min (11 questions), jeu 3 ~12-15 min (4-5 réponses lues + 3 anecdotes préparées).</p>
+
+  <h2>Enchaînement</h2>
+  <p class="note">Durées estimées. Ouverture par Stéphane, un interlude de Stéphane &amp; Suzanne entre chaque jeu. Tout à la suite ou pause buffet avant le jeu 3 : à décider (Aurélien &amp; Floriane).</p>
+  <div class="flow">
+    <div class="card j1">
+      <span class="n">Jeu 1</span>
+      <h4>Le défi des mariés</h4>
+      <p>Les invités écrivent un mot, les mariés devinent qui est visé.</p>
+      <p class="dur">~10 min</p>
+    </div>
+    <div class="card j2">
+      <span class="n">Jeu 2</span>
+      <h4>LUI, ELLE ou les 2 ?</h4>
+      <p>La salle vote avec des panneaux photo, puis les mariés.</p>
+      <p class="dur">~10-12 min</p>
+    </div>
+    <div class="card j3">
+      <span class="n">Jeu 3</span>
+      <h4>15 ans de nous... racontés par vous</h4>
+      <p>Questionnaires remplis, quelques invités interrogés, 3 anecdotes préparées.</p>
+      <p class="dur">~12-15 min, ou plus si ça prend</p>
+    </div>
+  </div>
+
+  <h2>Ton animation</h2>
+  <p class="note">Propositions pour le rôle de maître de cérémonie d'Aurélien. Les blagues sont à piocher : elles sont rangées dans la timeline, étape par étape (rubrique « Blagues à piocher »).</p>
+
+  <div class="before" style="border-left-color:var(--accent)">
+    <h4>Les running gags</h4>
+    <ul>
+      <li><strong>« Oui chérie »</strong> (Stéphane) : « C'est très important d'avoir le dernier mot avec sa femme. Et ce dernier mot, c'est : oui chérie. » À placer au premier désaccord des mariés au jeu 1, sinon à la question 2 du jeu 2 au plus tard. Puis on fait participer la salle : « À chaque cloche de ring, je dis "Stéphane ?" et vous répondez "Oui chérie !". On essaie. » On répète une fois, plus fort (« Suzanne ne vous a pas entendus »). Chute à la conclusion.</li>
+      <li><strong>« C'était bien mais… »</strong> (Suzanne, question 8 du jeu 2) : pour équilibrer, Stéphane ne doit pas être le seul visé. À ressortir à la fin.</li>
+      <li><strong>La CAF</strong> : par petites touches (ils s'y sont rencontrés), surtout avec les acronymes du bloc suivant. Pas un fil rouge : on n'en fait pas toute la soirée.</li>
+    </ul>
+  </div>
+
+  <div class="before" style="border-left-color:var(--accent)">
+    <h4>CAF : les autres définitions</h4>
+    <p style="margin:0 0 6px">Les 5 marquées « placée » sont déjà écrites dans la timeline. Les autres restent en réserve : pas plus d'une ou deux en plus. Formule : « La CAF, ici, ça veut dire… »</p>
+    <ul>
+      <li><strong>Cuisses, Abdos, Fessiers</strong> · intro : « Pas la CAF de la salle de sport… quoique, 22 ans de couple, c'est du sport. »</li>
+      <li><strong>Cuisine, Apéro, Flirt</strong> · intro : le vrai programme du restaurant « en tout bien tout honneur ».</li>
+      <li><strong>Coup de foudre Assez Flemmard</strong> · intro : 7 ans entre la rencontre et le mariage.</li>
+      <li><strong>Chérie A Forcément raison</strong> <span class="ok">placée</span> · jeu 2, question 2 (qui a toujours raison), juste avant « oui chérie ».</li>
+      <li><strong>Comité des Allers-retours Fréquents</strong> · jeu 2, question 3 (faux départs) : président, Stéphane.</li>
+      <li><strong>Collection Anatomique Fragmentée</strong> <span class="ok">placée</span> · jeu 2, question 4 (corps en puzzle avec les radios).</li>
+      <li><strong>Cherche, Appelle, Fouille</strong> · jeu 2, question 7 : la méthode de Stéphane pour retrouver ses affaires.</li>
+      <li><strong>Commentaire d'Après-Fête</strong> · jeu 2, question 8 : « C'était bien mais… », signé Suzanne.</li>
+      <li><strong>Club Anti-Fer à repasser</strong> · jeu 2, question 9 (lessive) : présidente, Suzanne.</li>
+      <li><strong>Chute Avec Frissons</strong> <span class="ok">placée</span> · jeu 2, question 10 (le saut en parachute de Suzanne).</li>
+      <li><strong>Contestataire À Fond</strong> <span class="ok">placée</span> · jeu 3, après Sandrine H. : Stéphane le rebelle, et Noah qui mène un mouvement de grève au lycée.</li>
+      <li><strong>Câlins, Apéro, Fous rires</strong> · jeu 3, après un souvenir tendre.</li>
+      <li><strong>Ça A Fonctionné</strong> <span class="ok">placée</span> · conclusion, en ouverture.</li>
+    </ul>
+  </div>
+
   <h2>Gérer son one man show</h2>
   <div class="before">
     <ol>
@@ -1281,7 +1215,127 @@
     </ol>
   </div>
 
-  <footer>Fiche perso d'Aurélien, d'après le document de Stéphane &amp; Suzanne. Mise à jour le 8 octobre 2026.</footer>
+  </div>
+
+
+  <div class="vue" id="vue-fiches" hidden>
+  <p class="note">Fiches et panneaux des jeux, déjà imprimés. Gardés ici pour réimprimer si besoin.</p>
+  <h2>Sur les tables, avant les jeux</h2>
+        <h5>Fiche règles (sur les tables)</h5>
+        <p>Récapitulatif des 3 jeux laissé sur chaque table, pour ne pas avoir à repasser. 4 par A4, à découper puis plastifier.</p>
+        <div class="paper-wrap">
+          <div class="paper p0" data-card="regles">
+            <p class="kicker">15 ans de mariage · Stéphane &amp; Suzanne</p>
+            <div class="orn" data-orn="coupes"></div>
+            <h6>Les jeux de la soirée</h6>
+            <div class="rule r1"><span class="num"><span>1</span></span><div><b>Le défi des mariés</b><p>Écrivez sur un post-it <strong>un mot</strong> qui décrit Stéphane, Suzanne ou les deux. <strong>Au dos : pour qui et votre prénom.</strong> Les mariés devront deviner qui est visé. Pas d'idée ? Voir la fiche « idées ».</p></div></div>
+            <div class="rule r2"><span class="num"><span>2</span></span><div><b>LUI, ELLE ou les 2 ?</b><p>À chaque question, levez le panneau de <strong>Stéphane</strong>, de <strong>Suzanne</strong>, les deux… ou aucun. Ensuite, les mariés donnent leur réponse.</p></div></div>
+            <div class="rule r3"><span class="num"><span>3</span></span><div><b>15 ans de nous… racontés par vous</b><p>Remplissez le questionnaire : <strong>votre prénom</strong> et les questions qui vous inspirent. On vous demandera peut-être d'en lire une !</p></div></div>
+            <p class="hl">Post-its et questionnaires ramassés <b>avant le début des jeux</b> (~19h).</p>
+          </div>
+        </div>
+        <button class="print-btn" type="button" data-print="regles" style="--c:var(--accent)">Imprimer la planche (4 fiches par A4)</button>
+  <h2>Jeu 1 · Le défi des mariés</h2>
+        <h5>Fiche « idées de mots » pour les invités</h5>
+        <p>Une petite fiche posée sur les tables, pour piocher si on n'a pas d'idée. Elle précise que la liste n'est pas exhaustive.</p>
+        <div class="paper-wrap">
+          <div class="paper p1" data-card="jeu1">
+            <p class="kicker">15 ans de mariage · Stéphane &amp; Suzanne</p>
+            <h6>Le défi des mariés</h6>
+            <div class="orn mini" data-orn="filet"></div>
+            <p class="lead">Écrivez sur un post-it <b>un mot</b> qui caractérise <b>Stéphane</b>, <b>Suzanne</b> ou <b>les deux</b>. <b>Au dos</b>, notez <b>qui vous visez</b> et <b>votre prénom</b>. Les mariés devront deviner qui est visé !</p>
+            <div class="ex">
+              <span class="lbl">Exemple</span>
+              <div class="pi"><small>Devant</small>Tête<br>en l'air</div>
+              <div class="turn"><b>→</b>au dos</div>
+              <div class="pi v"><small>Au dos</small>Pour : Stéphane<br>De : Maxime</div>
+            </div>
+            <p class="lead" style="margin:0 0 1mm">Pas d'idée ? Piochez ici :</p>
+            <div class="cols">
+              <div>
+                <p class="grp">Adjectifs</p>
+                <ul class="words">
+                  <li>Rebelle</li><li>Têtu(e)</li><li>Bavard(e)</li><li>Gourmand(e)</li><li>Généreux(se)</li><li>Drôle</li><li>Organisé(e)</li><li>Perfectionniste</li><li>Fêtard(e)</li><li>Zen</li><li>Râleur(se)</li><li>Câlin(e)</li><li>Rêveur(se)</li><li>Aventurier(e)</li><li>Distrait(e)</li>
+                </ul>
+              </div>
+              <div>
+                <p class="grp">Mots &amp; expressions</p>
+                <ul class="words">
+                  <li>Tornade</li><li>Soleil</li><li>Fous rires</li><li>Bon vivant</li><li>Tête en l'air</li><li>Pilier</li><li>Apéro</li><li>Voyages</li><li>Douceur</li><li>Complices</li><li>Inséparables</li><li>Chef d'orchestre</li><li>Grand cœur</li><li>Pile électrique</li><li>Duo de choc</li>
+                </ul>
+              </div>
+            </div>
+            <p class="foot">Liste non exhaustive : à vous de trouver mieux !</p>
+          </div>
+        </div>
+        <button class="print-btn" type="button" data-print="jeu1">Imprimer la planche (4 fiches par A4)</button>
+  <h2>Jeu 2 · LUI, ELLE ou les 2 ?</h2>
+        <h5>Les panneaux</h5>
+        <p>Imprimés en couleur sur papier blanc, photo comprise : portrait détouré sur fond à rayons, vert pour Stéphane, jaune pour Suzanne. Un panneau A5 par A4 paysage, l'autre moitié blanche : on plie en deux (plus rigide) et on colle sur un carton A5. Les PDF avec les photos sont générés en local (<code>python3 scripts/panneaux-photo.py</code>, dossier <code>jeux-mariage-impression/</code>) : les photos ne sont pas publiées.</p>
+        <div class="paper-wrap">
+          <div class="panneau" data-panneau="stephane" style="--feuille:#4f9be8">
+            <div class="orn" data-orn="coupes"></div>
+            <div class="fenetre"><div>Photo<br>96 × 94 mm</div></div>
+            <p class="nom">Stéphane</p>
+            <div class="orn mini" data-orn="filet"></div>
+          </div>
+          <div class="panneau" data-panneau="suzanne" style="--feuille:#f2bd3a">
+            <div class="orn" data-orn="coupes"></div>
+            <div class="fenetre"><div>Photo<br>96 × 94 mm</div></div>
+            <p class="nom">Suzanne</p>
+            <div class="orn mini" data-orn="filet"></div>
+          </div>
+        </div>
+        <div class="pan-btns">
+          <button class="print-btn" type="button" data-print="pan-stephane" style="--c:var(--lui)">Panneaux de Stéphane (2 par A4)</button>
+          <button class="print-btn" type="button" data-print="pan-suzanne" style="--c:var(--elle)">Panneaux de Suzanne (2 par A4)</button>
+          <button class="print-btn" type="button" data-print="a4-stephane" style="--c:var(--lui)">Grand panneau A4 de Stéphane</button>
+          <button class="print-btn" type="button" data-print="a4-suzanne" style="--c:var(--elle)">Grand panneau A4 de Suzanne</button>
+        </div>
+        <h5>Fiche de table « LUI, ELLE ou les 2 ? »</h5>
+        <p>Posée sur les tables avec les autres fiches : comment voter avec les panneaux. Aucune question dessus, pour garder la surprise.</p>
+        <div class="paper-wrap">
+          <div class="paper p2" data-card="jeu2">
+            <p class="kicker">15 ans de mariage · Stéphane &amp; Suzanne</p>
+            <h6>LUI, ELLE ou les 2 ?</h6>
+            <div class="orn mini" data-orn="filet"></div>
+            <p class="lead">Je pose une question sur le couple. <b>Vous votez</b> en levant vos panneaux photo, puis <b>les mariés</b> donnent leur réponse.</p>
+            <div class="votes">
+              <div class="vote"><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M28.5 30L26 17M35.5 30L38 17" stroke="#15223f" stroke-width="1.5" stroke-linecap="round" fill="none"/><g transform="translate(20 1) rotate(0 12 8.5)"><rect width="24" height="17" fill="#fff" stroke="#15223f" stroke-width=".8"/><circle cx="12" cy="6.2" r="3.4" fill="#e2c27a"/><text x="12" y="14.8" font-size="3.5" letter-spacing=".2" text-anchor="middle" fill="#15223f" font-family="Futura, Century Gothic, Trebuchet MS, sans-serif">STÉPHANE</text></g><use href="#pers" x="25" y="20" width="14" height="20" fill="#15223f"/></svg><b>Stéphane</b><small>son panneau levé</small></div>
+              <div class="vote"><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M28.5 30L26 17M35.5 30L38 17" stroke="#15223f" stroke-width="1.5" stroke-linecap="round" fill="none"/><g transform="translate(20 1) rotate(0 12 8.5)"><rect width="24" height="17" fill="#fff" stroke="#15223f" stroke-width=".8"/><circle cx="12" cy="6.2" r="3.4" fill="#e2c27a"/><text x="12" y="14.8" font-size="3.5" letter-spacing=".2" text-anchor="middle" fill="#15223f" font-family="Futura, Century Gothic, Trebuchet MS, sans-serif">SUZANNE</text></g><use href="#pers" x="25" y="20" width="14" height="20" fill="#15223f"/></svg><b>Suzanne</b><small>son panneau levé</small></div>
+              <div class="vote"><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M28.5 30L15 18M35.5 30L49 18" stroke="#15223f" stroke-width="1.5" stroke-linecap="round" fill="none"/><g transform="translate(2 2) rotate(-8 12 8.5)"><rect width="24" height="17" fill="#fff" stroke="#15223f" stroke-width=".8"/><circle cx="12" cy="6.2" r="3.4" fill="#e2c27a"/><text x="12" y="14.8" font-size="3.5" letter-spacing=".2" text-anchor="middle" fill="#15223f" font-family="Futura, Century Gothic, Trebuchet MS, sans-serif">STÉPHANE</text></g><g transform="translate(38 2) rotate(8 12 8.5)"><rect width="24" height="17" fill="#fff" stroke="#15223f" stroke-width=".8"/><circle cx="12" cy="6.2" r="3.4" fill="#e2c27a"/><text x="12" y="14.8" font-size="3.5" letter-spacing=".2" text-anchor="middle" fill="#15223f" font-family="Futura, Century Gothic, Trebuchet MS, sans-serif">SUZANNE</text></g><use href="#pers" x="25" y="20" width="14" height="20" fill="#15223f"/></svg><b>Les deux</b><small>les 2 panneaux levés</small></div>
+              <div class="vote"><svg viewBox="0 0 64 40" aria-hidden="true"><rect x="20" y="1" width="24" height="17" fill="none" stroke="#a5823a" stroke-width=".6" stroke-dasharray="1.6 1.2"/><text x="32" y="12" font-size="7" text-anchor="middle" fill="#a5823a" font-family="Futura, Century Gothic, Trebuchet MS, sans-serif">?</text><use href="#pers" x="25" y="20" width="14" height="20" fill="#15223f"/></svg><b>Aucun</b><small>rien de levé</small></div>
+            </div>
+            <p class="hl">Les panneaux sont distribués <b>juste avant le jeu</b>. Ensuite, ils sont à vous : <b>gardez-les !</b></p>
+          </div>
+        </div>
+        <button class="print-btn" type="button" data-print="jeu2">Imprimer la planche (4 fiches par A4)</button>
+  <h2>Jeu 3 · 15 ans de nous... racontés par vous</h2>
+        <h5>Le questionnaire (4 par A4)</h5>
+        <p>La fiche liste les 10 questions ; l'invité répond à une ou plusieurs questions de son choix, dans un seul grand cadre, en notant le numéro devant chaque réponse (plus au dos si besoin).</p>
+        <div class="paper-wrap">
+          <div class="paper p3" data-card="jeu3">
+            <p class="kicker">15 ans de mariage · Stéphane &amp; Suzanne</p>
+            <h6>15 ans de nous…<br>racontés par vous</h6>
+            <p class="lead" style="font-size:7.8pt">Répondez à <b>une ou plusieurs questions</b>, celles qui vous inspirent. On pourra vous demander d'en lire une pendant la soirée, puis les fiches seront offertes aux mariés.</p>
+            <p class="field">Prénom(s) <span class="line"></span></p>
+            <ol class="qs">
+              <li>Mon meilleur souvenir avec vous est…</li>
+              <li>Dans 15 ans, je vous imagine…</li>
+              <li>Le conseil que je vous donne pour les 15 prochaines années…</li>
+              <li>Si je devais raconter une anecdote sur vous, ce serait…</li>
+              <li>Si votre couple était une chanson, ce serait…</li>
+              <li>Si votre couple était un film, ce serait…</li>
+              <li>Si je devais révéler un petit dossier sur vous, ce serait…</li>
+              <li>Si votre couple avait un slogan, ce serait…</li>
+              <li>Le petit défaut de chacun que tout le monde connaît…</li>
+              <li>Si votre couple avait une notice d'utilisation, la première consigne serait…</li>
+            </ol>
+            <div class="answer big"><span class="no">Vos réponses (n° de la question + réponse)</span><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <p class="more">Plus de place ? Continuez au dos.</p>
+          </div>
+        </div>
+        <button class="print-btn" type="button" data-print="jeu3">Imprimer la planche (4 questionnaires par A4)</button>
   </div>
 
   <div class="vue" id="vue-todo" hidden>
@@ -1345,6 +1399,7 @@
     <li>Ordre des jeux : celui du document (1, 2, 3) ou finir sur le jeu 2, plus rythmé.</li>
   </ul>
   </div>
+  <footer>Fiche perso d'Aurélien, d'après le document de Stéphane &amp; Suzanne. Mise à jour le 9 octobre 2026.</footer>
 </main>
 
 <div class="sheets" aria-hidden="true"></div>
@@ -1397,16 +1452,16 @@
   document.querySelectorAll('[data-print]').forEach(btn =>
     btn.addEventListener('click', () => printSheet(btn.dataset.print)));
 
-  // Onglets : Fiche des jeux / To do (jeux-mariage.html#todo ouvre directement la to do)
+  // Onglets : Timeline des jeux / Contexte / Fiches imprimées / To do (jeux-mariage.html#contexte, #fiches ou #todo ouvre directement l'onglet)
   function montreVue(nom) {
     document.querySelectorAll('.vue').forEach(v => v.hidden = v.id !== 'vue-' + nom);
     document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.vue === nom));
   }
   document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => {
     montreVue(b.dataset.vue);
-    history.replaceState(null, '', b.dataset.vue === 'todo' ? '#todo' : location.pathname + location.search);
+    history.replaceState(null, '', b.dataset.vue === 'timeline' ? location.pathname + location.search : '#' + b.dataset.vue);
   }));
-  if (location.hash === '#todo') montreVue('todo');
+  if (['#contexte', '#fiches', '#todo'].includes(location.hash)) montreVue(location.hash.slice(1));
 
   // Cases cochées : gardées sur cet appareil seulement
   const CLE_TODO = 'jeux-mariage-todo';
@@ -1425,29 +1480,6 @@
   // jeux-mariage.html#print-jeu1 : ouvre directement en mode planche (utile pour générer un PDF).
   const m = location.hash.match(/^#print-([\w-]+)$/);
   if (m) showSheet(m[1]);
-</script>
-<script>
-  // Raccourcis de la table de sons (jeux-sons.html, même site) : la touche s'affiche devant le nom du son,
-  // dans le navigateur où la table de sons a été ouverte (elle y range ses touches, localStorage "sons-touches-programme").
-  (() => {
-    let sons = [];
-    try { sons = JSON.parse(localStorage.getItem('sons-touches-programme')) || []; } catch (e) {}
-    if (!sons.some(s => s[0])) return;
-    const norme = t => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[«»"]/g, '').replace(/\s+/g, ' ').trim();
-    const st = document.createElement('style');
-    st.textContent = '.sn kbd { font: 700 .7rem/1 ui-monospace, Menlo, monospace; border: 1px solid currentColor; border-radius: 4px; padding: 1px 4px; margin-right: 5px; }';
-    document.head.append(st);
-    document.querySelectorAll('.sn').forEach(sn => {
-      // « Titre » ou « Titre, détail » : un seul son doit correspondre
-      const txt = norme(sn.textContent);
-      const ok = sons.filter(([, titre, detail]) => {
-        const t = norme(titre);
-        return txt === t || (txt.startsWith(t + ',') && norme(detail).includes(txt.slice(t.length + 1).trim()));
-      });
-      if (ok.length !== 1 || !ok[0][0]) return;
-      const k = document.createElement('kbd'); k.textContent = ok[0][0]; sn.prepend(k);
-    });
-  })();
 </script>
 </body>
 </html>
