@@ -352,6 +352,9 @@ h2.tous { --c: var(--doux); margin-top: 22px; }
 /* Vrais extraits de pop culture : chargés et déchiffrés à l'ouverture de l'onglet (sons-pop.bin),
    ou intégrés ici dans la version complète locale (scripts/sons-pop.py) */
 /*POP:debut*/let SONS_POP = null;/*POP:fin*/
+/* Fiche des jeux (jeux-mariage.html) : intégrée dans la version complète locale, qui lit la conduite son sans réseau ;
+   sur le site, lue à côté de la page */
+/*FICHE:debut*/const FICHE_JEUX = null;/*FICHE:fin*/
 
 // Réglages par son : boucle, fondu d'entrée et de sortie (le volume est harmonisé dans les mp3, -16 LUFS)
 const REGLAGES = {
@@ -1024,9 +1027,13 @@ async function chargeFiche() {
   try { plan = JSON.parse(localStorage.getItem(CLE_CONDUITE)) || null; } catch (e) {}
   rendConduite();   // tout de suite, avec la dernière version gardée
   try {
-    const r = await fetch("jeux-mariage.html", { cache: "no-cache" });
-    if (!r.ok) throw new Error(r.status);
-    const p = lisFiche(new DOMParser().parseFromString(await r.text(), "text/html"));
+    let html = FICHE_JEUX;
+    if (!html) {
+      const r = await fetch("jeux-mariage.html", { cache: "no-cache" });
+      if (!r.ok) throw new Error(r.status);
+      html = await r.text();
+    }
+    const p = lisFiche(new DOMParser().parseFromString(html, "text/html"));
     if (!p.jeux.some(j => j.sections.length)) throw new Error("conduite vide");
     plan = p;
     try { localStorage.setItem(CLE_CONDUITE, JSON.stringify(plan)); } catch (e) {}
