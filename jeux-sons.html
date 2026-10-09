@@ -131,6 +131,51 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
 #etat { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: rgba(8, 13, 28, .92); border: 1px solid var(--trait); border-radius: 999px; padding: 8px 16px; font-size: .85rem; opacity: 0; transition: opacity .3s; pointer-events: none; white-space: nowrap; }
 #etat.on { opacity: 1; }
 
+/* Barre des jeux, sous la recherche : un onglet par jeu, les sons de partout, le chrono */
+.barre { flex-basis: 100%; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.onglets { display: inline-flex; gap: 4px; flex-wrap: wrap; }
+.onglets button { font: 600 .78rem/1.1 var(--titre); letter-spacing: .08em; text-transform: uppercase; text-align: left; color: var(--or); background: transparent; border: 1.5px solid var(--trait); border-radius: 10px; padding: 6px 11px; cursor: pointer; }
+.onglets button small { display: block; max-width: 190px; font: 400 .66rem/1.2 var(--sans); letter-spacing: 0; text-transform: none; color: var(--doux); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.onglets button.on { color: var(--fond); background: var(--or); border-color: var(--or); }
+.onglets button.on small { color: rgba(14, 23, 45, .75); }
+.partout { flex: 1; min-width: 0; display: flex; gap: 5px; }
+.partout .b { flex: 1; max-width: 150px; min-height: 40px; padding-top: 4px; padding-bottom: 5px; }
+.mini { display: inline-flex; align-items: center; gap: 2px; border: 1px solid var(--trait); border-radius: 999px; padding: 3px; }
+.mini button { font: 500 .78rem/1 var(--titre); color: var(--doux); background: transparent; border: 0; border-radius: 999px; padding: 7px 9px; cursor: pointer; }
+.mini button.on { color: var(--fond); background: var(--or); }
+#mini-reste { min-width: 2.6em; padding: 0 4px; text-align: center; font: 500 .95rem/1 var(--titre); cursor: pointer; }
+#mini-reste.fin { color: var(--rouge); }
+
+/* Onglet d'un jeu : la conduite son, un moment par ligne ; le son principal en grand, les autres en petit */
+.conduite { margin-top: 4px; }
+.conduite > h2 { --c: var(--or); }
+.conduite .regles { margin: 0 0 4px; font-size: .78rem; color: var(--doux); }
+.sections { columns: 2 520px; column-gap: 20px; }
+.sect { break-inside: avoid; margin-bottom: 8px; }
+.sect h3 { color: var(--or); margin: 10px 0 4px; }
+.ligne { display: grid; grid-template-columns: minmax(110px, 33%) minmax(120px, 30%) 1fr; gap: 6px; align-items: center; padding: 3px 4px; border-top: 1px solid rgba(226, 194, 122, .12); border-radius: 6px; }
+.ligne .lbl { font-size: .8rem; line-height: 1.2; }
+.ligne.derniere { background: rgba(226, 194, 122, .08); }
+.ligne.derniere .lbl { color: var(--or); }
+.lbl .qn { font: 600 .7rem/1 ui-monospace, Menlo, monospace; font-style: normal; color: var(--or); margin-right: 5px; }
+.rep { font: 600 .62rem/1 var(--titre); letter-spacing: .08em; padding: 2px 5px; border-radius: 4px; white-space: nowrap; border: 1px solid var(--trait); }
+.rep.elle { background: #f2bd3a; color: #1b1b1b; border-color: #f2bd3a; }
+.rep.lui { background: #4f9be8; color: #fff; border-color: #4f9be8; }
+.rep.both { background: var(--violet); color: #1b1b1b; border-color: var(--violet); }
+.ligne .grand { width: 100%; min-height: 44px; }
+.alts { display: flex; flex-wrap: wrap; gap: 4px; }
+.b.petit { min-height: 0; flex-direction: row; align-items: center; gap: 5px; padding: 4px 7px; border-left-width: 2px; }
+.b.petit b { font-size: .72rem; padding-right: 0 !important; }
+.b.petit kbd { position: static; order: 1; }
+.b.allume { border-color: var(--c, var(--or)); background: rgba(143, 182, 236, .16); }
+.absent { font-size: .72rem; color: var(--doux); opacity: .6; border: 1px dashed var(--trait); border-radius: 6px; padding: 3px 6px; }
+h2.tous { --c: var(--doux); margin-top: 22px; }
+@media (max-width: 620px) {
+  .partout, .mini { display: none; }
+  .ligne { grid-template-columns: 1fr 1fr; }
+  .ligne .lbl { grid-column: 1 / -1; }
+}
+
 @media (max-width: 620px) {
   h1 { display: none; }
   .stop { padding: 11px 12px; font-size: .78rem; letter-spacing: .08em; }
@@ -155,6 +200,11 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
     <input id="cherche" type="search" placeholder="Chercher : ding, tarzan, kaamelott…" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="go">
     <button class="outil" id="raccourcis" title="Choisir la touche du clavier de chaque son">Raccourcis</button>
     <button class="stop" id="stop">Tout couper</button>
+    <div class="barre">
+      <nav class="onglets"><button data-onglet="1">Jeu 1<small></small></button><button data-onglet="2">Jeu 2<small></small></button><button data-onglet="3">Jeu 3<small></small></button></nav>
+      <div class="partout" id="partout"></div>
+      <div class="mini" title="Durée du chrono (touches 1, 2, 3)"><button data-duree="10">10 s</button><button data-duree="20" class="on">20 s</button><button data-duree="30">30 s</button><span id="mini-reste" title="Arrêter le chrono"></span></div>
+    </div>
     <div class="panneau" id="panneau" hidden>
       <span id="panneau-aide">Clique sur un son, puis appuie sur sa touche (lettre, chiffre, Maj + lettre). Retour arrière : retirer la touche.</span>
       <button id="t-exporter" title="Enregistrer les raccourcis dans un fichier">Exporter</button>
@@ -177,6 +227,11 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
   </section>
 
   <p class="legende" id="legende" hidden><span>Sons</span><span class="kaamelott">Kaamelott</span><span class="film">Films, séries, jeux télé, jeux vidéo, manga</span></p>
+
+  <!-- Onglet du jeu choisi : sa conduite son, lue dans la fiche des jeux (rempli par le script) -->
+  <section class="conduite" id="conduite" hidden></section>
+
+  <h2 class="tous">Tous les sons</h2>
 
   <!-- Entrée en scène : en premier, avant de lancer un jeu -->
   <div class="groupe entree">
@@ -285,7 +340,7 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
   <section id="pop-reste" class="pop" hidden><h2>Autres extraits</h2></section>
   <p class="vide" id="vide" hidden>Aucun son. Échap pour tout réafficher.</p>
 
-  <p class="note">Un appui lance le son, un deuxième appui sur le même bouton l'arrête. Dans Chrono et attente, chaque musique ou son dure le temps choisi (10, 20 ou 30 s), avec bips sur les 5 dernières secondes et buzzer à zéro ; les boucles restent libres. Au clavier : <kbd>/</kbd> pour chercher, <kbd>Entrée</kbd> joue le premier résultat, la touche écrite sur chaque bouton (à régler avec « Raccourcis », retenus par ce navigateur et affichés dans le programme des jeux), <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> pour la durée (10, 20, 30 s), <kbd>Espace</kbd> arrête le chrono, <kbd>Échap</kbd> coupe tout. Sur iPhone, monter le volume du téléphone avant.</p>
+  <p class="note">Un appui lance le son, un deuxième appui sur le même bouton l'arrête. Dans Chrono et attente, chaque musique ou son dure le temps choisi (10, 20 ou 30 s), avec bips sur les 5 dernières secondes et buzzer à zéro ; les boucles restent libres. En haut, un onglet par jeu : sa conduite son (celle de la fiche des jeux), un moment par ligne, le son principal en grand ; clic droit sur un petit son pour le mettre en grand, deuxième clic sur l'onglet pour le replier. Au clavier : <kbd>/</kbd> pour chercher, <kbd>Entrée</kbd> joue le premier résultat, la touche écrite sur chaque bouton (à régler avec « Raccourcis », retenus par ce navigateur et affichés dans le programme des jeux), <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> pour la durée (10, 20, 30 s), <kbd>Espace</kbd> arrête le chrono, <kbd>Échap</kbd> coupe tout. Sur iPhone, monter le volume du téléphone avant.</p>
   <p class="note">Sons : <a href="https://bigsoundbank.com">BigSoundBank</a> (CC0) et <a href="https://mixkit.co">Mixkit</a> (licence gratuite Mixkit). Musique d'ascenseur : « Local Forecast - Elevator », Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), licence <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Pop culture : vrais extraits, réservés à la famille ; fond rouille pour Kaamelott, turquoise pour le reste.</p>
 </main>
 <div id="etat"></div>
@@ -543,6 +598,7 @@ function appliqueTouches() {
     if (!kbd) { kbd = document.createElement("kbd"); b.prepend(kbd); }
     kbd.textContent = afficheTouche(k);
   });
+  majTouchesConduite(parSon);
   // Pour le programme : titre et détail de chaque son (gardés d'une visite à l'autre, même si les extraits ne sont pas ouverts) et sa touche
   try {
     const titres = JSON.parse(localStorage.getItem(CLE_TITRES) || "{}");
@@ -599,7 +655,7 @@ document.getElementById("t-exporter").addEventListener("click", () => {
   const lisible = {};
   for (const [k, son] of Object.entries(touches)) { const b = carteDe(son); lisible[afficheTouche(k)] = b ? titreCarte(b) + " (" + b.querySelector("small").textContent + ")" : son; }
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([JSON.stringify({ touches, lisible }, null, 2)], { type: "application/json" }));
+  a.href = URL.createObjectURL(new Blob([JSON.stringify({ touches, preferes, lisible }, null, 2)], { type: "application/json" }));
   a.download = "raccourcis-sons.json"; a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 });
@@ -609,6 +665,7 @@ fichier.addEventListener("change", async () => {
   try {
     const d = JSON.parse(await fichier.files[0].text());
     touches = nettoieTouches(d.touches || d); sauveTouches();
+    if (d.preferes && typeof d.preferes === "object") { preferes = d.preferes; sauvePreferes(); rendConduite(); }
     signale(Object.keys(touches).length + " raccourcis importés");
   } catch (e) { signale("Fichier de raccourcis illisible"); }
   fichier.value = "";
@@ -625,13 +682,14 @@ document.querySelectorAll(".groupe .b").forEach(b => {
 function filtre() {
   const mots = sansAccent(cherche.value).split(/\s+/).filter(Boolean);
   let total = 0;
-  document.querySelectorAll(".b").forEach(b => b.hidden = !mots.every(m => b._texte.includes(m)));
+  document.querySelectorAll(".groupe .b").forEach(b => b.hidden = !mots.every(m => b._texte.includes(m)));
   document.querySelectorAll(".sous").forEach(g => g.hidden = !g.querySelector(".b:not([hidden])"));
   document.querySelectorAll(".groupe").forEach(g => { g.hidden = !g.querySelector(".b:not([hidden])"); total += !g.hidden; });
   document.getElementById("vide").hidden = total > 0;
   // Pendant une recherche, la ligne du mot de passe s'efface
   const filtrant = mots.length > 0;
   pop.hidden = !!SONS_POP || filtrant;   // la ligne du mot de passe, tant que les extraits ne sont pas ouverts
+  majVisibilite();   // l'onglet du jeu s'efface pendant une recherche
 }
 
 /* ---------- Pop culture : extraits chiffrés, mot de passe retenu par le téléphone ---------- */
@@ -702,7 +760,7 @@ function construitPop() {
     g.querySelector(".grille").append(b);
     b._texte = sansAccent([s.titre, s.detail, s.cat, "pop culture", b.closest(".groupe")?.querySelector("h2")?.textContent || "", b.closest(".sous")?.querySelector("h3")?.textContent || ""].join(" "));
   }
-  filtre(); numerote(); appliqueTouches(); prechargePop();
+  numerote(); rendConduite(); appliqueTouches(); filtre(); prechargePop();
 }
 // Numéros dans l'ordre de la page (refaits quand les extraits s'ajoutent)
 function numerote() {
@@ -723,13 +781,271 @@ cherche.addEventListener("input", filtre);
 cherche.addEventListener("keydown", e => {
   if (e.key === "Enter") {
     e.preventDefault();
-    const b = [...document.querySelectorAll(".b")].find(b => b.offsetParent);   // premier son visible
+    const b = [...document.querySelectorAll(".groupe .b")].find(b => b.offsetParent);   // premier son visible
     if (b) declenche(b);
   } else if (e.key === "Escape") {
     cherche.value = ""; filtre(); cherche.blur();
   }
 });
+/* ---------- Onglets par jeu : la conduite son de la fiche des jeux, moment par moment ---------- */
+// Lue dans jeux-mariage.html (même site) : tableaux « Conduite son », questions du jeu 2, sons cités dans l'intro, les interludes et la conclusion.
+// Gardée par ce navigateur, pour marcher sans réseau. Intro avec le jeu 1, interlude 1 avec le jeu 2, interlude 2 et conclusion avec le jeu 3.
+// Par moment : le son principal en grand, les autres en petit (clic droit : devient le principal, retenu par ce navigateur).
+// Les boutons des onglets et de la barre déclenchent la carte de la bibliothèque : même lecture, même touche, même arrêt.
+const CLE_CONDUITE = "sons-conduite", CLE_ONGLET = "sons-onglet", CLE_PREFERES = "sons-preferes";
+const DUREE_JEU = { 1: 20, 2: 10 };   // durée du chrono à l'ouverture de l'onglet (post-it, vote)
+const PARTOUT = ["ding", "buzzer", "bravo", "ring"];
+const conduite = document.getElementById("conduite"), miniReste = document.getElementById("mini-reste");
+let plan = null, onglet = 1, preferes = {}, proxies = {};
+const derniere = {};   // dernière ligne jouée, par jeu
+try { const o = localStorage.getItem(CLE_ONGLET); if (o !== null) onglet = +o || 0; } catch (e) {}
+try { preferes = JSON.parse(localStorage.getItem(CLE_PREFERES)) || {}; } catch (e) {}
+function sauvePreferes() { try { localStorage.setItem(CLE_PREFERES, JSON.stringify(preferes)); } catch (e) {} }
+
+// Lecture de la fiche
+const texte = el => el ? el.textContent.replace(/\s+/g, " ").trim() : "";
+const phrases = t => t.replace(/\s+/g, " ").trim().split(/(?<=[.!?…])\s+(?![»)])/).filter(Boolean);   // « … ? » reste entier
+const nettoie = t => t.replace(/^[\s:,;]+|[\s:,;]+$/g, "").replace(/^\([^)]*\)\s+(?=\S)/, "");   // sans « (pause) » devant
+const majuscule = t => t.charAt(0).toUpperCase() + t.slice(1);
+// Ce qui précède un son : la dernière phrase (et la précédente si elle est courte) ; sinon ce qui le suit
+function avant(t) {
+  const p = phrases(t); let r = p.pop() || "";
+  while (r.length < 25 && p.length) r = p.pop() + " " + r;
+  r = nettoie(r);
+  return r.length > 90 ? "…" + r.slice(-88).replace(/^\S*\s/, "") : r;
+}
+function apres(t) {
+  const p = phrases(t); let r = p.shift() || "";
+  while (r.length < 30 && p.length) r += " " + p.shift();
+  r = nettoie(r);
+  return r.length > 90 ? r.slice(0, 88).replace(/\s\S*$/, "") + "…" : r;
+}
+function lisTableau(t, titre) {
+  const sections = []; let s = null;
+  t.querySelectorAll("tbody tr").forEach(tr => {
+    if (tr.classList.contains("sep")) { s = { titre: texte(tr), lignes: [] }; sections.push(s); return; }
+    const sons = [...tr.querySelectorAll(".sn")].map(texte);
+    if (!sons.length) return;
+    if (!s) { s = { titre, lignes: [] }; sections.push(s); }
+    s.lignes.push({ label: texte(tr.cells[0]), sons });
+  });
+  return sections;
+}
+function lisQuestions(t) {
+  const lignes = [...t.querySelectorAll("tbody tr")].filter(tr => tr.querySelector(".num")).map(tr => {
+    const ans = tr.querySelector(".ans");
+    return { num: texte(tr.querySelector(".num")), label: texte(tr.cells[1]), rep: texte(ans), repClasse: ans ? [...ans.classList].filter(c => c !== "ans").join(" ") : "",
+      sons: [...tr.querySelectorAll(".snd .sn")].map(texte) };
+  });
+  return { titre: "Les " + lignes.length + " questions", lignes };
+}
+// Texte suivi : une suite de sons (séparés par des espaces) = un moment, ses sons au choix
+function lisRecit(box) {
+  const lignes = [];
+  box.querySelectorAll("p, li").forEach(el => {
+    if (el.closest("table") || !el.querySelector(":scope > .sn")) return;
+    const morceaux = []; let txt = "", suite = null;
+    for (const n of el.childNodes) {
+      if (n.nodeType === 1 && n.classList.contains("sn")) {
+        if (!suite) { morceaux.push({ txt }); txt = ""; suite = []; morceaux.push({ sons: suite }); }
+        suite.push(texte(n));
+      } else {
+        if (suite && !n.textContent.trim()) continue;
+        suite = null; txt += n.textContent;
+      }
+    }
+    morceaux.push({ txt });
+    morceaux.forEach((m, i) => { if (m.sons) lignes.push({ label: majuscule(avant(morceaux[i - 1].txt) || apres(morceaux[i + 1].txt)), sons: m.sons }); });
+  });
+  return lignes;
+}
+function lisFiche(doc) {
+  const h5 = [...doc.querySelectorAll("h5")].find(h => /^Règles pour Maxime/.test(texte(h)));
+  const plan = { regles: h5?.nextElementSibling ? [...h5.nextElementSibling.querySelectorAll("li")].map(texte) : [],
+    jeux: [1, 2, 3].map(n => ({ n, titre: "", notes: [], sections: [] })) };
+  let dernier = 0;
+  doc.querySelectorAll(".box").forEach(box => {
+    const k = texte(box.querySelector(".k")), m = k.match(/^Jeu (\d)/);
+    if (m) {
+      dernier = +m[1];
+      const jeu = plan.jeux[dernier - 1];
+      if (!jeu) return;
+      jeu.titre = texte(box.querySelector("h4"));
+      box.querySelectorAll("table.ctab").forEach(t => {
+        jeu.sections.push(...lisTableau(t, "Pendant le jeu"));
+        // Remarques juste sous le tableau (« Souvenirs émouvants : aucun son »…)
+        for (let n = (t.closest(".table-wrap") || t).nextElementSibling; n && n.matches("p:not(.part)"); n = n.nextElementSibling) jeu.notes.push(texte(n));
+      });
+      const q = box.querySelector("table.qtab");
+      if (q) jeu.sections.push(lisQuestions(q));
+    } else {
+      // Intro avant le jeu 1, interlude avant le jeu suivant, conclusion après le jeu 3
+      const lignes = lisRecit(box);
+      if (lignes.length) plan.jeux[Math.min(dernier + 1, 3) - 1].sections.push({ titre: k.split("·")[0].trim(), lignes });
+    }
+  });
+  const entrees = doc.querySelector(".before table.ctab");
+  if (entrees) plan.jeux.forEach(j => j.sections.push(...lisTableau(entrees, "Entrées en scène, à tout moment")));
+  return plan;
+}
+
+// Nom de la fiche -> carte de la bibliothèque : le titre, ou « titre, détail » (« Rocky, Eye of the Tiger »)
+const norme = t => t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[’‘]/g, "'").replace(/…/g, "...")
+  .replace(/[«»"]/g, "").replace(/\s+/g, " ").replace(/ ,/g, ",").trim();
+function indexCartes() {
+  const titres = {}, cartes = [];
+  document.querySelectorAll(".groupe .b[data-son]").forEach(c => {
+    const t = norme(titreCarte(c)), d = norme(c.querySelector("small").textContent);
+    (titres[t] ||= []).push(c); cartes.push({ c, t, d });
+  });
+  return nom => {
+    const n = norme(nom);
+    if (titres[n]?.length === 1) return titres[n][0];
+    const ok = cartes.filter(x => n.startsWith(x.t + ",") && x.d.includes(n.slice(x.t.length + 1).trim()));
+    return ok.length === 1 ? ok[0].c : titres[n]?.[0] || null;
+  };
+}
+
+// Bouton relais : joue la carte, et en reprend l'état (joue, allumé, choisi pour une touche)
+function proxy(c, taille) {
+  const p = document.createElement("button");
+  p.className = "b p " + taille + (c.classList.contains("kaamelott") ? " kaamelott" : c.classList.contains("film") ? " film" : "");
+  p.dataset.cible = c.dataset.son;
+  p.style.setProperty("--c", getComputedStyle(c).getPropertyValue("--c"));
+  const detail = c.querySelector("small").textContent;
+  p.innerHTML = taille === "petit" ? "<b></b>" : "<b></b><small></small>";
+  p.querySelector("b").textContent = titreCarte(c);
+  p.querySelector("small")?.append(detail);
+  p.title = titreCarte(c) + (detail ? " (" + detail + ")" : "");
+  p.addEventListener("click", () => { const carte = carteDe(p.dataset.cible); if (carte) declenche(carte); });
+  (proxies[c.dataset.son] ||= []).push(p);
+  copieEtat(c, p, false);
+  return p;
+}
+function copieEtat(c, p, relance) {
+  p.classList.toggle("allume", c.classList.contains("on") || c.classList.contains("minute-on"));
+  p.classList.toggle("choisi", c.classList.contains("choisi"));
+  if (!c.classList.contains("joue")) p.classList.remove("joue");
+  else if (relance || !p.classList.contains("joue")) {
+    p.style.setProperty("--d", c.style.getPropertyValue("--d"));
+    p.classList.remove("joue"); p.offsetWidth; p.classList.add("joue");
+  }
+}
+new MutationObserver(recs => {
+  const cartes = new Map();   // carte -> jauge à relancer
+  for (const r of recs) {
+    const c = r.target;
+    if (!c.dataset?.son || !proxies[c.dataset.son]) continue;
+    cartes.set(c, cartes.get(c) || !/\bjoue\b/.test(r.oldValue || ""));
+  }
+  cartes.forEach((relance, c) => proxies[c.dataset.son].forEach(p => copieEtat(c, p, relance)));
+}).observe(document.querySelector("main"), { subtree: true, attributes: true, attributeFilter: ["class"], attributeOldValue: true });
+
+function majTouchesConduite(parSon) {
+  if (!parSon) { parSon = {}; for (const k in touches) parSon[touches[k]] = k; }
+  for (const son in proxies) for (const p of proxies[son]) {
+    let kbd = p.querySelector("kbd");
+    if (!parSon[son]) { kbd?.remove(); continue; }
+    if (!kbd) { kbd = document.createElement("kbd"); p.prepend(kbd); }
+    kbd.textContent = afficheTouche(parSon[son]);
+  }
+}
+function majVisibilite() { conduite.hidden = !onglet || !!cherche.value.trim(); }
+
+function absent(nom) {
+  const a = document.createElement("span"); a.className = "absent"; a.textContent = nom;
+  a.title = SONS_POP ? "Pas sur la page des sons" : "Extraits de pop culture pas encore ouverts (mot de passe)";
+  return a;
+}
+function rendLigne(jeu, l, trouve) {
+  const cle = jeu.n + "|" + (l.num ? "q" + l.num : l.label);
+  const div = document.createElement("div"); div.className = "ligne" + (derniere[jeu.n] === cle ? " derniere" : "");
+  const lbl = document.createElement("span"); lbl.className = "lbl";
+  if (l.num) { const n = document.createElement("i"); n.className = "qn"; n.textContent = l.num; lbl.append(n); }
+  lbl.append(l.label);
+  if (l.rep) { const r = document.createElement("span"); r.className = "rep " + l.repClasse; r.textContent = l.rep; lbl.append(" ", r); }
+  const sons = l.sons.map(nom => ({ nom, c: trouve(nom) })), presents = sons.filter(x => x.c);
+  const principal = presents.find(x => x.c.dataset.son === preferes[cle]) || presents[0];
+  const grand = document.createElement("div");
+  grand.append(principal ? proxy(principal.c, "grand") : absent(sons[0]?.nom || ""));
+  const alts = document.createElement("div"); alts.className = "alts";
+  sons.forEach((x, i) => {
+    if (x === principal || (!principal && i === 0)) return;
+    if (!x.c) { alts.append(absent(x.nom)); return; }
+    const p = proxy(x.c, "petit");
+    p.addEventListener("contextmenu", e => {
+      e.preventDefault(); preferes[cle] = x.c.dataset.son; sauvePreferes(); rendConduite();
+      signale("Son principal : " + titreCarte(x.c));
+    });
+    alts.append(p);
+  });
+  div.append(lbl, grand, alts);
+  div.addEventListener("click", e => {
+    if (!e.target.closest(".b")) return;
+    derniere[jeu.n] = cle;
+    conduite.querySelectorAll(".ligne.derniere").forEach(x => x.classList.remove("derniere"));
+    div.classList.add("derniere");
+  });
+  return div;
+}
+function rendConduite() {
+  proxies = {};
+  const partout = document.getElementById("partout"); partout.textContent = "";
+  for (const son of PARTOUT) { const c = carteDe(son); if (c) partout.append(proxy(c, "partout")); }
+  document.querySelectorAll("[data-onglet]").forEach(b => {
+    b.classList.toggle("on", +b.dataset.onglet === onglet);
+    b.querySelector("small").textContent = plan?.jeux[b.dataset.onglet - 1]?.titre || "";
+  });
+  conduite.textContent = "";
+  const jeu = plan?.jeux[onglet - 1];
+  if (!plan) conduite.innerHTML = '<p class="vide">Conduite son pas encore chargée : ouvrir cette page une fois avec la connexion (elle lit la fiche des jeux).</p>';
+  else if (jeu) {
+    const trouve = indexCartes();
+    const h = document.createElement("h2"); h.textContent = "Jeu " + jeu.n + " · " + jeu.titre; conduite.append(h);
+    const r = document.createElement("p"); r.className = "regles";
+    r.textContent = [...plan.regles, ...jeu.notes].join(" · ") + " · Clic droit sur un petit son : il passe en grand.";
+    conduite.append(r);
+    if (!SONS_POP) { const v = document.createElement("p"); v.className = "regles"; v.textContent = "Extraits de pop culture pas encore ouverts : mot de passe plus haut. En pointillés, les sons qui manquent."; conduite.append(v); }
+    const secs = document.createElement("div"); secs.className = "sections";
+    for (const s of jeu.sections) {
+      const sec = document.createElement("section"); sec.className = "sect";
+      const t = document.createElement("h3"); t.textContent = s.titre; sec.append(t);
+      for (const l of s.lignes) sec.append(rendLigne(jeu, l, trouve));
+      secs.append(sec);
+    }
+    conduite.append(secs);
+  }
+  majTouchesConduite(); majVisibilite();
+}
+async function chargeFiche() {
+  try { plan = JSON.parse(localStorage.getItem(CLE_CONDUITE)) || null; } catch (e) {}
+  rendConduite();   // tout de suite, avec la dernière version gardée
+  try {
+    const r = await fetch("jeux-mariage.html", { cache: "no-cache" });
+    if (!r.ok) throw new Error(r.status);
+    const p = lisFiche(new DOMParser().parseFromString(await r.text(), "text/html"));
+    if (!p.jeux.some(j => j.sections.length)) throw new Error("conduite vide");
+    plan = p;
+    try { localStorage.setItem(CLE_CONDUITE, JSON.stringify(plan)); } catch (e) {}
+    rendConduite();
+  } catch (e) {}   // hors ligne : la version gardée
+}
+document.querySelectorAll("[data-onglet]").forEach(b => b.addEventListener("click", () => {
+  const n = +b.dataset.onglet;
+  onglet = onglet === n ? 0 : n;   // deuxième clic : replie l'onglet
+  try { localStorage.setItem(CLE_ONGLET, onglet); } catch (e) {}
+  if (DUREE_JEU[onglet]) choisitDuree(DUREE_JEU[onglet]);
+  rendConduite(); scrollTo({ top: 0 });
+}));
+// Chrono de la barre : reprend le compte à rebours de l'anneau
+new MutationObserver(() => {
+  miniReste.textContent = resteEl.textContent === "·" ? "" : resteEl.textContent + " s";
+  miniReste.classList.toggle("fin", anneau.classList.contains("fin"));
+}).observe(anneau, { subtree: true, childList: true, characterData: true, attributes: true, attributeFilter: ["class"] });
+miniReste.addEventListener("click", () => arreteChrono(true));
+
 numerote(); appliqueTouches(); filtre();   // masque les lignes encore vides (extraits pas encore ouverts)
+chargeFiche();   // onglets des jeux : la conduite son de la fiche
 if (SONS_POP) construitPop();   // version complète locale : extraits déjà là, pas de mot de passe
 else {
   // Mot de passe déjà retenu sur ce téléphone : les extraits s'ouvrent seuls
