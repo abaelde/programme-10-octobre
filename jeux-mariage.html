@@ -112,19 +112,25 @@
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ans:not(.ask) { color: #181715; } }
   :root[data-theme="dark"] .ans:not(.ask) { color: #181715; }
   .comment { color: var(--muted); font-size: .88rem; }
+  .sn { display: inline-block; font-style: normal; font-weight: 700; font-size: .78rem; line-height: 1.35; color: #fff; background: var(--son); border: 1.5px solid var(--son); border-radius: 999px; padding: 0 9px 0 7px; margin: 1px 2px; vertical-align: 1px; }
+  .sn::before { content: "\266A\00a0"; }
+  .sn.p { background: transparent; color: var(--son); border-style: dashed; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .sn:not(.p) { color: #181715; } }
+  :root[data-theme="dark"] .sn:not(.p) { color: #181715; }
   .son { margin: 12px 0 6px; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--son); border-radius: 8px; padding: 8px 12px; }
   .son-t { margin: 0 0 2px; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--son); }
   .son ol { list-style: none; margin: 0; padding: 0; }
   .son li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 46%); gap: 2px 14px; padding: 6px 0; border-top: 1px solid var(--line); font-size: .9rem; }
   .son li:first-child { border-top: 0; }
-  .son li.sep { display: block; padding: 8px 0 2px; font-size: .78rem; font-weight: 700; color: var(--muted); }
-  .son .s b { color: var(--son); }
   .son .s small { display: block; color: var(--muted); font-size: .8rem; }
-  .son .pr { display: inline-block; font-style: normal; background: var(--warn-bg); color: var(--warn-text); font-size: .7rem; font-weight: 600; padding: 0 6px; border-radius: 4px; margin-left: 4px; }
+  .son li.sep { display: block; padding: 10px 0 2px; font-size: .76rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+  .son li.sep + li { border-top: 0; }
+  .qtab td.snd { font-size: .8rem; color: var(--muted); width: 22%; }
+  .qtab td.snd .sn { margin-left: 0; }
   @media (max-width: 620px) { .son li { grid-template-columns: 1fr; } }
   .table-wrap { overflow-x: auto; }
   .qtab td:nth-child(2) { min-width: 150px; }
-  .qtab td.gag { font-size: .88rem; width: 45%; }
+  .qtab td.gag { font-size: .88rem; width: 36%; }
   .qtab td:nth-child(3) .comment { font-size: .8rem; }
   .qtab td.gag .comment { font-size: .82rem; }
   @media (max-width: 620px) {
@@ -132,7 +138,7 @@
     .qtab tr { display: grid; grid-template-columns: 26px minmax(0, 1fr) minmax(0, 40%); border-bottom: 1px solid var(--line); }
     .qtab td { border-bottom: 0; }
     .qtab td:nth-child(2) { min-width: 0; }
-    .qtab td.gag { grid-column: 2 / -1; width: auto; padding-top: 0; }
+    .qtab td.gag, .qtab td.snd { grid-column: 2 / -1; width: auto; padding-top: 0; }
   }
 
   /* Bouton d'impression */
@@ -404,13 +410,13 @@
     <ul>
       <li><strong>« Oui chérie »</strong> (Stéphane) : « C'est très important d'avoir le dernier mot avec sa femme. Et ce dernier mot, c'est : oui chérie. » À placer au premier désaccord des mariés au jeu 1, sinon à la question 2 du jeu 2 au plus tard. Puis on fait participer la salle : « À chaque cloche de ring, je dis "Stéphane ?" et vous répondez "Oui chérie !". On essaie. » On répète une fois, plus fort (« Suzanne ne vous a pas entendus »). Chute à la conclusion.</li>
       <li><strong>« C'était bien mais… »</strong> (Suzanne, question 8 du jeu 2) : pour équilibrer, Stéphane ne doit pas être le seul visé. À ressortir à la fin.</li>
-      <li><strong>La CAF</strong> : par petites touches (ils s'y sont rencontrés), surtout avec les acronymes du bloc suivant. Pas un fil rouge : on n'en fait pas toute la soirée. <span class="comment">Son : « Attente téléphonique » sur la page des sons.</span></li>
+      <li><strong>La CAF</strong> : par petites touches (ils s'y sont rencontrés), surtout avec les acronymes du bloc suivant. Pas un fil rouge : on n'en fait pas toute la soirée. <span class="comment" style="font-style:normal">Son : </span><span class="sn">Attente tél.</span></li>
     </ul>
   </div>
 
   <div class="before" style="border-left-color:var(--accent)">
     <h4>CAF : les autres définitions</h4>
-    <p style="margin:0 0 6px">Les 5 marquées « placée » sont déjà écrites dans la timeline. Les autres restent en réserve : pas plus d'une ou deux en plus. Formule : « La CAF, ici, ça veut dire… » <span class="comment">Son : attente téléphonique, deux secondes.</span></p>
+    <p style="margin:0 0 6px">Les 5 marquées « placée » sont déjà écrites dans la timeline. Les autres restent en réserve : pas plus d'une ou deux en plus. Formule : « La CAF, ici, ça veut dire… » <span class="comment" style="font-style:normal">Son : </span><span class="sn">Attente tél.</span><span class="comment" style="font-style:normal"> deux secondes.</span></p>
     <ul>
       <li><strong>Cuisses, Abdos, Fessiers</strong> · intro : « Pas la CAF de la salle de sport… quoique, 22 ans de couple, c'est du sport. »</li>
       <li><strong>Cuisine, Apéro, Flirt</strong> · intro : le vrai programme du restaurant « en tout bien tout honneur ».</li>
@@ -431,18 +437,27 @@
   <h2>Timeline des jeux</h2>
   <div class="before" style="border-left-color:var(--son)">
     <h4>Conduite son : mode d'emploi</h4>
-    <p style="margin:0 0 6px">Document de travail pour Aurélien et Maxime (page « Sons des jeux » sur son ordinateur). Chaque étape de la timeline a son bloc « Conduite son » : à gauche ce que dit ou fait Aurélien, à droite le son. <kbd>P</kbd> : touche du clavier. <kbd>/ vote</kbd> : taper / puis le mot, puis Entrée (premier son trouvé) ; ensuite <kbd>Échap</kbd> vide la recherche. <kbd>Échap</kbd> hors de la recherche : tout couper. <em class="pr" style="font-style:normal;background:var(--warn-bg);color:var(--warn-text);font-size:.7rem;font-weight:600;padding:0 6px;border-radius:4px">proposé</em> : à discuter ; sans étiquette : déjà prévu dans la fiche.</p>
+    <p style="margin:0 0 6px">Document de travail pour Aurélien et Maxime (page « Sons des jeux » sur son ordinateur). Les sons sont écrits dans le texte, au moment où ils partent, sous leur nom exact dans la page des sons : <span class="sn">Ding</span> déjà prévu, <span class="sn p">Ding</span> proposé, à discuter. Jeux 1 et 3 : un bloc « Conduite son » en plus. Jeu 2 : colonne Son du tableau des questions.</p>
     <h5>Sons signatures (toujours les mêmes, la salle finit par les attendre)</h5>
     <ul>
-      <li>Acronyme de la CAF : <b>Attente tél.</b> <kbd>P</kbd>, deux secondes.</li>
-      <li>Désaccord des mariés : <b>Cloche de ring</b> <kbd>C</kbd>, puis « Stéphane ? », salle : « Oui chérie ! ». <span class="prop">Après le « Oui chérie ! » : <b>Ah voui, vous avez raison</b> <kbd>/ raison</kbd> (Guenièvre).</span></li>
-      <li class="prop">« C'était bien mais… » de Suzanne : <b>Oui… Ben non !</b> <kbd>/ ben non</kbd> (Galessin).</li>
+      <li>Acronyme de la CAF : <span class="sn">Attente tél.</span> deux secondes.</li>
+      <li>Désaccord des mariés : <span class="sn">Cloche de ring</span> puis « Stéphane ? », salle : « Oui chérie ! », puis <span class="sn p">« Ah voui, vous avez raison »</span> (Guenièvre).</li>
+      <li>« C'était bien mais… » de Suzanne : <span class="sn p">« Oui… Ben non ! »</span> (Galessin).</li>
+    </ul>
+    <h5>Entrées en scène (quelques secondes, coupé dès que la personne parle)</h5>
+    <ul>
+      <li>Aurélien prend le micro après Stéphane : <span class="sn p">Star Wars, Marche impériale</span></li>
+      <li>Aurélien revient sur scène après un interlude : <span class="sn p">Kaamelott, Générique</span></li>
+      <li>Aurélien part interviewer quelqu'un dans la salle entre deux jeux : <span class="sn p">Koh-Lanta, Générique</span></li>
+      <li>Un invité se lève pour parler (jeu 3, auteur d'un post-it au jeu 1) : <span class="sn p">Une famille en or, Générique</span></li>
+      <li>Célia, temps fort de la fin du jeu 3 : <span class="sn p">Jurassic Park</span></li>
+      <li class="prop">Autres entrées dans la page : Tarzan (version MGM), Fort Boyard, Le Juste Prix.</li>
     </ul>
     <h5>Règles pour Maxime</h5>
     <ul>
       <li class="prop">Un son court tombe juste après la chute ou le rire, jamais par-dessus quelqu'un qui parle.</li>
-      <li class="prop">Les musiques (chrono, vote, ascenseur) s'arrêtent dès qu'Aurélien reprend la parole : <kbd>Échap</kbd>.</li>
-      <li class="prop">Blague qui tombe à plat : <b>Criquets</b> <kbd>K</kbd>, trois secondes.</li>
+      <li class="prop">Les musiques (chrono, vote, ascenseur, entrées) s'arrêtent dès qu'Aurélien reprend la parole : « Tout couper ».</li>
+      <li class="prop">Blague qui tombe à plat : <span class="sn">Criquets</span> trois secondes.</li>
       <li class="prop">Moments d'émotion (anecdotes du jeu 3, remise de la boîte) : aucun son.</li>
       <li class="prop">Signe d'Aurélien vers Maxime : main levée = on coupe.</li>
     </ul>
@@ -512,20 +527,12 @@
         <p class="meta">~2 min · Aurélien · Écran : « Programme » (trois jeux)</p>
         <h5>Démarrage · ~40 s</h5>
         <div class="round">
+          <p><span class="comment" style="font-style:normal">(Stéphane tend le micro)</span> <span class="sn p">Star Wars, Marche impériale</span> <span class="comment" style="font-style:normal">quelques secondes, coupé au premier mot</span></p>
           <p>« Merci Stéphane. Pour ceux qui ne me connaissent pas : Aurélien, neveu de Stéphane et parrain de Noah. Je connais donc les dossiers de deux générations. <span class="comment" style="font-style:normal">(pause)</span></p>
-          <p>Stéphane et Suzanne se sont rencontrés à la CAF. La Caisse d'Allocations Familiales. Ils ont pris le nom au pied de la lettre. <span class="comment" style="font-style:normal">(pause)</span></p>
+          <p>Stéphane et Suzanne se sont rencontrés à la CAF. La Caisse d'Allocations Familiales. Ils ont pris le nom au pied de la lettre. <span class="sn p">Ba-dum-tss</span></p>
           <p>Suzanne l'a invité au restaurant, en tout bien tout honneur. Stéphane, lui, a surtout entendu "restaurant".</p>
-          <p>Et comme toujours à la CAF, le traitement du dossier a pris du temps : 7 ans entre la rencontre et le mariage. Mais ça a abouti.</p>
+          <p>Et comme toujours à la CAF, le traitement du dossier a pris du temps <span class="sn p">Attente tél.</span> : 7 ans entre la rencontre et le mariage. Mais ça a abouti. <span class="comment" style="font-style:normal">(couper)</span> <span class="sn p">Ding</span></p>
           <p>Ce soir, trois défis, pour voir si vous les connaissez aussi bien qu'ils se connaissent. Et s'ils se connaissent vraiment. »</p>
-        </div>
-        <div class="son">
-          <p class="son-t">Conduite son</p>
-          <ol>
-            <li><span class="q">Stéphane tend le micro à Aurélien</span><span class="s"><b>La Marche impériale</b> <kbd>/ imperiale</kbd> <em class="pr">proposé</em><small>~5 s, <kbd>Échap</kbd> au premier mot</small></span></li>
-            <li><span class="q">« …au pied de la lettre. »</span><span class="s"><b>Ba-dum-tss</b> <kbd>Z</kbd> <em class="pr">proposé</em></span></li>
-            <li><span class="q">« …le traitement du dossier a pris du temps »</span><span class="s"><b>Attente tél.</b> <kbd>P</kbd> <em class="pr">proposé</em><small>en boucle pendant la phrase</small></span></li>
-            <li><span class="q">« Mais ça a abouti. »</span><span class="s"><kbd>Échap</kbd> puis <b>Ding</b> <kbd>D</kbd> <em class="pr">proposé</em></span></li>
-          </ol>
         </div>
       </div>
     </li>
@@ -628,13 +635,13 @@
         </div>
         <p class="part">Sur scène</p>
         <h5>Annonce</h5>
-        <div class="round"><p>« Premier défi, le jeu de l'apéro. Vous avez écrit un mot sur eux. Stéphane, Suzanne : à vous de deviner qui il visait. »</p></div>
+        <div class="round"><p><span class="sn p">Jingle qui monte</span> « Premier défi, le jeu de l'apéro. Vous avez écrit un mot sur eux. Stéphane, Suzanne : à vous de deviner qui il visait. »</p></div>
         <h5>Pour chaque post-it (8-10)</h5>
         <ol>
-          <li>Aurélien lit le mot, sans retourner le post-it. <span class="comment">Son : chrono 20 s, tic-tac pendant qu'ils réfléchissent.</span></li>
+          <li>Aurélien lit le mot, sans retourner le post-it. <span class="sn">Tic-tac suspense</span><span class="comment" style="font-style:normal"> 20 s, pendant qu'ils réfléchissent</span></li>
           <li>Les mariés répondent : Stéphane, Suzanne ou les 2.</li>
-          <li>Aurélien retourne le post-it : 1 point si c'est la bonne cible. <span class="comment">Son : ding ou buzzer.</span></li>
-          <li>Bonus si le temps le permet : « Et qui l'a écrit ? » <span class="comment">Son : roulement de tambour.</span></li>
+          <li>Aurélien retourne le post-it : 1 point si c'est la bonne cible. <span class="sn">Ding</span><span class="comment" style="font-style:normal"> ou </span><span class="sn">Buzzer</span></li>
+          <li>Bonus si le temps le permet : « Et qui l'a écrit ? » <span class="sn">Roulement</span></li>
         </ol>
         <h5>Questions pour relancer</h5>
         <ul>
@@ -650,22 +657,43 @@
           <li>Score : « … sur … À la CAF, on appelle ça un dossier incomplet. On vous recontactera. »</li>
         </ul>
         <h5>Sortie</h5>
-        <div class="round"><p>« Score des mariés : … sur … Ils se connaissent, à peu près. On leur laisse un moment pour s'en remettre. » <span class="comment" style="font-style:normal">Son : fanfare.</span></p></div>
+        <div class="round"><p>« Score des mariés : … sur … Ils se connaissent, à peu près. On leur laisse un moment pour s'en remettre. » <span class="sn">Fanfare</span></p></div>
         <h5>Si ça s'essouffle</h5>
         <p>Garder 5-6 post-its au lieu de 8-10 ; passer plus vite au bonus « qui l'a écrit ? ».</p>
         <p class="part">Conduite son</p>
         <div class="son">
           <p class="son-t">Conduite son</p>
           <ol>
-            <li><span class="q">« Premier défi, le jeu de l'apéro. »</span><span class="s"><b>Jingle qui monte</b> <kbd>/ monte</kbd> <em class="pr">proposé</em><small>Questions pour un champion</small></span></li>
-            <li><span class="q">Aurélien lit le post-it</span><span class="s"><b>Chrono</b> : Suspense, 20 s<small>couper dès qu'ils répondent</small></span></li>
-            <li><span class="q">Aurélien retourne le post-it</span><span class="s"><b>Ding</b> <kbd>D</kbd> ou <b>Buzzer</b> <kbd>X</kbd><small>bonne cible ou ratée</small></span></li>
-            <li><span class="q">Les mariés ne sont pas d'accord</span><span class="s"><b>Cloche de ring</b> <kbd>C</kbd><small>puis « Stéphane ? », salle : « Oui chérie ! »</small></span></li>
-            <li><span class="q">Salle : « Oui chérie ! »</span><span class="s"><b>Ah voui, vous avez raison</b> <kbd>/ raison</kbd> <em class="pr">proposé</em></span></li>
-            <li><span class="q">« Et qui l'a écrit ? »</span><span class="s"><b>Roulement</b> <kbd>R</kbd></span></li>
-            <li><span class="q">« …Stéphane l'a peut-être écrit lui-même. »</span><span class="s"><b>Objection !</b> <kbd>/ objection</kbd> <em class="pr">proposé</em></span></li>
-            <li><span class="q">« …un dossier incomplet. On vous recontactera. »</span><span class="s"><b>Attente tél.</b> <kbd>P</kbd><small>deux secondes</small></span></li>
-            <li><span class="q">« Score des mariés : … sur … »</span><span class="s"><b>Fanfare</b> <kbd>E</kbd></span></li>
+            <li class="sep">Mise en place</li>
+            <li><span class="q">Annonce du jeu 1</span><span class="s"><span class="sn p">Jingle qui monte</span></span></li>
+            <li><span class="q">Stéphane &amp; Suzanne s'installent face à la salle</span><span class="s"><span class="sn p">Fort Boyard, Générique</span><small>le temps qu'ils s'asseyent</small></span></li>
+            <li><span class="q">Aurélien montre la boîte de post-its</span><span class="s"><span class="sn p">Tambours</span></span></li>
+            <li class="sep">À chaque post-it</li>
+            <li><span class="q">Aurélien pioche un post-it</span><span class="s"><span class="sn p">Gong</span></span></li>
+            <li><span class="q">Les mariés réfléchissent</span><span class="s"><span class="sn">Tic-tac suspense</span><small>20 s, coupé dès qu'ils répondent</small></span></li>
+            <li><span class="q">Ils se concertent à voix basse</span><span class="s"><span class="sn p">Mission impossible</span><small>à la place du tic-tac</small></span></li>
+            <li><span class="q">Ils se regardent sans rien dire</span><span class="s"><span class="sn p">Jeopardy</span></span></li>
+            <li><span class="q">Ça traîne</span><span class="s"><span class="sn p">« C'est votre dernier mot ? »</span></span></li>
+            <li><span class="q">Ils ne sont pas d'accord</span><span class="s"><span class="sn">Cloche de ring</span><small>puis « Stéphane ? », salle : « Oui chérie ! »</small></span></li>
+            <li><span class="q">La salle a crié « Oui chérie ! »</span><span class="s"><span class="sn p">« Ah voui, vous avez raison »</span></span></li>
+            <li><span class="q">Aurélien retourne lentement le post-it</span><span class="s"><span class="sn p">Cœur qui bat</span><small>quelques secondes, coupé net</small></span></li>
+            <li><span class="q">Bonne cible / ratée</span><span class="s"><span class="sn">Ding</span> <span class="sn">Buzzer</span></span></li>
+            <li class="sep">Selon le mot</li>
+            <li><span class="q">Mot tendre ou très flatteur</span><span class="s"><span class="sn p">« Oh la vache ! »</span></span></li>
+            <li><span class="q">Mot piquant</span><span class="s"><span class="sn p">« Oh c'est la vacherie ça ! »</span></span></li>
+            <li><span class="q">Le visé proteste</span><span class="s"><span class="sn p">« Objection ! »</span></span></li>
+            <li><span class="q">Mot mystérieux, que personne ne comprend</span><span class="s"><span class="sn p">« C'est pas faux », Perceval</span></span></li>
+            <li><span class="q">Stéphane rate un mot qui le visait, lui</span><span class="s"><span class="sn p">Wah wah wah</span></span></li>
+            <li><span class="q">Trois bonnes réponses d'affilée</span><span class="s"><span class="sn p">Mario</span></span></li>
+            <li><span class="q">Trois ratés d'affilée</span><span class="s"><span class="sn p">Violon triste</span></span></li>
+            <li class="sep">Bonus « Et qui l'a écrit ? »</li>
+            <li><span class="q">La question tombe</span><span class="s"><span class="sn">Roulement</span></span></li>
+            <li><span class="q">L'auteur se lève</span><span class="s"><span class="sn p">Une famille en or, Générique</span><small>quelques secondes</small></span></li>
+            <li><span class="q">Auteur trouvé / pas trouvé</span><span class="s"><span class="sn p">Bonus</span> <span class="sn p">Pac-Man</span></span></li>
+            <li class="sep">Fin du jeu</li>
+            <li><span class="q">Score faible</span><span class="s"><span class="sn p">« En un mot, consternant. »</span><small>puis la fanfare quand même</small></span></li>
+            <li><span class="q">Score annoncé</span><span class="s"><span class="sn">Fanfare</span></span></li>
+            <li><span class="q">Blague du « dossier incomplet »</span><span class="s"><span class="sn">Attente tél.</span><small>deux secondes</small></span></li>
           </ol>
         </div>
         <p class="part">Préparation</p>
@@ -725,19 +753,11 @@
         <p class="meta">Quelques minutes · préparé par eux · rien à l'écran</p>
         <ul>
           <li>Leur idée (appel du 7 octobre) : façon « le gars qui chante le jingle de la gare ». Contenu : surprise de leur côté.</li>
-          <li>Son : musique d'ascenseur en fond (bouton « Ascenseur », fondu d'entrée et de sortie), au moins pendant qu'on se met en place.</li>
+          <li><span class="sn">Ascenseur</span> en fond (fondu d'entrée et de sortie), au moins pendant qu'on se met en place.</li>
           <li>Pendant ce temps : Floriane distribue les panneaux du jeu 2, une paire Stéphane + Suzanne par invité.</li>
         </ul>
         <h5>Reprise</h5>
-        <div class="round"><p>« Merci à nos deux artistes. Prenez vos panneaux. »</p></div>
-        <div class="son">
-          <p class="son-t">Conduite son</p>
-          <ol>
-            <li><span class="q">Stéphane &amp; Suzanne prennent la scène</span><span class="s"><b>Ascenseur</b> <kbd>I</kbd><small>en boucle, entre en fondu</small></span></li>
-            <li><span class="q">Ils commencent leur numéro</span><span class="s"><kbd>I</kbd> à nouveau <em class="pr">proposé</em><small>sort en fondu, sauf s'ils veulent un fond</small></span></li>
-            <li><span class="q">« Merci à nos deux artistes. »</span><span class="s"><b>Bravo</b> <kbd>A</kbd> <em class="pr">proposé</em></span></li>
-          </ol>
-        </div>
+        <div class="round"><p><span class="sn p">Bravo</span> « Merci à nos deux artistes. Prenez vos panneaux. »</p></div>
       </div>
     </li>
 
@@ -838,13 +858,13 @@
         <p class="prop">Convention à annoncer : les deux panneaux levés = « les 2 », aucun panneau = « aucun des 2 ».</p>
         <p class="part">Sur scène</p>
         <h5>Annonce</h5>
-        <div class="round"><p>« Deuxième défi : c'est vous qui votez. Je pose une question, vous levez Stéphane, Suzanne, les deux… ou aucun. Ensuite, c'est à eux. »</p></div>
+        <div class="round"><p><span class="sn p">« Let's play ! »</span> « Deuxième défi : c'est vous qui votez. Je pose une question, vous levez Stéphane, Suzanne, les deux… ou aucun. Ensuite, c'est à eux. »</p></div>
         <h5>Pour chaque question (11, dans l'ordre du tableau du jeu 2)</h5>
         <ol>
-          <li>Aurélien lit la question.</li>
-          <li>La salle lève ses panneaux. Aurélien commente la tendance : « Majorité de Suzanne… »</li>
-          <li>Les mariés lèvent leurs panneaux. <span class="comment">Son : cloche de ring s'ils ne sont pas d'accord.</span></li>
-          <li>Aurélien donne la réponse officielle et commente.</li>
+          <li>Aurélien lit la question. <span class="sn p">Verres</span></li>
+          <li>La salle lève ses panneaux. <span class="sn p">Vote du public</span> <span class="comment" style="font-style:normal">coupé quand Aurélien commente</span> Aurélien commente la tendance : « Majorité de Suzanne… »</li>
+          <li>Les mariés lèvent leurs panneaux. <span class="sn">Cloche de ring</span> <span class="comment" style="font-style:normal">s'ils ne sont pas d'accord</span></li>
+          <li>Aurélien donne la réponse officielle et commente. <span class="sn p">Ding</span> <span class="comment" style="font-style:normal">ou</span> <span class="sn p">Buzzer</span> <span class="comment" style="font-style:normal">selon les mariés ; le son propre à chaque question est dans la colonne Son du tableau</span></li>
         </ol>
         <h5>Questions pour relancer</h5>
         <ul>
@@ -860,23 +880,23 @@
           <li>Sortie : « Gardez vos panneaux : c'est la seule allocation de la soirée. »</li>
         </ul>
         <h5>Sortie</h5>
-        <div class="round"><p>« Gardez vos panneaux, ils sont pour vous. On laisse la scène aux mariés. »</p></div>
+        <div class="round"><p><span class="sn p">Bravo</span> « Gardez vos panneaux, ils sont pour vous. On laisse la scène aux mariés. »</p></div>
         <h5>Questions et réponses</h5>
         <div class="table-wrap">
           <table class="qtab">
-            <thead><tr><th>#</th><th>Question</th><th>Réponse</th><th>Blague</th></tr></thead>
+            <thead><tr><th>#</th><th>Question</th><th>Réponse</th><th>Blague</th><th>Son</th></tr></thead>
             <tbody>
-              <tr><td class="num">1</td><td>Qui a fait le premier pas ?</td><td><span class="ans elle">ELLE</span><div class="comment">« mais ça se discute »</div></td><td class="gag">« Elle l'invite au restaurant, en tout bien tout honneur. Stéphane, lui, n'a fait qu'un pas : celui vers la table. »</td></tr>
-              <tr><td class="num">2</td><td>Qui a toujours raison ?</td><td><span class="ans elle">ELLE</span><div class="comment">ça se discute : elle a toujours raison, et lui n'a jamais tort</div></td><td class="gag">« Évidemment. D'ailleurs, la CAF, ici, ça veut dire : <strong>Chérie A Forcément raison</strong>. » <span class="comment">Son : attente téléphonique, deux secondes.</span><br>Si « oui chérie » n'est pas encore placé : « Donc Stéphane, c'est très important d'avoir le dernier mot avec sa femme. Et ce dernier mot, c'est : oui chérie. » Puis faire répéter la salle. S'il est déjà placé : « Stéphane ? » Salle : « Oui chérie ! »</td></tr>
-              <tr><td class="num">3</td><td>Qui est spécialiste des faux départs ?</td><td><span class="ans lui">LUI</span></td><td class="gag">« Heureusement, à la mairie, il y a 15 ans, il n'a pas fait de faux départ. »<br><span class="comment">Réserve CAF : Comité des Allers-retours Fréquents (président : Stéphane).</span></td></tr>
-              <tr><td class="num">4</td><td>Qui peut, avec tous ses résultats d'examen, reconstituer son corps en puzzle ?</td><td><span class="ans lui">LUI</span></td><td class="gag">« Pour Stéphane, la CAF, ça veut dire : <strong>Collection Anatomique Fragmentée</strong>. » <span class="comment">Son : attente téléphonique, deux secondes.</span></td></tr>
-              <tr><td class="num">5</td><td>Qui râle le plus souvent ?</td><td><span class="ans both">LES 2</span><div class="comment">LUI d'après elle, mais en vrai les 2</div></td><td class="gag">« Officiellement : les deux. D'après Suzanne : lui. Stéphane ? » Salle : « Oui chérie ! »</td></tr>
-              <tr><td class="num">6</td><td>Qui est le plus jaloux ?</td><td><span class="ans both">AUCUN</span><div class="comment">question piège</div></td><td class="gag">« Question piège. Ou alors ils le cachent très bien. »</td></tr>
-              <tr><td class="num">7</td><td>Qui cherche toujours ses affaires ?</td><td><span class="ans lui">LUI</span></td><td class="gag">« Suzanne, c'est le service des objets trouvés de la maison. »<br><span class="comment">Réserve CAF : Cherche, Appelle, Fouille.</span></td></tr>
-              <tr><td class="num">8</td><td>Qui dit toujours « C'était bien mais... » ?</td><td><span class="ans elle">ELLE</span></td><td class="gag">« Bon, Suzanne : jusqu'à présent, c'est bien ? » La laisser répondre. Si elle tombe dans le piège (« C'était bien mais… ») : « On le note pour la fin. »<br><span class="comment">Réserve CAF : Commentaire d'Après-Fête.</span></td></tr>
-              <tr><td class="num">9</td><td>Qui pourrait tenir 2 mois sans faire une seule lessive ni toucher à un fer à repasser ?</td><td><span class="ans elle">ELLE</span></td><td class="gag">« Donc Stéphane cherche ses affaires… mais au moins elles sont propres. »<br><span class="comment">Réserve CAF : Club Anti-Fer à repasser (présidente : Suzanne).</span></td></tr>
-              <tr><td class="num">10</td><td>Qui va bientôt faire le grand saut... en parachute ?</td><td><span class="ans elle">ELLE</span></td><td class="gag">« Suzanne va faire le grand saut… en parachute. Pour elle, la CAF, ça veut dire : <strong>Chute Avec Frissons</strong>. Et Stéphane était d'accord ? » Salle : « Oui chérie ! »</td></tr>
-              <tr><td class="num">11</td><td>Qui pète le plus à la maison ?</td><td><span class="ans ask">à demander</span><div class="comment">ajoutée par Aurélien</div></td><td class="gag">« Petit rappel scientifique : le premier qui lève son panneau, c'est souvent le coupable. »</td></tr>
+              <tr><td class="num">1</td><td>Qui a fait le premier pas ?</td><td><span class="ans elle">ELLE</span><div class="comment">« mais ça se discute »</div></td><td class="gag">« Elle l'invite au restaurant, en tout bien tout honneur. Stéphane, lui, n'a fait qu'un pas : celui vers la table. »</td><td class="snd"><span class="sn p">Les Dents de la mer</span> pendant le vote : elle approche…</td></tr>
+              <tr><td class="num">2</td><td>Qui a toujours raison ?</td><td><span class="ans elle">ELLE</span><div class="comment">ça se discute : elle a toujours raison, et lui n'a jamais tort</div></td><td class="gag">« Évidemment. D'ailleurs, la CAF, ici, ça veut dire : <strong>Chérie A Forcément raison</strong>. »<br>Si « oui chérie » n'est pas encore placé : « Donc Stéphane, c'est très important d'avoir le dernier mot avec sa femme. Et ce dernier mot, c'est : oui chérie. » Puis faire répéter la salle. S'il est déjà placé : « Stéphane ? » Salle : « Oui chérie ! »</td><td class="snd"><span class="sn">Attente tél.</span> au mot CAF, puis après « Oui chérie ! » <span class="sn p">« Ah voui, vous avez raison »</span></td></tr>
+              <tr><td class="num">3</td><td>Qui est spécialiste des faux départs ?</td><td><span class="ans lui">LUI</span></td><td class="gag">« Heureusement, à la mairie, il y a 15 ans, il n'a pas fait de faux départ. »<br><span class="comment">Réserve CAF : Comité des Allers-retours Fréquents (président : Stéphane).</span></td><td class="snd"><span class="sn p">Benny Hill</span> lancé, coupé au bout de 2 s, relancé : un faux départ</td></tr>
+              <tr><td class="num">4</td><td>Qui peut, avec tous ses résultats d'examen, reconstituer son corps en puzzle ?</td><td><span class="ans lui">LUI</span></td><td class="gag">« Pour Stéphane, la CAF, ça veut dire : <strong>Collection Anatomique Fragmentée</strong>. »</td><td class="snd"><span class="sn">Attente tél.</span> au mot CAF</td></tr>
+              <tr><td class="num">5</td><td>Qui râle le plus souvent ?</td><td><span class="ans both">LES 2</span><div class="comment">LUI d'après elle, mais en vrai les 2</div></td><td class="gag">« Officiellement : les deux. D'après Suzanne : lui. Stéphane ? » Salle : « Oui chérie ! »</td><td class="snd"><span class="sn p">« On en a gros ! »</span> à la réponse</td></tr>
+              <tr><td class="num">6</td><td>Qui est le plus jaloux ?</td><td><span class="ans both">AUCUN</span><div class="comment">question piège</div></td><td class="gag">« Question piège. Ou alors ils le cachent très bien. »</td><td class="snd"><span class="sn p">X-Files</span> « …ils le cachent très bien »</td></tr>
+              <tr><td class="num">7</td><td>Qui cherche toujours ses affaires ?</td><td><span class="ans lui">LUI</span></td><td class="gag">« Suzanne, c'est le service des objets trouvés de la maison. »<br><span class="comment">Réserve CAF : Cherche, Appelle, Fouille.</span></td><td class="snd"><span class="sn p">Inspecteur Gadget</span> « …objets trouvés »</td></tr>
+              <tr><td class="num">8</td><td>Qui dit toujours « C'était bien mais... » ?</td><td><span class="ans elle">ELLE</span></td><td class="gag">« Bon, Suzanne : jusqu'à présent, c'est bien ? » La laisser répondre. Si elle tombe dans le piège (« C'était bien mais… ») : « On le note pour la fin. »<br><span class="comment">Réserve CAF : Commentaire d'Après-Fête.</span></td><td class="snd"><span class="sn p">« Oui… Ben non ! »</span> si elle répond « C'était bien mais… »</td></tr>
+              <tr><td class="num">9</td><td>Qui pourrait tenir 2 mois sans faire une seule lessive ni toucher à un fer à repasser ?</td><td><span class="ans elle">ELLE</span></td><td class="gag">« Donc Stéphane cherche ses affaires… mais au moins elles sont propres. »<br><span class="comment">Réserve CAF : Club Anti-Fer à repasser (présidente : Suzanne).</span></td><td class="snd"></td></tr>
+              <tr><td class="num">10</td><td>Qui va bientôt faire le grand saut... en parachute ?</td><td><span class="ans elle">ELLE</span></td><td class="gag">« Suzanne va faire le grand saut… en parachute. Pour elle, la CAF, ça veut dire : <strong>Chute Avec Frissons</strong>. Et Stéphane était d'accord ? » Salle : « Oui chérie ! »</td><td class="snd"><span class="sn p">Cri qui tombe</span> au « grand saut », puis <span class="sn">Attente tél.</span> au mot CAF</td></tr>
+              <tr><td class="num">11</td><td>Qui pète le plus à la maison ?</td><td><span class="ans ask">à demander</span><div class="comment">ajoutée par Aurélien</div></td><td class="gag">« Petit rappel scientifique : le premier qui lève son panneau, c'est souvent le coupable. »</td><td class="snd"><span class="sn p">Klaxon</span> après la réponse</td></tr>
             </tbody>
           </table>
         </div>
@@ -896,33 +916,6 @@
         </div>
         <h5>Si ça s'essouffle</h5>
         <p>Sauter les questions bonus ; faire voter la salle et les mariés en même temps.</p>
-        <p class="part">Conduite son</p>
-        <div class="son">
-          <p class="son-t">Conduite son</p>
-          <ol>
-            <li><span class="q">« Deuxième défi : c'est vous qui votez. »</span><span class="s"><b>Qui veut gagner des millions</b> <kbd>/ play</kbd> <em class="pr">proposé</em><small>« Let's play »</small></span></li>
-            <li><span class="q">Aurélien lit la question</span><span class="s"><b>Verres</b> <kbd>T</kbd> <em class="pr">proposé</em></span></li>
-            <li><span class="q">La salle lève ses panneaux</span><span class="s"><b>Vote du public</b> <kbd>/ vote</kbd> <em class="pr">proposé</em><small>couper quand Aurélien commente</small></span></li>
-            <li><span class="q">Les mariés ne sont pas d'accord</span><span class="s"><b>Cloche de ring</b> <kbd>C</kbd><small>puis « Stéphane ? », salle : « Oui chérie ! »</small></span></li>
-            <li><span class="q">Réponse officielle</span><span class="s"><b>Ding</b> <kbd>D</kbd> ou <b>Buzzer</b> <kbd>X</kbd> <em class="pr">proposé</em><small>les mariés ont juste ou faux</small></span></li>
-            <li><span class="q">« Gardez vos panneaux… »</span><span class="s"><b>Bravo</b> <kbd>A</kbd> <em class="pr">proposé</em></span></li>
-          </ol>
-        </div>
-        <div class="son">
-          <p class="son-t">Conduite son · question par question</p>
-          <ol>
-            <li><span class="q"><b>Q1</b> · pendant le vote</span><span class="s"><b>Les Dents de la mer</b> <kbd>/ dents</kbd> <em class="pr">proposé</em><small>elle approche…</small></span></li>
-            <li><span class="q"><b>Q2</b> · « Chérie A Forcément raison »</span><span class="s"><b>Attente tél.</b> <kbd>P</kbd><small>puis, après « Oui chérie ! » (proposé) : Ah voui, vous avez raison <kbd>/ raison</kbd></small></span></li>
-            <li><span class="q"><b>Q3</b> · « …pas fait de faux départ »</span><span class="s"><b>Les Chariots de feu</b> <kbd>/ chariots</kbd> <em class="pr">proposé</em><small>lancer, couper au bout de 2 s, relancer : un faux départ</small></span></li>
-            <li><span class="q"><b>Q4</b> · « Collection Anatomique Fragmentée »</span><span class="s"><b>Attente tél.</b> <kbd>P</kbd></span></li>
-            <li><span class="q"><b>Q5</b> · « D'après Suzanne : lui. »</span><span class="s"><b>On en a gros !</b> <kbd>/ en a gros</kbd> <em class="pr">proposé</em><small>Perceval</small></span></li>
-            <li><span class="q"><b>Q6</b> · « Question piège. »</span><span class="s"><b>La Quatrième Dimension</b> <kbd>/ dimension</kbd> <em class="pr">proposé</em></span></li>
-            <li><span class="q"><b>Q7</b> · « …les objets trouvés de la maison »</span><span class="s"><b>Inspecteur Gadget</b> <kbd>/ gadget</kbd> <em class="pr">proposé</em></span></li>
-            <li><span class="q"><b>Q8</b> · Suzanne : « C'était bien mais… »</span><span class="s"><b>Oui… Ben non !</b> <kbd>/ ben non</kbd> <em class="pr">proposé</em></span></li>
-            <li><span class="q"><b>Q10</b> · « …le grand saut… »</span><span class="s"><b>Cri Wilhelm</b> <kbd>/ wilhelm</kbd> <em class="pr">proposé</em><small>puis « Chute Avec Frissons » : <b>Attente tél.</b> <kbd>P</kbd></small></span></li>
-            <li><span class="q"><b>Q11</b> · pendant le vote</span><span class="s"><b>Le Bon, la Brute et le Truand</b> <kbd>/ brute</kbd> <em class="pr">proposé</em><small>le duel</small></span></li>
-          </ol>
-        </div>
         <p class="part">Préparation</p>
         <h5>Matériel</h5>
         <ul>
@@ -985,19 +978,12 @@
         <h4>Leur deuxième interlude</h4>
         <p class="meta">Quelques minutes · préparé par eux · rien à l'écran</p>
         <ul>
-          <li>Son : musique d'ascenseur en fond, comme à l'interlude 1.</li>
+          <li><span class="sn">Ascenseur</span> en fond, comme à l'interlude 1. À la fin de leur numéro : <span class="sn p">Bravo</span></li>
           <li>Pendant ce temps : le deuxième micro (celui qui circule) est prêt. <span class="comment">5 micros en tout.</span></li>
           <li>Pause buffet ici, ou pas. <span class="tbc">à décider (Aurélien &amp; Floriane)</span></li>
         </ul>
         <h5>Si pause buffet</h5>
         <div class="round"><p>« On mange un morceau. On revient dans un quart d'heure pour le dernier défi, et c'est vous qui aurez la parole. »</p></div>
-        <div class="son">
-          <p class="son-t">Conduite son</p>
-          <ol>
-            <li><span class="q">Stéphane &amp; Suzanne prennent la scène</span><span class="s"><b>Ascenseur</b> <kbd>I</kbd><small>comme à l'interlude 1</small></span></li>
-            <li><span class="q">Fin de leur numéro</span><span class="s"><kbd>I</kbd> à nouveau, puis <b>Bravo</b> <kbd>A</kbd> <em class="pr">proposé</em></span></li>
-          </ol>
-        </div>
       </div>
     </li>
 
@@ -1171,7 +1157,7 @@
         </ul>
         <h5>Blagues à piocher</h5>
         <ul class="gags">
-          <li><strong>Question 5, la chanson</strong> : faire lire une réponse à « Si votre couple était une chanson, ce serait… », puis : « Et leur chanson de mariage, quelqu'un sait ? » Laisser la salle chercher, puis lancer quelques secondes de l'intro de Dirty Dancing. <span class="comment">Playlist : The Time of My Life. On la garde entière pour la fin.</span></li>
+          <li><strong>Question 5, la chanson</strong> : faire lire une réponse à « Si votre couple était une chanson, ce serait… », puis : « Et leur chanson de mariage, quelqu'un sait ? » Laisser la salle chercher, puis lancer quelques secondes de l'intro de Dirty Dancing. <span class="sn">The Time of My Life</span><span class="comment" style="font-style:normal"> (playlist) : l'intro seulement, on la garde entière pour la fin.</span></li>
           <li><strong>Après Sandrine H. (Stéphane le rebelle)</strong> : « Et ça se transmet : Noah mène en ce moment un mouvement de grève au lycée. Chez les Bauduin, la CAF, ça veut dire : <strong>Contestataire À Fond</strong>. De père en fils. »</li>
         </ul>
         <p class="comment" style="margin-top:4px">Interventions spontanées bienvenues : l'ordre est indicatif.</p>
@@ -1181,14 +1167,15 @@
         <div class="son">
           <p class="son-t">Conduite son</p>
           <ol>
-            <li><span class="q">« Dernier défi… »</span><span class="s">Aucun son <em class="pr">proposé</em><small>on change de ton</small></span></li>
-            <li><span class="q">« …la CAF, ça veut dire : Contestataire À Fond. »</span><span class="s"><b>Attente tél.</b> <kbd>P</kbd><small>deux secondes</small></span></li>
-            <li><span class="q">« De père en fils. »</span><span class="s"><b>Pays de Galles indépendant !</b> <kbd>/ galles</kbd> <em class="pr">proposé</em><small>Perceval, le rebelle</small></span></li>
-            <li><span class="q">« Et leur chanson de mariage, quelqu'un sait ? »</span><span class="s">Si silence : <b>Criquets</b> <kbd>K</kbd> <em class="pr">proposé</em></span></li>
-            <li><span class="q">La salle a trouvé (ou pas)</span><span class="s"><b>The Time of My Life</b>, l'intro<small>quelques secondes, playlist (pas sur la page des sons) ; on la garde entière pour la fin</small></span></li>
-            <li><span class="q">Une réponse « Titanic »</span><span class="s"><b>Titanic</b> <kbd>/ titanic</kbd> <em class="pr">proposé</em><small>quelques secondes</small></span></li>
-            <li><span class="q">Une anecdote qui finit sur une blague</span><span class="s"><b>Ba-dum-tss</b> <kbd>Z</kbd> <em class="pr">proposé</em><small>avec parcimonie</small></span></li>
-            <li><span class="q">Célia et les souvenirs émouvants</span><span class="s">Aucun son <em class="pr">proposé</em></span></li>
+            <li><span class="q">« Dernier défi… »</span><span class="s">Aucun son<small>on change de ton</small></span></li>
+            <li><span class="q">Un invité se lève pour parler</span><span class="s"><span class="sn p">Une famille en or, Générique</span><small>quelques secondes, coupé dès qu'il parle</small></span></li>
+            <li><span class="q">« …la CAF, ça veut dire : Contestataire À Fond. »</span><span class="s"><span class="sn">Attente tél.</span><small>deux secondes</small></span></li>
+            <li><span class="q">« De père en fils. »</span><span class="s"><span class="sn p">« Pays de Galles indépendant ! »</span><small>Perceval, le rebelle</small></span></li>
+            <li><span class="q">« Et leur chanson de mariage, quelqu'un sait ? »</span><span class="s"><span class="sn p">Criquets</span><small>si silence</small></span></li>
+            <li><span class="q">La salle a trouvé (ou pas)</span><span class="s"><span class="sn">The Time of My Life</span><small>l'intro, quelques secondes : playlist, pas sur la page des sons</small></span></li>
+            <li><span class="q">Une anecdote qui finit sur une blague</span><span class="s"><span class="sn p">Ba-dum-tss</span><small>avec parcimonie</small></span></li>
+            <li><span class="q">Célia se lève</span><span class="s"><span class="sn p">Jurassic Park</span><small>quelques secondes</small></span></li>
+            <li><span class="q">Pendant les souvenirs émouvants</span><span class="s">Aucun son</span></li>
           </ol>
         </div>
         <p class="part">Préparation</p>
@@ -1243,12 +1230,12 @@
         </ul>
         <h5>La chute (revue le 8 octobre : sans fil rouge CAF)</h5>
         <div class="round">
-          <p>« Stéphane et Suzanne se sont rencontrés à la CAF. <span class="comment" style="font-style:normal">(pause)</span> Et 22 ans plus tard, la CAF, ça veut surtout dire : <b>Ça A Fonctionné</b>. » <span class="comment" style="font-style:normal">Son : fanfare.</span></p>
-          <p>« Suzanne, cette soirée ? » <span class="comment" style="font-style:normal">(Elle : « C'était bien mais… »)</span> « On note : c'était bien. »</p>
+          <p>« Stéphane et Suzanne se sont rencontrés à la CAF. <span class="comment" style="font-style:normal">(pause)</span> Et 22 ans plus tard, la CAF, ça veut surtout dire : <b>Ça A Fonctionné</b>. » <span class="sn">Fanfare</span></p>
+          <p>« Suzanne, cette soirée ? » <span class="comment" style="font-style:normal">(Elle : « C'était bien mais… »)</span> <span class="sn p">« Oui… Ben non ! »</span> « On note : c'était bien. »</p>
           <p><span class="comment" style="font-style:normal">(Remise de la boîte)</span> « Dans cette boîte, il y a tous vos mots et tous vos souvenirs, même ceux qu'on n'a pas eu le temps de lire. À relire dans 15 ans.</p>
-          <p>15 ans de mariage, 22 ans ensemble : joyeuses noces de cristal, Stéphane et Suzanne ! » <span class="comment" style="font-style:normal">(Applaudissements, les laisser retomber)</span></p>
+          <p>15 ans de mariage, 22 ans ensemble : joyeuses noces de cristal, Stéphane et Suzanne ! » <span class="sn p">Bravo</span> <span class="comment" style="font-style:normal">(Applaudissements, les laisser retomber)</span></p>
           <p>« Et comme c'est très important d'avoir le dernier mot avec sa femme… Stéphane, le dernier mot est pour toi. » <span class="comment" style="font-style:normal">(Lui tendre le micro, regarder la salle)</span></p>
-          <p><b>Stéphane et la salle : « Oui chérie ! »</b> <span class="comment" style="font-style:normal">Musique tout de suite : The Time of My Life (Dirty Dancing).</span></p>
+          <p><b>Stéphane et la salle : « Oui chérie ! »</b> <span class="sn">The Time of My Life</span><span class="comment" style="font-style:normal"> tout de suite, en entier (playlist).</span></p>
           <p>Pendant l'intro, une seule phrase : « Comme il y a 15 ans : la piste est à vous. Stéphane, le porté n'est pas obligatoire. » <span class="comment" style="font-style:normal">(Une invitation, pas une obligation : s'ils ne dansent pas, la chanson lance quand même la soirée.)</span></p>
         </div>
         <ul class="gags">
@@ -1256,15 +1243,6 @@
           <li>Ça ne marche que si la salle a déjà répété « oui chérie » pendant les jeux 1 et 2.</li>
         </ul>
         <p class="comment" style="margin-top:4px">En réserve, pas validé par les mariés : faux renouvellement des vœux humoristique.</p>
-        <div class="son">
-          <p class="son-t">Conduite son</p>
-          <ol>
-            <li><span class="q">« …Ça A Fonctionné. »</span><span class="s"><b>Fanfare</b> <kbd>E</kbd></span></li>
-            <li><span class="q">Suzanne : « C'était bien mais… »</span><span class="s"><b>Oui… Ben non !</b> <kbd>/ ben non</kbd> <em class="pr">proposé</em></span></li>
-            <li><span class="q">« …joyeuses noces de cristal, Stéphane et Suzanne ! »</span><span class="s"><b>Bravo</b> <kbd>A</kbd> <em class="pr">proposé</em></span></li>
-            <li><span class="q">Stéphane et la salle : « Oui chérie ! »</span><span class="s"><b>The Time of My Life</b><small>tout de suite, en entier : playlist</small></span></li>
-          </ol>
-        </div>
       </div>
     </li>
   </ol>
@@ -1339,7 +1317,7 @@
       <li><strong>Les rappels font plus rire que les nouvelles blagues</strong> : le rire monte à chaque retour d'un running gag.</li>
       <li><strong>Laisser rire</strong> : petite pause avant la chute, se taire pendant le rire, reprendre quand il retombe.</li>
       <li><strong>Les stars, ce sont eux</strong> : toi, tu poses, tu écoutes, tu rebondis. Répéter au micro ce qu'un invité a dit sans micro.</li>
-      <li><strong>Blague qui tombe à plat</strong> : l'assumer, c'est souvent ce qui fait le plus rire. « Celle-là, je l'avais testée à la maison : même réaction. » Ou « Je la garde pour les 30 ans de mariage. » <span class="comment">Son : criquets.</span></li>
+      <li><strong>Blague qui tombe à plat</strong> : l'assumer, c'est souvent ce qui fait le plus rire. « Celle-là, je l'avais testée à la maison : même réaction. » Ou « Je la garde pour les 30 ans de mariage. » <span class="sn">Criquets</span></li>
       <li><strong>Les limites</strong> : on charrie le couple, pas un invité qui n'a rien demandé. Si l'un des deux a l'air vexé, on passe à la suite.</li>
       <li><strong>Micro</strong> : à quelques centimètres de la bouche, ne pas le baisser quand tu ris, parler plus lentement que d'habitude.</li>
       <li><strong>Tempo</strong> : finir quand c'est encore drôle, mieux vaut couper un jeu que l'épuiser. Un signe convenu avec Floriane pour accélérer ou couper.</li>
