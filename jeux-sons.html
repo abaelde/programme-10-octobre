@@ -153,6 +153,22 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
 .sections { columns: 2 520px; column-gap: 20px; }
 .sect { break-inside: avoid; margin-bottom: 8px; }
 .sect h3 { color: var(--or); margin: 10px 0 4px; }
+.sections.deux { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(520px, 100%), 1fr)); gap: 0 20px; align-items: start; }
+/* Lancement du jeu : un bandeau en haut, les étapes numérotées de gauche à droite */
+.lancement { margin: 6px 0 10px; padding: 2px 10px 8px; border: 1.5px solid var(--or); border-radius: 12px; background: rgba(226, 194, 122, .05); }
+.lancement h3 { color: var(--or); margin: 8px 0 6px; }
+.etapes { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 0 24px; counter-reset: etape; }
+.etapes .ligne { position: relative; display: flex; flex-direction: column; align-items: stretch; gap: 5px; border-top: 0; padding: 2px; }
+.etapes .ligne + .ligne::before { content: "›"; position: absolute; left: -17px; top: 34px; color: var(--or); font-size: 1.5rem; line-height: 1; }
+.etapes .lbl { font-size: .76rem; color: var(--doux); }
+.etapes .lbl::before { counter-increment: etape; content: counter(etape) ". "; color: var(--or); font-weight: 600; }
+.ligne.fond .lbl { color: var(--texte); }
+.ligne.fond .lbl::after { content: " · en fond, en boucle, plus bas"; color: var(--doux); }
+.sect.facultatif { border: 1.5px dashed var(--doux); border-radius: 10px; padding: 0 8px 6px; margin-top: 12px; }
+.sect.facultatif h3 { color: var(--doux); }
+/* Partie qu'on suit pendant tout le jeu (les questions du jeu 2) : encadrée en or */
+.sect.cadre { border: 2px solid var(--or); border-radius: 12px; padding: 2px 10px 8px; margin-top: 12px; background: rgba(226, 194, 122, .07); box-shadow: 0 0 0 4px rgba(226, 194, 122, .12); }
+.sect.cadre h3 { font-size: .8rem; letter-spacing: .24em; margin: 10px 0 8px; }
 .ligne { display: grid; grid-template-columns: minmax(110px, 33%) minmax(120px, 30%) 1fr; gap: 6px; align-items: center; padding: 3px 4px; border-top: 1px solid rgba(226, 194, 122, .12); border-radius: 6px; }
 .ligne .lbl { font-size: .8rem; line-height: 1.2; }
 .ligne.derniere { background: rgba(226, 194, 122, .08); }
@@ -170,15 +186,18 @@ h3 { font: 500 .66rem/1 var(--titre); letter-spacing: .2em; text-transform: uppe
 .b.allume { border-color: var(--c, var(--or)); background: rgba(143, 182, 236, .16); }
 .absent { font-size: .72rem; color: var(--doux); opacity: .6; border: 1px dashed var(--trait); border-radius: 6px; padding: 3px 6px; }
 h2.tous { --c: var(--doux); margin-top: 22px; }
-/* Entrée en scène : bandeau d'une ligne au-dessus des onglets des jeux */
+/* Entrée en scène : bandeau de deux lignes au-dessus des onglets des jeux */
 .groupe.entree { display: flex; align-items: center; gap: 10px; margin: 10px 0 4px; padding: 6px 8px; border: 1px solid var(--trait); border-radius: 10px; }
 .groupe.entree h2 { margin: 0; flex: none; }
 .groupe.entree h2::after { display: none; }
-.entree .grille { display: flex; flex: 1; min-width: 0; overflow-x: auto; gap: 5px; scrollbar-width: thin; }
-.entree .grille .b { flex: 0 0 auto; min-height: 40px; max-width: 170px; }
+.groupe.entree .grille { flex: 1; min-width: 0; grid-template-columns: none; grid-template-rows: repeat(2, auto); grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 5px; }
+.entree .grille .b { min-height: 40px; }
 @media (max-width: 620px) {
   .partout, .mini { display: none; }
   .groupe.entree { flex-direction: column; align-items: stretch; gap: 6px; }
+  .etapes { grid-auto-flow: row; gap: 6px; }
+  .etapes .ligne + .ligne::before { display: none; }
+  .groupe.entree .grille { grid-template-rows: none; grid-auto-flow: row; grid-template-columns: repeat(4, 1fr); }
   .ligne { grid-template-columns: 1fr 1fr; }
   .ligne .lbl { grid-column: 1 / -1; }
 }
@@ -208,7 +227,7 @@ h2.tous { --c: var(--doux); margin-top: 22px; }
     <button class="outil" id="raccourcis" title="Choisir la touche du clavier de chaque son">Raccourcis</button>
     <button class="stop" id="stop">Tout couper</button>
     <div class="barre">
-      <nav class="onglets"><button data-onglet="1">Jeu 1<small></small></button><button data-onglet="2">Jeu 2<small></small></button><button data-onglet="3">Jeu 3<small></small></button></nav>
+      <nav class="onglets"><button data-onglet="4">Intro<small></small></button><button data-onglet="1">Jeu 1<small></small></button><button data-onglet="2">Jeu 2<small></small></button><button data-onglet="3">Jeu 3<small></small></button></nav>
       <div class="partout" id="partout"></div>
       <div class="mini" title="Durée des sons et du chrono (touches 1, 2, 3)"><button data-duree="10">10 s</button><button data-duree="20" class="on">20 s</button><button data-duree="30">30 s</button><span id="mini-reste" title="Arrêter le chrono"></span></div>
     </div>
@@ -235,7 +254,7 @@ h2.tous { --c: var(--doux); margin-top: 22px; }
 
   <p class="legende" id="legende" hidden><span>Sons</span><span class="kaamelott">Kaamelott</span><span class="film">Films, séries, chansons, pubs, jeux télé, jeux vidéo, manga</span></p>
 
-  <!-- Entrée en scène : bandeau en haut, commun à tous les jeux (une ligne, qui défile de côté) -->
+  <!-- Entrée en scène : bandeau en haut, commun à tous les jeux (deux lignes) -->
   <div class="groupe entree">
     <h2>Entrée en scène</h2>
     <div class="grille" data-groupe="entree"></div>
@@ -412,6 +431,7 @@ function libere(g, vite) {
 }
 function toutCouper() {
   for (const k in boucles) delete boucles[k];
+  for (const k in fonds) delete fonds[k];
   arreteChrono(false);
   [...voix].forEach(g => libere(g, true));
 }
@@ -457,6 +477,24 @@ function joue(nom) {
     if (b.duration > duree) { g.gain.setValueAtTime(1, t + d - .8); g.gain.linearRampToValueAtTime(0, t + d); src.stop(t + d + .05); }
     return { d, g };
   });
+}
+
+// Musique des règles, en fond : en boucle jusqu'au deuxième appui, plus basse que les autres sons, sans la durée choisie en haut
+const fonds = {}, VOLUME_FOND = .45;
+function basculeFond(nom, titre) {
+  audio();
+  if (fonds[nom]) {
+    const g = fonds[nom]; delete fonds[nom];
+    g.gain.cancelScheduledValues(ac.currentTime); g.gain.setValueAtTime(g.gain.value, ac.currentTime); g.gain.linearRampToValueAtTime(0, ac.currentTime + 2);
+    setTimeout(() => libere(g), 2200);
+    signale("■ " + titre + " : fondu de sortie");
+  } else {
+    const g = voie(); fonds[nom] = g;
+    g.gain.setValueAtTime(0, ac.currentTime); g.gain.linearRampToValueAtTime(1, ac.currentTime + 1.5);
+    charge(nom).then(() => { if (fonds[nom] === g) lit(nom, g, ac.currentTime, { boucle: true, volume: VOLUME_FOND }); });
+    signale("▶ " + titre + " : en fond, en boucle");
+  }
+  majBoucles();
 }
 
 /* ---------- Chrono : la durée du curseur s'applique à la carte touchée (musique ou son, en boucle jusqu'à zéro) ---------- */
@@ -524,6 +562,7 @@ function signale(txt) { etat.textContent = txt; etat.classList.add("on"); clearT
 
 function majBoucles() {
   document.querySelectorAll(".b.boucle").forEach(b => b.classList.toggle("on", !!boucles[b.dataset.son]));
+  document.querySelectorAll("[data-fond]").forEach(p => p.classList.toggle("allume", !!fonds[p.dataset.cible]));
 }
 function declenche(b) {
   if (modeTouches) { choisitCarte(b); return; }   // réglage des raccourcis : la carte attend sa touche
@@ -854,7 +893,7 @@ function lisQuestions(t) {
     return { num: texte(tr.querySelector(".num")), label: texte(tr.cells[1]), rep: texte(ans), repClasse: ans ? [...ans.classList].filter(c => c !== "ans").join(" ") : "",
       sons: [...tr.querySelectorAll(".snd .sn")].map(texte) };
   });
-  return { titre: "Les " + lignes.length + " questions", lignes };
+  return { titre: "Les " + lignes.length + " questions", lignes, cadre: true };   // le cœur du jeu 2 : encadré
 }
 // Texte suivi : une suite de sons (séparés par des espaces) = un moment, ses sons au choix
 function lisRecit(box) {
@@ -879,7 +918,7 @@ function lisRecit(box) {
 function lisFiche(doc) {
   const h5 = [...doc.querySelectorAll("h5")].find(h => /^Règles pour Maxime/.test(texte(h)));
   const plan = { regles: h5?.nextElementSibling ? [...h5.nextElementSibling.querySelectorAll("li")].map(texte) : [],
-    jeux: [1, 2, 3].map(n => ({ n, titre: "", notes: [], sections: [] })) };
+    jeux: [1, 2, 3, 0].map(n => ({ n, titre: "", notes: [], sections: [] })) };   // le 4e : l'intro, onglet avant le jeu 1
   let dernier = 0;
   doc.querySelectorAll(".box").forEach(box => {
     const k = texte(box.querySelector(".k")), m = k.match(/^Jeu (\d)/);
@@ -896,13 +935,14 @@ function lisFiche(doc) {
       const q = box.querySelector("table.qtab");
       if (q) jeu.sections.push(lisQuestions(q));
     } else {
-      // Intro avant le jeu 1, interlude avant le jeu suivant, conclusion après le jeu 3
+      // Intro avant le jeu 1 (son propre onglet), interlude avant le jeu suivant, conclusion après le jeu 3
       const lignes = lisRecit(box);
-      if (lignes.length) plan.jeux[Math.min(dernier + 1, 3) - 1].sections.push({ titre: k.split("·")[0].trim(), lignes });
+      const cible = dernier ? plan.jeux[Math.min(dernier + 1, 3) - 1] : plan.jeux[3];
+      if (!lignes.length) return;
+      if (!dernier) cible.titre ||= texte(box.querySelector("h4"));
+      cible.sections.push({ titre: k.split("·")[0].trim(), lignes });
     }
   });
-  const entrees = doc.querySelector(".before table.ctab");
-  if (entrees) plan.jeux.forEach(j => j.sections.push(...lisTableau(entrees, "Entrées en scène, à tout moment")));
   return plan;
 }
 
@@ -924,7 +964,7 @@ function indexCartes() {
 }
 
 // Bouton relais : joue la carte, et en reprend l'état (joue, allumé, choisi pour une touche)
-function proxy(c, taille) {
+function proxy(c, taille, fond) {
   const p = document.createElement("button");
   p.className = "b p " + taille + (c.classList.contains("kaamelott") ? " kaamelott" : c.classList.contains("film") ? " film" : "");
   p.dataset.cible = c.dataset.son;
@@ -934,6 +974,11 @@ function proxy(c, taille) {
   p.querySelector("b").textContent = titreCarte(c);
   p.querySelector("small")?.append(detail);
   p.title = titreCarte(c) + (detail ? " (" + detail + ")" : "");
+  if (fond) {   // musique des règles : sa propre lecture, en fond
+    p.dataset.fond = ""; p.classList.toggle("allume", !!fonds[c.dataset.son]);
+    p.addEventListener("click", () => { if (modeTouches) choisitCarte(carteDe(p.dataset.cible)); else basculeFond(p.dataset.cible, titreCarte(c)); });
+    return p;
+  }
   p.addEventListener("click", () => { const carte = carteDe(p.dataset.cible); if (carte) declenche(carte); });
   (proxies[c.dataset.son] ||= []).push(p);
   copieEtat(c, p, false);
@@ -974,9 +1019,9 @@ function absent(nom) {
   a.title = SONS_POP ? "Pas sur la page des sons" : "Extraits de pop culture pas encore ouverts (mot de passe)";
   return a;
 }
-function rendLigne(jeu, l, trouve) {
+function rendLigne(jeu, l, trouve, fond) {
   const cle = jeu.n + "|" + (l.num ? "q" + l.num : l.label);
-  const div = document.createElement("div"); div.className = "ligne" + (derniere[jeu.n] === cle ? " derniere" : "");
+  const div = document.createElement("div"); div.className = "ligne" + (derniere[jeu.n] === cle ? " derniere" : "") + (fond ? " fond" : "");
   const lbl = document.createElement("span"); lbl.className = "lbl";
   if (l.num) { const n = document.createElement("i"); n.className = "qn"; n.textContent = l.num; lbl.append(n); }
   lbl.append(l.label);
@@ -984,12 +1029,12 @@ function rendLigne(jeu, l, trouve) {
   const sons = l.sons.map(nom => ({ nom, c: trouve(nom) })), presents = sons.filter(x => x.c);
   const principal = presents.find(x => x.c.dataset.son === preferes[cle]) || presents[0];
   const grand = document.createElement("div");
-  grand.append(principal ? proxy(principal.c, "grand") : absent(sons[0]?.nom || ""));
+  grand.append(principal ? proxy(principal.c, "grand", fond) : absent(sons[0]?.nom || ""));
   const alts = document.createElement("div"); alts.className = "alts";
   sons.forEach((x, i) => {
     if (x === principal || (!principal && i === 0)) return;
     if (!x.c) { alts.append(absent(x.nom)); return; }
-    const p = proxy(x.c, "petit");
+    const p = proxy(x.c, "petit", fond);
     p.addEventListener("contextmenu", e => {
       e.preventDefault(); preferes[cle] = x.c.dataset.son; sauvePreferes(); rendConduite();
       signale("Son principal : " + titreCarte(x.c));
@@ -1018,18 +1063,35 @@ function rendConduite() {
   if (!plan) conduite.innerHTML = '<p class="vide">Conduite son pas encore chargée : ouvrir cette page une fois avec la connexion (elle lit la fiche des jeux).</p>';
   else if (jeu) {
     const trouve = indexCartes();
-    const h = document.createElement("h2"); h.textContent = "Jeu " + jeu.n + " · " + jeu.titre; conduite.append(h);
+    const h = document.createElement("h2"); h.textContent = (jeu.n ? "Jeu " + jeu.n : "Intro") + " · " + jeu.titre; conduite.append(h);
+    // Lancement : l'interlude d'avant, l'annonce, les règles (musique en fond), dans l'ordre, de gauche à droite
+    const lance = jeu.sections.find(s => s.titre === "Lancement");
+    const avant = lance ? jeu.sections.filter(s => /^Interlude/.test(s.titre)) : [];
+    const sections = jeu.sections.filter(s => s !== lance && !avant.includes(s));
+    if (lance) {
+      const band = document.createElement("section"); band.className = "lancement";
+      const t = document.createElement("h3"); t.textContent = "Lancement du jeu"; band.append(t);
+      const etapes = document.createElement("div"); etapes.className = "etapes";
+      // L'interlude des mariés : sa musique de fond, puis ses applaudissements (libellés courts, le détail est dans la fiche)
+      const inter = avant.flatMap(s => s.lignes).map((l, i, tout) => ({ ...l, label: i === 0 ? "Interlude des mariés" : i === tout.length - 1 ? "Fin de l'interlude" : l.label }));
+      for (const l of [...inter, ...lance.lignes]) etapes.append(rendLigne(jeu, l, trouve, /^Explication des règles/.test(l.label)));
+      band.append(etapes); conduite.append(band);
+    }
     const r = document.createElement("p"); r.className = "regles";
     r.textContent = [...plan.regles, ...jeu.notes].join(" · ") + " · Clic droit sur un petit son : il passe en grand.";
     conduite.append(r);
     if (!SONS_POP) { const v = document.createElement("p"); v.className = "regles"; v.textContent = "Extraits de pop culture pas encore ouverts : mot de passe plus haut. En pointillés, les sons qui manquent."; conduite.append(v); }
     const secs = document.createElement("div"); secs.className = "sections";
-    for (const s of jeu.sections) {
-      const sec = document.createElement("section"); sec.className = "sect";
+    // Parties facultatives (titre entre parenthèses, à la fin) : à droite, sous la dernière partie du jeu (Fin du jeu)
+    const fac = sections.findIndex(s => s.titre.startsWith("("));
+    let gauche = secs, droite = secs;
+    if (fac > 0) { secs.classList.add("deux"); gauche = document.createElement("div"); droite = document.createElement("div"); secs.append(gauche, droite); }
+    sections.forEach((s, i) => {
+      const sec = document.createElement("section"); sec.className = "sect" + (s.titre.startsWith("(") ? " facultatif" : "") + (s.cadre ? " cadre" : "");
       const t = document.createElement("h3"); t.textContent = s.titre; sec.append(t);
       for (const l of s.lignes) sec.append(rendLigne(jeu, l, trouve));
-      secs.append(sec);
-    }
+      (fac > 0 && i >= fac - 1 ? droite : gauche).append(sec);
+    });
     conduite.append(secs);
   }
   majTouchesConduite(); majVisibilite();
