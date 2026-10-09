@@ -368,6 +368,41 @@
   .sheet.a4 .panneau { zoom: 1.4142; }
 
   @page planche { size: A4; margin: 0; }
+  @page pb { size: A4; margin: 0; }
+
+  /* Pense-bêtes : une feuille A4 par page, à l'écran comme sur papier */
+  .pb-page { box-sizing: border-box; width: 210mm; max-width: 100%; min-height: 297mm; margin: 14px auto; padding: 9mm 11mm; background: #fff; color: #1f1d1a; border: 1px solid var(--line); box-shadow: 0 2px 10px rgba(0,0,0,.08); font-size: 11pt; line-height: 1.3; }
+  .pb-tete { margin: 0 0 2.5mm; padding-bottom: 1.5mm; border-bottom: .4mm solid #c2456b; font: 500 8pt/1.2 var(--titre); letter-spacing: .18em; text-transform: uppercase; color: #6b665e; }
+  .pb-tete b { color: #1f1d1a; }
+  .pb-leg { float: right; letter-spacing: 0; text-transform: none; font: 7.5pt/1.2 inherit; }
+  .pb-leg i { font-style: normal; padding: .3mm 1.5mm; border-radius: 1mm; margin-left: 1.5mm; color: #1f1d1a; }
+  .pb-page h3 { font-size: 12.5pt; margin: 3mm 0 1.4mm; color: #1f1d1a; }
+  .pb-page h3 small { font-size: 8.5pt; font-weight: 400; color: #6b665e; margin-left: 2mm; }
+  .pb-fil { margin: 0; padding-left: 5mm; }
+  .pb-fil li { margin: 0 0 1mm; padding: .4mm 1.4mm; }
+  .pb-k { font-weight: 700; margin-right: 1.5mm; }
+  .pb-page .bl { background: #fff0c9; border-radius: 1mm; }
+  .pb-page .rg { background: #fde0ea; border-radius: 1mm; }
+  .pb-q { width: 100%; border-collapse: collapse; margin: 1.5mm 0 2mm; font-size: 10.4pt; }
+  .pb-q td { padding: .9mm 1.2mm; border-bottom: .2mm solid #e4dfd6; vertical-align: top; }
+  .pb-q td:first-child { width: 5mm; font-weight: 700; }
+  .pb-q td:nth-child(2) { width: 33mm; font-weight: 600; }
+  .pb-q td:nth-child(3) { width: 15mm; }
+  .pb-q tr.rg td { background: #fde0ea; }
+  .pb-blanc { color: #6b665e; }
+  .pb-lignes { display: block; margin: .5mm 0 0; }
+  .pb-lignes span { display: block; height: 5.5mm; border-bottom: .2mm dotted #6b665e; }
+  .pb-secours { margin: 1.5mm 0 0; padding-top: 1.2mm; border-top: .2mm dotted #b9b2a5; font-size: 9.8pt; color: #4a463f; }
+  .pb-regles { margin: 0 0 2mm; padding: 2mm 3mm 2mm 7mm; background: #e6f3ee; border-radius: 1.5mm; }
+  .pb-regles li { margin: .4mm 0; }
+  .pb-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 7mm; }
+  .pb-maxime h3 { margin: 2.6mm 0 1mm; font-size: 11.5pt; color: #1d7f8c; }
+  .pb-cues { list-style: none; margin: 0; padding: 0; font-size: 10.2pt; }
+  .pb-cues li { display: flex; justify-content: space-between; gap: 3mm; padding: .55mm 0; border-bottom: .2mm dotted #cfc8bb; }
+  .pb-cues b { text-align: right; }
+  .pb-sous { margin: 1.6mm 0 .6mm; font-weight: 700; font-size: 10.2pt; }
+  .pb-qs { columns: 2; column-gap: 5mm; margin: 0; padding-left: 6mm; font-size: 10.2pt; }
+  .pb-qs li { break-inside: avoid; }
   @page paysage { size: A4 landscape; margin: 0; }
 
   @media (max-width: 620px) {
@@ -382,6 +417,9 @@
     body[class*="print-"] .sheets { display: block; }
     body[class*="print-"] .sheet { display: none; }
     body[class*="print-"] .sheet.on { display: grid; }
+    body[class*="print-"] .sheet.pb.on { display: block; page: pb; }
+    .sheet.pb::before, .sheet.pb::after { display: none; }
+    .sheet.pb .pb-page { margin: 0; width: 210mm; height: 297mm; min-height: 0; border: 0; box-shadow: none; overflow: hidden; }
   }
   @media print { * { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
 </style>
@@ -407,6 +445,7 @@
 
   <nav class="tabs" role="tablist">
     <button type="button" role="tab" data-vue="timeline" aria-selected="true">Timeline des jeux</button>
+    <button type="button" role="tab" data-vue="pensebetes" aria-selected="false">Pense-bêtes</button>
     <button type="button" role="tab" data-vue="contexte" aria-selected="false">Contexte</button>
     <button type="button" role="tab" data-vue="fiches" aria-selected="false">Fiches imprimées</button>
     <button type="button" role="tab" data-vue="todo" aria-selected="false">To do</button>
@@ -1340,6 +1379,179 @@
         <button class="print-btn" type="button" data-print="jeu3">Imprimer la planche (4 questionnaires par A4)</button>
   </div>
 
+  <div class="vue" id="vue-pensebetes" hidden>
+  <p class="note">À imprimer et à garder en main : le fil de chaque jeu, les phrases et les blagues à ne pas oublier. Les mêmes moments, dans le même ordre, chez Aurélien et chez Maxime.</p>
+  <div class="pan-btns">
+    <button class="print-btn" type="button" data-print="pb-aurelien">Imprimer le pense-bête d'Aurélien (3 pages)</button>
+    <button class="print-btn" type="button" data-print="pb-maxime" style="--c:var(--son)">Imprimer le pense-bête de Maxime (1 page)</button>
+  </div>
+
+  <section class="pb-page" data-pb="aurelien">
+    <p class="pb-tete"><span class="pb-leg"><i class="bl">blague</i> <i class="rg">oui chérie, running gag</i></span><b>Aurélien</b> · Intro et jeu 1</p>
+    <h3>Intro <small>Steph me tend le micro</small></h3>
+    <ol class="pb-fil">
+      <li>« Merci Steph. Aurélien, neveu de Steph et parrain de Noah : je connais les dossiers de deux générations. »</li>
+      <li class="bl">« Steph et Suzanne se sont rencontrés à la CAF. La Caisse d'Allocations Familiales. Ils ont pris le nom au pied de la lettre. »</li>
+      <li class="bl">« Comme toujours à la CAF, le dossier a pris du temps : 7 ans entre la rencontre et le mariage. Mais ça a abouti. »</li>
+      <li>« Qui était au mariage, il y a 15 ans ? Levez la main. »</li>
+      <li class="bl">« Steph avait un zona. Il a tenu jusqu'au bout. Pour le meilleur et pour le pire : le pire, c'était fait dès le premier jour. »</li>
+      <li>« Ce soir, trois défis, pour voir si vous les connaissez aussi bien qu'ils se connaissent. »</li>
+    </ol>
+
+    <h3>Jeu 1 · Le défi des mariés</h3>
+    <ol class="pb-fil">
+      <li><span class="pb-k">Annonce</span> « Premier défi, le jeu de l'apéro. Vous avez écrit un mot sur eux. Steph, Suzanne : à vous de deviner qui il visait. Pour le tirage, comme au Loto : des mains innocentes. Ce sont les enfants qui piochent. »</li>
+      <li><span class="pb-k">8-10 post-its</span> Un enfant pioche · je lis le recto · les mariés : Steph, Suzanne ou les 2 · je retourne : 1 point.</li>
+      <li><span class="pb-k">Relances</span> « Vous êtes d'accord tous les deux ? » · « Suzanne, tu as l'air bien sûre que c'est lui. » · À l'auteur : « Pourquoi ce mot-là ? »</li>
+      <li class="rg"><span class="pb-k">Premier désaccord : oui chérie</span> « Steph, c'est très important d'avoir le dernier mot avec sa femme. Et ce dernier mot, c'est : oui chérie. » Puis : « À chaque cloche de ring, je dis "Steph ?" et vous répondez "Oui chérie !". On essaie. » Encore, plus fort : « Suzanne ne vous a pas entendus. »</li>
+      <li class="bl"><span class="pb-k">Mot très flatteur pour Steph</span> « On vérifie l'écriture : Steph l'a peut-être écrit lui-même. »</li>
+      <li class="bl"><span class="pb-k">Bonus « Et qui l'a écrit ? »</span> « Les post-its sont anonymes. Enfin, anonymes avec le prénom au dos. »</li>
+      <li class="bl"><span class="pb-k">Score</span> « … sur … À la CAF, on appelle ça un dossier incomplet. On vous recontactera. »</li>
+      <li><span class="pb-k">Sortie</span> « Ils se connaissent, à peu près. On leur laisse un moment pour s'en remettre. »</li>
+      <li><span class="pb-k">Interlude des mariés</span> Je ris, je lance les applaudissements.</li>
+    </ol>
+    <p class="pb-secours"><b>Si ça s'essouffle :</b> 5-6 post-its seulement. <b>Blague à plat :</b> « Celle-là, je l'avais testée à la maison : même réaction. »</p>
+  </section>
+
+  <section class="pb-page" data-pb="aurelien">
+    <p class="pb-tete"><span class="pb-leg"><i class="bl">blague</i> <i class="rg">oui chérie, running gag</i></span><b>Aurélien</b> · Jeu 2 · LUI, ELLE ou les 2 ?</p>
+    <ol class="pb-fil">
+      <li><span class="pb-k">Fin de l'interlude</span> « Merci à nos deux artistes. Prenez vos panneaux. »</li>
+      <li><span class="pb-k">Annonce</span> « Deuxième défi : c'est vous qui votez. Je pose une question, vous levez Steph, Suzanne, les deux… ou aucun. Ensuite, c'est à eux. »</li>
+      <li class="bl"><span class="pb-k">Convention</span> « Deux panneaux levés : les deux. Aucun : aucun. Un panneau à l'envers : vous avez trop pris l'apéro. »</li>
+      <li><span class="pb-k">Chaque question</span> Je lis · la salle lève, je commente (« Majorité de Suzanne… ») · les mariés lèvent · réponse officielle.</li>
+      <li><span class="pb-k">Relances</span> Désaccord : « Steph, plaide ta cause. » · Salle : « Pourquoi tu as levé Steph ? »</li>
+    </ol>
+    <table class="pb-q">
+      <tbody>
+        <tr><td>1</td><td>Premier pas</td><td><span class="ans elle">ELLE</span></td><td>« Elle l'invite au restaurant, en tout bien tout honneur. Steph, lui, n'a fait qu'un pas : celui vers la table. »</td></tr>
+        <tr class="rg"><td>2</td><td>Toujours raison</td><td><span class="ans elle">ELLE</span></td><td>« Évidemment. La CAF, ici, ça veut dire : Chérie A Forcément raison. » « Elle a toujours raison… et lui n'a jamais tort. » <b>Oui chérie</b> : si pas encore placé, la tirade et faire répéter ; sinon « Steph ? » Salle : « Oui chérie ! »</td></tr>
+        <tr><td>3</td><td>Faux départs</td><td><span class="ans lui">LUI</span></td><td>« Heureusement, à la mairie, il y a 15 ans, il n'a pas fait de faux départ. »</td></tr>
+        <tr><td>4</td><td>Corps en puzzle</td><td><span class="ans lui">LUI</span></td><td>« Pour Steph, la CAF, ça veut dire : Collection Anatomique Fragmentée. Et pour le genou, la pièce était en rupture de stock. »</td></tr>
+        <tr class="rg"><td>5</td><td>Râle le plus</td><td><span class="ans both">LES 2</span></td><td>« Officiellement : les deux. D'après Suzanne : lui. Steph ? » Salle : « Oui chérie ! »</td></tr>
+        <tr><td>6</td><td>Plus jaloux</td><td><span class="ans both">AUCUN</span></td><td>« Question piège. Ou alors ils le cachent très bien. »</td></tr>
+        <tr><td>7</td><td>Cherche ses affaires</td><td><span class="ans lui">LUI</span></td><td>« Suzanne, c'est le service des objets trouvés de la maison. »</td></tr>
+        <tr class="rg"><td>8</td><td>« C'était bien mais… »</td><td><span class="ans elle">ELLE</span></td><td>« Bon, Suzanne : jusqu'à présent, c'est bien ? » Si elle tombe dans le piège : « On le note pour la fin. »</td></tr>
+        <tr><td>9</td><td>2 mois sans lessive</td><td><span class="ans elle">ELLE</span></td><td>« Donc Steph cherche ses affaires… mais au moins elles sont propres. »</td></tr>
+        <tr class="rg"><td>10</td><td>Parachute</td><td><span class="ans elle">ELLE</span></td><td>« Suzanne va faire le grand saut… en parachute. Pour elle, la CAF, ça veut dire : Chute Avec Frissons. Et Steph était d'accord ? » Salle : « Oui chérie ! »</td></tr>
+        <tr><td>11</td><td>Qui pète</td><td><span class="pb-blanc">……</span></td><td>« Petit rappel scientifique : le premier qui lève son panneau, c'est souvent le coupable. »</td></tr>
+      </tbody>
+    </table>
+    <ol class="pb-fil" start="6">
+      <li class="bl"><span class="pb-k">Sortie</span> « Gardez vos panneaux : c'est la seule allocation de la soirée. »</li>
+      <li><span class="pb-k">Interlude des mariés</span> Je ris, je lance les applaudissements.</li>
+    </ol>
+    <p class="pb-secours"><b>Si ça s'essouffle :</b> faire voter la salle et les mariés en même temps.</p>
+  </section>
+
+  <section class="pb-page" data-pb="aurelien">
+    <p class="pb-tete"><span class="pb-leg"><i class="bl">blague</i> <i class="rg">oui chérie, running gag</i></span><b>Aurélien</b> · Jeu 3 et conclusion</p>
+    <h3>Jeu 3 · 15 ans de nous… racontés par vous</h3>
+    <ol class="pb-fil">
+      <li><span class="pb-k">Si pause buffet</span> « On mange un morceau. On revient dans un quart d'heure pour le dernier défi, et c'est vous qui aurez la parole. »</li>
+      <li><span class="pb-k">Annonce</span> « Dernier défi, et cette fois ce ne sont pas eux qui jouent. On va raconter Steph et Suzanne à travers vos souvenirs. Et Steph, Suzanne : vous avez le droit de donner votre version. »</li>
+      <li><span class="pb-k">1. Sandrine H.</span> « Il paraît que Stéphane est un rebelle : c'est-à-dire ? »</li>
+      <li class="bl"><span class="pb-k">Juste après</span> « Et ça se transmet : Noah mène en ce moment un mouvement de grève au lycée. Chez les Bauduin, la CAF, ça veut dire : Contestataire À Fond. De père en fils. »</li>
+      <li><span class="pb-k">2. Sylvie</span> « Tu as connu Stéphane avant Suzanne : il était comment à l'époque ? »</li>
+      <li><span class="pb-k">3. Les 4-5 invités</span> Prénom et numéro de question :
+        <span class="pb-lignes"><span></span><span></span><span></span><span></span><span></span></span></li>
+      <li class="bl"><span class="pb-k">Question 5, la chanson</span> Faire lire une réponse, puis : « Et leur chanson de mariage, quelqu'un sait ? » Laisser chercher, puis quelques secondes de l'intro de Dirty Dancing.</li>
+      <li><span class="pb-k">4. Célia, pour finir</span> « Raconte-nous LE moment où tu t'es dit "ces deux-là, c'est quelque chose". »</li>
+      <li><span class="pb-k">Relances</span> « Pourquoi cette réponse ? » (« Titanic ? Tu penses qu'on coule ? ») · Aux mariés : « C'est comme ça que vous l'avez vécu ? » · « Quelqu'un était là ? » · Moi : la portière refermée par Suzanne sur Steph.</li>
+    </ol>
+    <p class="pb-secours"><b>Si ça s'essouffle :</b> Célia ou Sandrine H. plus tôt, « pourquoi ? », la version des mariés, une réponse marquante d'un questionnaire.</p>
+
+    <h3>Conclusion</h3>
+    <ol class="pb-fil">
+      <li class="bl">« Steph et Suzanne se sont rencontrés à la CAF. (pause) Et 22 ans plus tard, la CAF, ça veut surtout dire : Ça A Fonctionné. »</li>
+      <li class="rg">« Suzanne, cette soirée ? » (Elle : « C'était bien mais… ») « On note : c'était bien. »</li>
+      <li><span class="pb-k">La boîte</span> « Dans cette boîte, il y a tous vos mots et tous vos souvenirs, même ceux qu'on n'a pas eu le temps de lire. À relire dans 15 ans. 15 ans de mariage, 22 ans ensemble : joyeuses noces de cristal, Steph et Suzanne ! » Laisser retomber les applaudissements.</li>
+      <li class="rg"><span class="pb-k">Le dernier mot</span> « Et comme c'est très important d'avoir le dernier mot avec sa femme… Steph, le dernier mot est pour toi. » Micro tendu, regarder la salle. Salle : « Oui chérie ! » <b>Plan B :</b> « Mauvaise réponse. La salle ? »</li>
+      <li><span class="pb-k">The Time of My Life</span> Pendant l'intro : « Comme il y a 15 ans : la piste est à vous. Steph, le porté n'est pas obligatoire. »</li>
+    </ol>
+  </section>
+
+  <section class="pb-page pb-maxime" data-pb="maxime">
+    <p class="pb-tete"><b>Maxime</b> · Sons des jeux</p>
+    <ul class="pb-regles">
+      <li>Un son court juste après la chute ou le rire, <b>jamais sur quelqu'un qui parle</b>.</li>
+      <li>Aurélien reprend la parole : on coupe la musique. <b>Main levée</b> d'Aurélien : on coupe. <kbd>Échap</kbd> coupe tout.</li>
+      <li>Émotion (souvenirs du jeu 3, remise de la boîte) : <b>aucun son</b>.</li>
+      <li>Musique des règles : en fond pendant qu'Aurélien explique, deuxième appui pour l'arrêter.</li>
+      <li>Désaccord des mariés : <b>Cloche de ring</b>, c'est le signal du « Steph ? » / « Oui chérie ! ».</li>
+    </ul>
+    <div class="pb-cols">
+      <div>
+        <h3>Intro</h3>
+        <ul class="pb-cues">
+          <li>Steph tend le micro<b>Star Wars</b></li>
+          <li>« …au pied de la lettre »<b>Ba-dum-tss</b></li>
+          <li>« …a pris du temps »<b>Attente CAF</b></li>
+          <li>« Mais ça a abouti »<b>couper</b></li>
+        </ul>
+        <h3>Jeu 1</h3>
+        <ul class="pb-cues">
+          <li>Annonce<b>Jingle qui monte</b></li>
+          <li>Règles<b>Musique des questions (fond)</b></li>
+          <li>Un enfant pioche<b>Gong</b></li>
+          <li>Les mariés réfléchissent<b>Tic-tac suspense</b></li>
+          <li>Ils se concertent<b>La Panthère rose</b></li>
+          <li>Ça traîne<b>« C'est votre dernier mot ? »</b></li>
+          <li>Ils ne sont pas d'accord<b>Cloche de ring</b></li>
+          <li>Salle : « Oui chérie ! »<b>« Ah voui, vous avez raison »</b></li>
+          <li>Aurélien retourne le post-it<b>Roulement</b></li>
+          <li>Bonne cible / ratée<b>Ding / Buzzer</b></li>
+          <li>Score<b>Fanfare</b></li>
+          <li>« …dossier incomplet »<b>Attente CAF</b></li>
+        </ul>
+        <h3>Interludes</h3>
+        <ul class="pb-cues">
+          <li>Les mariés s'installent<b>Ascenseur (fond)</b></li>
+          <li>Fin de leur numéro<b>Bravo</b></li>
+        </ul>
+        <h3>Conclusion</h3>
+        <ul class="pb-cues">
+          <li>« …Ça A Fonctionné »<b>Fanfare</b></li>
+          <li>« C'était bien mais… »<b>« Oui… Ben non ! »</b></li>
+          <li>« …noces de cristal »<b>Bravo</b></li>
+          <li>Salle : « Oui chérie ! »<b>The Time of My Life (playlist)</b></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Jeu 2</h3>
+        <ul class="pb-cues">
+          <li>Annonce<b>« Let's play ! »</b></li>
+          <li>Règles<b>Musique de la manche (fond)</b></li>
+          <li>Aurélien lit la question<b>Gong</b></li>
+          <li>La salle vote<b>Vote du public</b></li>
+          <li>Les mariés vont lever<b>Roulement</b></li>
+          <li>Bonne réponse / ratée<b>Ding / Buzzer</b></li>
+          <li>Fin du jeu<b>Bravo</b></li>
+        </ul>
+        <p class="pb-sous">Son de chaque question</p>
+        <ol class="pb-qs">
+          <li>Alerte à Malibu</li><li>« C'est votre dernier mot ? »</li><li>K2000</li><li>Il était une fois la vie</li>
+          <li>Ça m'énerve</li><li>Les Dents de la mer</li><li>Inspecteur Gadget</li><li>Désenchantée</li>
+          <li>Monsieur Propre</li><li>Mission impossible</li><li>SOS Fantômes</li>
+        </ol>
+        <h3>Jeu 3</h3>
+        <ul class="pb-cues">
+          <li>Annonce<b>Il était une fois la vie</b></li>
+          <li>Règles<b>La Panthère rose (fond)</b></li>
+          <li>Sandrine H. se lève<b>Albator</b></li>
+          <li>Noah et la grève<b>« Pays de Galles indépendant ! »</b></li>
+          <li>Un invité se lève<b>Une famille en or</b></li>
+          <li>Anecdote drôle<b>Ba-dum-tss</b></li>
+          <li>Les mariés contestent<b>« Objection ! »</b></li>
+          <li>Silence dans la salle<b>Criquets</b></li>
+          <li>Célia se lève<b>Jurassic Park</b></li>
+          <li>Souvenir émouvant<b>rien</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  </div>
+
   <div class="vue" id="vue-todo" hidden>
   <h2>Courses</h2>
   <p class="note">Quantités pour 35 personnes le soir, nombre de tables à confirmer (base : ~8).</p>
@@ -1454,7 +1666,15 @@
   document.querySelectorAll('[data-print]').forEach(btn =>
     btn.addEventListener('click', () => printSheet(btn.dataset.print)));
 
-  // Onglets : Timeline des jeux / Contexte / Fiches imprimées / To do (jeux-mariage.html#contexte, #fiches ou #todo ouvre directement l'onglet)
+  // Pense-bêtes : chaque page A4 imprimée telle quelle
+  document.querySelectorAll('.pb-page').forEach(page => {
+    const sheet = document.createElement('div');
+    sheet.className = 'sheet pb s-pb-' + page.dataset.pb;
+    sheet.appendChild(page.cloneNode(true));
+    sheets.appendChild(sheet);
+  });
+
+  // Onglets : Timeline des jeux / Pense-bêtes / Contexte / Fiches imprimées / To do (jeux-mariage.html#contexte, #fiches ou #todo ouvre directement l'onglet)
   function montreVue(nom) {
     document.querySelectorAll('.vue').forEach(v => v.hidden = v.id !== 'vue-' + nom);
     document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.vue === nom));
@@ -1463,7 +1683,7 @@
     montreVue(b.dataset.vue);
     history.replaceState(null, '', b.dataset.vue === 'timeline' ? location.pathname + location.search : '#' + b.dataset.vue);
   }));
-  if (['#contexte', '#fiches', '#todo'].includes(location.hash)) montreVue(location.hash.slice(1));
+  if (['#pensebetes', '#contexte', '#fiches', '#todo'].includes(location.hash)) montreVue(location.hash.slice(1));
 
   // Cases cochées : gardées sur cet appareil seulement
   const CLE_TODO = 'jeux-mariage-todo';
