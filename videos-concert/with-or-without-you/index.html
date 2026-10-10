@@ -36,7 +36,7 @@
 </head>
 <body>
 <canvas id="scene" aria-label="Deux fils de lumière flottent au-dessus d'un désert nocturne dans la brume, se rapprochent, fusionnent puis se séparent."></canvas>
-<div class="caption"><strong>U2 / Deux lignes</strong>Proposition 03 / matière sépia</div>
+<div class="caption"><strong>U2 / Deux lignes</strong>Matière sépia / ~7 min</div>
 <div id="title"><h1>With or Without You</h1><p>U2</p></div>
 <div id="error" role="alert" hidden></div>
 <!-- lecteur-concert:debut -->
@@ -175,19 +175,52 @@ function creerLecteurConcert(options) {
 </script>
 <!-- lecteur-concert:fin -->
 <script>
-/* Proposition autonome : paysage, brume et lumière calculés sans image externe.
-   Même déroulé de ~50 s que la première esquisse. Arrêt en fin de lecture. Intensités continues, sans flash. */
+/* Paysage, brume et lumière calculés sans image externe.
+   Repères album : LRCLIB 112136, ~296 s. Durée de projection : ~7 min,
+   avec coda prolongée pour la marge demandée. Calage du groupe à vérifier.
+   Les repères pilotent les intensités, le mouvement conserve sa vitesse naturelle.
+   Arrêt au noir en fin de lecture. Intensités continues, sans flash. */
 const canvas = document.querySelector('#scene');
 const gl = canvas.getContext('webgl', {alpha: false, antialias: false, depth: false, powerPreference: 'low-power'});
 const title = document.querySelector('#title');
 let landscape = true, texture = .75;
-const duration = 50;
+const duration = 420;
 const smooth = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+// Débuts des parties chantées, puis choix visuels pour la coda instrumentale.
+// Transitions continues, état calculé directement depuis le temps de lecture.
+const parties = [
+  {name:'Intro', start:0, separation:.13, fusion:0, energy:.68},
+  {name:'Couplet 1', start:28.91, separation:.12, fusion:0, energy:.76},
+  {name:'Refrain retenu', start:60.83, separation:.10, fusion:.06, energy:.84},
+  {name:'Couplet 2', start:71.97, separation:.115, fusion:.02, energy:.82},
+  {name:'Refrain 2', start:87.06, separation:.085, fusion:.12, energy:.94},
+  {name:'Attraction', start:113.70, separation:.06, fusion:.28, energy:1.02},
+  {name:'Tension', start:132.62, separation:.085, fusion:.14, energy:.94},
+  {name:'Grande montée', start:148.94, separation:.04, fusion:.55, energy:1.12},
+  {name:'Fusion', start:165.90, separation:.018, fusion:.92, energy:1.18},
+  {name:'Sommet vocal', start:183.75, separation:.012, fusion:1, energy:1.24},
+  {name:'Dernier refrain', start:200.59, separation:.028, fusion:.72, energy:1.02},
+  {name:'Coda instrumentale', start:220.38, separation:.065, fusion:.30, energy:.86},
+  {name:'Fondu final', start:402, separation:.10, fusion:0, energy:.60}
+];
+function etatVisuel(t) {
+  let index = 0;
+  parties.forEach((p, i) => { if (t >= p.start) index = i; });
+  const cible = parties[index], precedent = parties[Math.max(0, index - 1)];
+  // La coda retrouve lentement deux fils distincts, sur ~35 s.
+  const transition = index === 11 ? 35 : index === 12 ? 18 : 6;
+  const progression = smooth(cible.start, cible.start + transition, t);
+  const valeur = cle => precedent[cle] + (cible[cle] - precedent[cle]) * progression;
+  return {
+    active:smooth(4, 18, t) * (1 - smooth(parties[12].start, duration, t)),
+    fusion:valeur('fusion'), separation:valeur('separation'), energy:valeur('energy')
+  };
+}
 const vertex = `attribute vec2 p; void main() { gl_Position = vec4(p,0.,1.); }`;
 const fragment = `
 precision highp float;
 uniform vec2 resolution;
-uniform float t, landscape, texture;
+uniform float t, landscape, texture, active, fusion, separation, energy;
 float hash(vec2 p) { return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
 float noise(vec2 p) {
   vec2 i=floor(p), f=fract(p); f=f*f*(3.-2.*f);
@@ -208,10 +241,6 @@ float lineY(float x,float side,float fusion,float separation) {
 }
 void main() {
   vec2 uv=gl_FragCoord.xy/resolution, q=vec2(uv.x*resolution.x/resolution.y,uv.y);
-  float appear=smoothstep(3.,8.,t), fade=1.-smoothstep(44.,50.,t);
-  float fusion=smoothstep(22.,29.,t)*(1.-smoothstep(35.,43.,t));
-  float separation=.13-.08*smoothstep(8.,22.,t)+.055*smoothstep(36.,45.,t);
-  float active=appear*fade;
   float wind=t*.012;
   float fog=fbm(q*vec2(2.4,5.)+vec2(-wind,wind*.25));
   float wisps=fbm(q*vec2(4.,16.)+vec2(-wind*.7,4.));
@@ -250,14 +279,14 @@ void main() {
     float flow=.72+.28*pow(.5+.5*sin(uv.x*17.-t*.75+side*2.),4.);
     float ends=smoothstep(0.,.13,uv.x)*(1.-smoothstep(.87,1.,uv.x));
     vec3 ivory=side<0.?vec3(1.,.91,.76):vec3(.76,.81,.83);
-    float energy=(.85+.045*sin(t*2.))*active*ends*(1.+fusion*.18);
+    float light=energy*(.85+.045*sin(t*2.))*ends*(1.+fusion*.18);
     // Un halo gaussien évite les bandes de contours de la première version.
-    col+=ivory*energy*(gauss(d,w)*.87*focus*flow+gauss(d,.004)*.18+gauss(d,.015)*.08+gauss(d,.046)*.034);
+    col+=ivory*light*(gauss(d,w)*.87*focus*flow+gauss(d,.004)*.18+gauss(d,.015)*.08+gauss(d,.046)*.034);
     // Sous-filament, doux et irrégulier : la ligne prend du volume.
     float strand=.0018*sin(uv.x*39.+side+t*.2);
-    col+=ivory*energy*gauss(d+strand,w*.6)*.14;
+    col+=ivory*light*gauss(d+strand,w*.6)*.14;
     float mist=gauss(d,.09)*(.3+fog*.8)*(.7+wisps*.3);
-    col+=landscape*ivory*energy*mist*(.042+fusion*.12);
+    col+=landscape*ivory*light*mist*(.042+fusion*.12);
   }
   // Grain à deux échelles : émulsion fine et petits amas irréguliers.
   float vignette=1.-.58*pow(clamp(length((uv-.5)*vec2(1.25,1.)),0.,1.),1.4);
@@ -294,7 +323,7 @@ function initialize() {
     gl.useProgram(program);
     const buffer=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,buffer); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
     const attribute=gl.getAttribLocation(program,'p'); gl.enableVertexAttribArray(attribute); gl.vertexAttribPointer(attribute,2,gl.FLOAT,false,0,0);
-    uniforms={resolution:gl.getUniformLocation(program,'resolution'),t:gl.getUniformLocation(program,'t'),landscape:gl.getUniformLocation(program,'landscape'),texture:gl.getUniformLocation(program,'texture')};
+    uniforms=Object.fromEntries(['resolution','t','landscape','texture','active','fusion','separation','energy'].map(name => [name,gl.getUniformLocation(program,name)]));
     ready=true; document.querySelector('#error').hidden=true; resize();
   } catch (error) { console.error(error); showError(); }
 }
@@ -303,15 +332,17 @@ canvas.addEventListener('webglcontextrestored', initialize);
 addEventListener('resize',resize); initialize();
 function render(t) {
   if (ready) {
+    const etat = etatVisuel(t);
+    for (const name of ['active','fusion','separation','energy']) gl.uniform1f(uniforms[name],etat[name]);
     gl.uniform2f(uniforms.resolution,canvas.width,canvas.height); gl.uniform1f(uniforms.t,t); gl.uniform1f(uniforms.landscape,landscape?1:0); gl.uniform1f(uniforms.texture,texture); gl.drawArrays(gl.TRIANGLES,0,6);
   }
   title.style.opacity = (smooth(0, 1.3, t) * (1 - smooth(2.8, 5.2, t))).toFixed(3);
  }
 const lecteur = creerLecteurConcert({
-  name: "With or Without You · démo ~50 s", duration,
-  parts:[{name:'Apparition',start:0},{name:'Attraction',start:8},{name:'Fusion',start:22},{name:'Apaisement',start:36}],
+  name: "With or Without You · ~7 min", duration,
+  parts:parties,
   ready,
-  help:"B fond : désert / noir   V intensité de la texture",
+  help:"B fond : désert / noir   V intensité de la texture\nLancer au premier son · calage du groupe à vérifier",
   details:() => `Fond : ${landscape ? 'désert' : 'noir'} · Texture : ${Math.round(texture * 100)} %`,
   onKey(key) {
     if (key === 'b') { landscape = !landscape; return true; }
