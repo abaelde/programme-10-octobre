@@ -46,6 +46,13 @@ h1 { font: 500 1rem/1.2 var(--titre); letter-spacing: .26em; text-transform: upp
 .stop:active { transform: scale(.97); }
 .outil { flex: none; font: 600 .8rem/1 var(--titre); letter-spacing: .1em; text-transform: uppercase; color: var(--or); background: transparent; border: 1.5px solid var(--trait); border-radius: 10px; padding: 11px 13px; cursor: pointer; }
 .outil.on { color: var(--fond); background: var(--or); border-color: var(--or); }
+/* Volume global, en haut à droite : 0 dB = réglage de base, de coupé à +10 dB, s'applique à tous les sons */
+.volume { flex: none; display: flex; align-items: center; gap: 6px; border: 1.5px solid var(--trait); border-radius: 10px; padding: 4px 8px 4px 10px; }
+.volume label { font: 600 .72rem/1 var(--titre); letter-spacing: .1em; text-transform: uppercase; color: var(--doux); }
+.volume input { width: 130px; margin: 0; accent-color: var(--or); cursor: pointer; }
+#vol-val { min-width: 4.2em; text-align: right; font: 500 .85rem/1 var(--titre); color: var(--or); cursor: pointer; white-space: nowrap; }
+#vol-val.base { color: var(--doux); }
+#vol-val.coupe { color: var(--rouge); }
 
 /* Réglage des raccourcis : on touche une carte, puis la touche du clavier */
 .haut { flex-wrap: wrap; }
@@ -205,6 +212,8 @@ h2.tous { --c: var(--doux); margin-top: 22px; }
 @media (max-width: 620px) {
   h1 { display: none; }
   .stop { padding: 11px 12px; font-size: .78rem; letter-spacing: .08em; }
+  .volume { flex-basis: 100%; }
+  .volume input { flex: 1; width: auto; }
   .grille { grid-template-columns: repeat(4, 1fr); gap: 4px; }
   .grille { grid-template-columns: repeat(5, 1fr); }
   .emotions .grille, .entree .grille { grid-template-columns: repeat(4, 1fr); }   /* répliques plus longues */
@@ -226,6 +235,12 @@ h2.tous { --c: var(--doux); margin-top: 22px; }
     <input id="cherche" type="search" placeholder="Chercher : ding, tarzan, kaamelott…" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="go">
     <button class="outil" id="raccourcis" title="Choisir la touche du clavier de chaque son">Raccourcis</button>
     <button class="stop" id="stop">Tout couper</button>
+    <div class="volume" title="Volume de tous les sons. 0 dB = réglage de base. Double-clic sur la valeur : retour à 0 dB.">
+      <label for="volume">Volume</label>
+      <input id="volume" type="range" min="-40" max="10" step="1" value="0" list="vol-reperes">
+      <datalist id="vol-reperes"><option value="0"></option></datalist>
+      <span id="vol-val" class="base">0 dB</span>
+    </div>
     <div class="barre">
       <nav class="onglets"><button data-onglet="4">Intro<small></small></button><button data-onglet="1">Jeu 1<small></small></button><button data-onglet="2">Jeu 2<small></small></button><button data-onglet="3">Jeu 3<small></small></button></nav>
       <div class="partout" id="partout"></div>
@@ -365,7 +380,7 @@ h2.tous { --c: var(--doux); margin-top: 22px; }
   <section id="pop-reste" class="pop" hidden><h2>Autres extraits</h2></section>
   <p class="vide" id="vide" hidden>Aucun son. Échap pour tout réafficher.</p>
 
-  <p class="note">Un appui lance le son, un deuxième appui sur le même bouton l'arrête. Dans Chrono et attente, chaque musique ou son dure le temps choisi (10, 20 ou 30 s), avec bips sur les 5 dernières secondes, sans son à zéro (le buzzer reste un bouton, au choix). Les autres sons s'arrêtent aussi au bout de ce temps, en fondu, s'ils sont plus longs ; les boucles restent libres. En haut, un onglet par jeu : sa conduite son (celle de la fiche des jeux), un moment par ligne, le son principal en grand ; clic droit sur un petit son pour le mettre en grand, deuxième clic sur l'onglet pour le replier. Au clavier : <kbd>/</kbd> pour chercher, <kbd>Entrée</kbd> joue le premier résultat, la touche écrite sur chaque bouton (à régler avec « Raccourcis », retenus par ce navigateur et affichés dans le programme des jeux), <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> pour la durée (10, 20, 30 s), <kbd>Espace</kbd> arrête le chrono, <kbd>Échap</kbd> coupe tout. Sur iPhone, monter le volume du téléphone avant.</p>
+  <p class="note">Un appui lance le son, un deuxième appui sur le même bouton l'arrête. Dans Chrono et attente, chaque musique ou son dure le temps choisi (10, 20 ou 30 s), avec bips sur les 5 dernières secondes, sans son à zéro (le buzzer reste un bouton, au choix). Les autres sons s'arrêtent aussi au bout de ce temps, en fondu, s'ils sont plus longs ; les boucles restent libres. En haut, un onglet par jeu : sa conduite son (celle de la fiche des jeux), un moment par ligne, le son principal en grand ; clic droit sur un petit son pour le mettre en grand, deuxième clic sur l'onglet pour le replier. Au clavier : <kbd>/</kbd> pour chercher, <kbd>Entrée</kbd> joue le premier résultat, la touche écrite sur chaque bouton (à régler avec « Raccourcis », retenus par ce navigateur et affichés dans le programme des jeux), <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> pour la durée (10, 20, 30 s), <kbd>Espace</kbd> arrête le chrono, <kbd>Échap</kbd> coupe tout. En haut à droite, le volume de tous les sons : 0 dB = réglage de base, plus bas ou jusqu'à +10 dB (sans saturer), double-clic sur la valeur pour revenir à 0 dB ; retenu par ce navigateur. Sur iPhone, monter le volume du téléphone avant.</p>
   <p class="note">Sons : <a href="https://bigsoundbank.com">BigSoundBank</a> (CC0) et <a href="https://mixkit.co">Mixkit</a> (licence gratuite Mixkit). Musique d'ascenseur : « Local Forecast - Elevator », Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), licence <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Pop culture : vrais extraits, réservés à la famille ; fond rouille pour Kaamelott, turquoise pour le reste.</p>
 </main>
 <div id="etat"></div>
@@ -389,7 +404,7 @@ const REGLAGES = {
   "attente-caf": { boucle: true }
 };
 
-let ac = null, sortie;
+let ac = null, sortie, volumeGlobal;
 const voix = new Set(), boucles = {}, tampons = {}, chargements = {};
 
 function audio() {
@@ -400,7 +415,11 @@ function audio() {
     ac = new (window.AudioContext || window.webkitAudioContext)();
     const comp = ac.createDynamicsCompressor();
     comp.threshold.value = -8; comp.knee.value = 6; comp.ratio.value = 3; comp.attack.value = .003; comp.release.value = .25;
-    sortie = ac.createGain(); sortie.connect(comp); comp.connect(ac.destination);
+    // Volume global après le compresseur (0 dB = son de base inchangé), puis un limiteur qui n'agit qu'au-dessus de 0 dB, pour ne pas saturer la table
+    volumeGlobal = ac.createGain(); volumeGlobal.gain.value = gainDe(volumeDb);
+    const lim = ac.createDynamicsCompressor();
+    lim.threshold.value = -1; lim.knee.value = 0; lim.ratio.value = 20; lim.attack.value = .001; lim.release.value = .1;
+    sortie = ac.createGain(); sortie.connect(comp); comp.connect(volumeGlobal); volumeGlobal.connect(lim); lim.connect(ac.destination);
     Object.keys(SONS_MP3).forEach(charge);   // décode tout dès le premier appui
     // Pop culture : décodés ensuite, un par un, sans ralentir les sons des jeux
     prechargePop();
@@ -614,6 +633,26 @@ addEventListener("keydown", e => {
     if (b) { e.preventDefault(); declenche(b); }
   }
 });
+
+/* ---------- Volume global : en dB, 0 = réglage de base, tout à gauche = coupé ; retenu par ce navigateur ---------- */
+const CLE_VOLUME = "sons-volume", VOL_MIN = -40;
+const curseurVol = document.getElementById("volume"), valVol = document.getElementById("vol-val");
+let volumeDb = 0;
+try { const v = parseFloat(localStorage.getItem(CLE_VOLUME)); if (Number.isFinite(v)) volumeDb = Math.max(VOL_MIN, Math.min(10, v)); } catch (e) {}
+function gainDe(db) { return db <= VOL_MIN ? 0 : Math.pow(10, db / 20); }
+function regleVolume(db) {
+  volumeDb = db;
+  curseurVol.value = db;
+  valVol.textContent = db <= VOL_MIN ? "coupé" : (db > 0 ? "+" : "") + db + " dB";
+  valVol.className = db <= VOL_MIN ? "coupe" : db === 0 ? "base" : "";
+  if (volumeGlobal) volumeGlobal.gain.setTargetAtTime(gainDe(db), ac.currentTime, .03);
+  try { localStorage.setItem(CLE_VOLUME, db); } catch (e) {}
+}
+regleVolume(volumeDb);
+curseurVol.addEventListener("input", () => regleVolume(+curseurVol.value));
+// Rend la main au clavier après le réglage, sinon les raccourcis des sons ne répondent plus
+curseurVol.addEventListener("change", () => curseurVol.blur());
+valVol.addEventListener("dblclick", () => { regleVolume(0); signale("Volume : réglage de base"); });
 
 /* ---------- Raccourcis clavier : réglés dans la page, retenus par ce navigateur ---------- */
 // Touches d'origine : data-k des boutons. Les réglages de Maxime les remplacent (localStorage), Exporter / Importer pour les garder.
